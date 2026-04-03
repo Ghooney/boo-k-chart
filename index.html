@@ -799,6 +799,23 @@
     font-family: 'Noto Sans KR', sans-serif;
   }
   .btn-primary:hover { background: var(--amber-light); }
+  .btn-primary {
+    flex: 1;
+    padding: 12px;
+    background: var(--grad);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .btn-primary:hover { opacity: 0.88; }
   .btn-secondary {
     flex: 1;
     padding: 12px;
@@ -811,6 +828,9 @@
     cursor: pointer;
     transition: all 0.2s;
     font-family: 'Noto Sans KR', sans-serif;
+    text-align: center;
+    text-decoration: none;
+    display: block;
   }
   .btn-secondary:hover { border-color: var(--ink); }
 
@@ -1846,7 +1866,7 @@ function _renderThemePage(isAppend = false) {
         <span class="crown">${crowns[i]}</span>
         ${coverHTML(b,'featured-cover')}
         <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
-        <div class="featured-title">${b.title}</div>
+        <div class="featured-title">${cleanTitle(b.title)}</div>
         <div class="featured-author">${b.author}</div>
         <div class="featured-loan">
           📖 대출 ${(b.loans||0).toLocaleString()}회
@@ -1861,7 +1881,7 @@ function _renderThemePage(isAppend = false) {
         <div class="rank-num other">${b.rank}</div>
         ${coverHTML(b,'book-cover')}
         <div class="book-info">
-          <div class="book-title">${b.title}</div>
+          <div class="book-title">${cleanTitle(b.title)}</div>
           <div class="book-author">${b.author} · ${b.publisher||''}</div>
           <div class="book-meta">
             <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
@@ -1887,7 +1907,7 @@ function _renderThemePage(isAppend = false) {
         <div class="rank-num other">${b.rank}</div>
         ${coverHTML(b,'book-cover')}
         <div class="book-info">
-          <div class="book-title">${b.title}</div>
+          <div class="book-title">${cleanTitle(b.title)}</div>
           <div class="book-author">${b.author} · ${b.publisher||''}</div>
           <div class="book-meta">
             <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
@@ -1969,7 +1989,7 @@ function _drawModal(b, kakaoDoc, aladin, chaekieum) {
     <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
       ${coverHTML}
       <div style="flex:1;min-width:0">
-        <div class="modal-title">${b.title}</div>
+        <div class="modal-title">${cleanTitle(b.title)}</div>
         <div class="modal-author" style="margin-bottom:6px">${b.author}${b.publisher ? ' · ' + b.publisher : ''}</div>
         <div class="modal-tags">
           ${b.kdc ? `<span class="modal-tag">${kdcLabel(b.kdc)}</span>` : ''}
@@ -2193,7 +2213,7 @@ function _renderChartPage(isAppend = false) {
         <span class="crown">${crowns[i]}</span>
         ${coverHTML(b, 'featured-cover')}
         <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
-        <div class="featured-title">${b.title}</div>
+        <div class="featured-title">${cleanTitle(b.title)}</div>
         <div class="featured-author">${b.author}</div>
         <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
       </div>
@@ -2205,7 +2225,7 @@ function _renderChartPage(isAppend = false) {
         <div class="rank-num other">${b.rank}</div>
         ${coverHTML(b, 'book-cover')}
         <div class="book-info">
-          <div class="book-title">${b.title}</div>
+          <div class="book-title">${cleanTitle(b.title)}</div>
           <div class="book-author">${b.author} · ${b.publisher||''}</div>
           <div class="book-meta">
             <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
@@ -2229,7 +2249,7 @@ function _renderChartPage(isAppend = false) {
         <div class="rank-num other">${b.rank}</div>
         ${coverHTML(b, 'book-cover')}
         <div class="book-info">
-          <div class="book-title">${b.title}</div>
+          <div class="book-title">${cleanTitle(b.title)}</div>
           <div class="book-author">${b.author} · ${b.publisher||''}</div>
           <div class="book-meta">
             <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
@@ -2268,7 +2288,7 @@ function renderRising(data) {
           : `${b.cover || '📚'}`}
       </div>
       <div class="rising-pct-badge">▲ ${b.pct}</div>
-      <div class="rising-book-title">${b.title}</div>
+      <div class="rising-book-title">${cleanTitle(b.title)}</div>
       <div class="rising-book-author">${b.author}</div>
     </div>
   `).join('');
@@ -2360,6 +2380,12 @@ function filterCeleb(cat, el) {
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
+// 책 제목에서 " : " 이후 부제 제거
+function cleanTitle(title) {
+  if (!title) return '';
+  return title.split(/\s*[:：]\s*/)[0].trim();
+}
+
 function kdcLabel(kdc) {
   const map = { '0':'총류','1':'철학','2':'종교','3':'사회과학','4':'자연과학','5':'기술과학','6':'예술','7':'언어','8':'문학','9':'역사' };
   return map[kdc?.[0]] || '기타';
