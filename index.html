@@ -378,9 +378,14 @@
   .filter-bar {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     margin-bottom: 24px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
+  .filter-bar::-webkit-scrollbar { display: none; }
   .filter-chip {
     font-size: 0.75rem;
     padding: 6px 14px;
@@ -391,11 +396,32 @@
     cursor: pointer;
     transition: all 0.18s;
     font-family: 'Pretendard', sans-serif;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .filter-chip:hover { border-color: var(--amber); color: var(--amber); }
   .filter-chip.active {
     background: var(--amber);
     border-color: var(--amber);
+    color: white;
+  }
+
+  /* ── LOADMORE ── */
+  .loadmore-btn {
+    padding: 12px 32px;
+    background: none;
+    border: 1.5px solid var(--amber);
+    color: var(--amber);
+    border-radius: 24px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Pretendard', sans-serif;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .loadmore-btn:hover {
+    background: var(--amber);
     color: white;
   }
 
@@ -870,22 +896,31 @@
       <span class="section-badge">도서관 정보나루</span>
     </div>
 
-    <div class="filter-bar">
-      <button class="filter-chip active" onclick="filterChart('all', this)">전체</button>
-      <button class="filter-chip" onclick="filterChart('1', this)">총류</button>
-      <button class="filter-chip" onclick="filterChart('8', this)">문학</button>
-      <button class="filter-chip" onclick="filterChart('3', this)">사회과학</button>
-      <button class="filter-chip" onclick="filterChart('5', this)">기술과학</button>
-      <button class="filter-chip" onclick="filterChart('4', this)">자연과학</button>
+    <div class="filter-bar" id="chart-filter-bar">
+      <button class="filter-chip active" onclick="filterChart('all', this)">📚 전체</button>
+      <button class="filter-chip" onclick="filterChart('8', this)">✍️ 문학</button>
+      <button class="filter-chip" onclick="filterChart('3', this)">💼 사회·경제</button>
+      <button class="filter-chip" onclick="filterChart('1', this)">🧠 철학·심리</button>
+      <button class="filter-chip" onclick="filterChart('9', this)">🏛️ 역사</button>
+      <button class="filter-chip" onclick="filterChart('6', this)">🎨 예술</button>
+      <button class="filter-chip" onclick="filterChart('4', this)">🔬 자연과학</button>
+      <button class="filter-chip" onclick="filterChart('5', this)">⚙️ 기술·공학</button>
+      <button class="filter-chip" onclick="filterChart('2', this)">🕊️ 종교</button>
+      <button class="filter-chip" onclick="filterChart('7', this)">🗣️ 언어</button>
+      <button class="filter-chip" onclick="filterChart('0', this)">📂 총류</button>
     </div>
 
     <div class="featured-row" id="featured-row"></div>
-
     <div class="chart-grid" id="chart-grid">
       <div class="loading-wrap">
         <div class="loading-spinner"></div>
         <div class="loading-text">도서관 빅데이터 불러오는 중...</div>
       </div>
+    </div>
+    <div id="chart-loadmore-wrap" style="display:none;text-align:center;margin-top:24px">
+      <button class="loadmore-btn" onclick="loadMoreChart()">
+        📖 더 보기 <span id="chart-loadmore-count"></span>
+      </button>
     </div>
   </div>
 
@@ -912,8 +947,25 @@
         </div>
         <span class="section-badge" id="theme-detail-badge"></span>
       </div>
+      <!-- 테마 장르 필터 -->
+      <div class="filter-bar" id="theme-filter-bar" style="display:none">
+        <button class="filter-chip active" onclick="filterTheme('all', this)">📚 전체</button>
+        <button class="filter-chip" onclick="filterTheme('8', this)">✍️ 문학</button>
+        <button class="filter-chip" onclick="filterTheme('3', this)">💼 사회·경제</button>
+        <button class="filter-chip" onclick="filterTheme('1', this)">🧠 철학·심리</button>
+        <button class="filter-chip" onclick="filterTheme('9', this)">🏛️ 역사</button>
+        <button class="filter-chip" onclick="filterTheme('6', this)">🎨 예술</button>
+        <button class="filter-chip" onclick="filterTheme('4', this)">🔬 자연과학</button>
+        <button class="filter-chip" onclick="filterTheme('5', this)">⚙️ 기술·공학</button>
+        <button class="filter-chip" onclick="filterTheme('2', this)">🕊️ 종교</button>
+      </div>
       <div class="featured-row" id="theme-featured-row"></div>
       <div class="chart-grid" id="theme-chart-grid"></div>
+      <div id="theme-loadmore-wrap" style="display:none;text-align:center;margin-top:24px">
+        <button class="loadmore-btn" onclick="loadMoreTheme()">
+          📖 더 보기 <span id="theme-loadmore-count"></span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1202,68 +1254,129 @@ async function fetchPeriodBooks(startDt, endDt, extraParams = {}, pageSize = 100
     .filter(isAdultBook);
 }
 
-// ─── 10년 교집합 알고리즘 ────────────────────────────────────────────
-// 각 연도별 TOP100 가져와서 ISBN 기준으로 등장 횟수 카운트
-// 많이 등장할수록 상위 → "시간이 검증한 책"
+// ─── 10년 교집합 — 병렬 호출 ─────────────────────────────────────────
 async function fetchIntersectBooks(theme, onProgress) {
   const years = [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
   const isWinter = theme.id === 'winter';
-  const scoreMap = {}; // isbn → { count, totalLoans, doc }
 
-  for (let i = 0; i < years.length; i++) {
-    const y = years[i];
-    onProgress && onProgress(i + 1, years.length, y);
-
+  // 연도별 API 요청을 모두 동시에 실행
+  const promises = years.map(async (y) => {
     let startDt, endDt;
     if (theme.seasonMonths) {
       if (isWinter) {
         startDt = `${y}-${theme.seasonMonths[0]}`;
-        endDt   = `${y+1 > 2024 ? 2024 : y+1}-${theme.seasonMonths[1]}`;
+        endDt   = `${y === 2024 ? 2024 : y+1}-${theme.seasonMonths[1]}`;
       } else {
         startDt = `${y}-${theme.seasonMonths[0]}`;
         endDt   = `${y}-${theme.seasonMonths[1]}`;
       }
     } else {
-      // 연령대 테마: 연간 전체
       startDt = `${y}-01-01`;
       endDt   = `${y}-12-31`;
     }
-
     try {
-      const docs = await fetchPeriodBooks(startDt, endDt, {
-        age: theme.ageParam,
-      }, 50);
+      return await fetchPeriodBooks(startDt, endDt, { age: theme.ageParam }, 50);
+    } catch(e) { return []; }
+  });
 
-      docs.forEach((doc, rank) => {
-        const isbn = doc.isbn13 || doc.bookname; // isbn 없으면 제목으로 키
-        if (!isbn) return;
-        if (!scoreMap[isbn]) {
-          scoreMap[isbn] = { count: 0, totalLoans: 0, doc };
-        }
-        scoreMap[isbn].count++;
-        scoreMap[isbn].totalLoans += parseInt(doc.loan_count) || 0;
-      });
-    } catch(e) { /* 연도 하나 실패해도 계속 */ }
-  }
+  // 진행 상황 표시 (병렬이지만 UI 업데이트용)
+  let done = 0;
+  const results = await Promise.all(promises.map(p => p.then(r => {
+    done++;
+    onProgress && onProgress(done, years.length);
+    return r;
+  })));
 
-  // 등장 횟수 많은 순 → 같으면 총 대출 횟수 순
+  // 교집합 스코어 계산
+  const scoreMap = {};
+  results.forEach((docs, yi) => {
+    docs.forEach(doc => {
+      const key = doc.isbn13 || doc.bookname;
+      if (!key) return;
+      if (!scoreMap[key]) scoreMap[key] = { count:0, totalLoans:0, doc };
+      scoreMap[key].count++;
+      scoreMap[key].totalLoans += parseInt(doc.loan_count)||0;
+    });
+  });
+
   return Object.values(scoreMap)
-    .sort((a, b) => b.count - a.count || b.totalLoans - a.totalLoans)
-    .slice(0, 20)
+    .sort((a,b) => b.count - a.count || b.totalLoans - a.totalLoans)
+    .slice(0, 100)
     .map((item, i) => ({
-      rank: i + 1,
+      rank: i+1,
       title: item.doc.bookname,
       author: item.doc.authors,
       publisher: item.doc.publisher,
-      kdc: item.doc.class_no?.[0] || '',
+      kdc: item.doc.class_no?.[0]||'',
       loans: item.totalLoans,
       isbn: item.doc.isbn13,
       cover: '📚', desc: '',
-      years: item.count, // 몇 년도에 등장했는지
+      years: item.count,
     }));
 }
 
-// ─── 테마 목록 렌더 ──────────────────────────────────────────────────
+// 테마 상세 열기
+async function openTheme(idx) {
+  const theme = THEMES[idx];
+  document.getElementById('theme-list').style.display = 'none';
+  const detail = document.getElementById('theme-detail');
+  detail.style.display = 'block';
+  document.getElementById('theme-detail-title').textContent = `${theme.emoji} ${theme.title}`;
+  document.getElementById('theme-detail-sub').textContent = theme.desc;
+  document.getElementById('theme-detail-badge').textContent = theme.badge;
+  document.getElementById('theme-featured-row').innerHTML = '';
+  // 필터바 숨김 초기화
+  const fb = document.getElementById('theme-filter-bar');
+  if (fb) fb.style.display = 'none';
+
+  const isIntersect = theme.type === 'intersect';
+  document.getElementById('theme-chart-grid').innerHTML = `
+    <div class="loading-wrap" style="grid-column:1/-1">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="theme-loading-text">
+        ${isIntersect ? '10년치 데이터를 동시에 분석 중...' : '데이터 불러오는 중...'}
+      </div>
+      ${isIntersect ? `<div style="margin-top:8px">
+        <div style="height:4px;background:var(--border);border-radius:2px;width:240px;margin:0 auto;overflow:hidden">
+          <div id="theme-progress-bar" style="height:100%;background:var(--amber);border-radius:2px;width:0%;transition:width 0.3s"></div>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:6px" id="theme-progress-text">0 / 10년 완료</div>
+      </div>` : ''}
+    </div>`;
+
+  try {
+    let data = [];
+    if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
+      if (isIntersect) {
+        data = await fetchIntersectBooks(theme, (done, total) => {
+          const bar = document.getElementById('theme-progress-bar');
+          const txt = document.getElementById('theme-progress-text');
+          if (bar) bar.style.width = `${Math.round(done/total*100)}%`;
+          if (txt) txt.textContent = `${done} / ${total}년 완료`;
+        });
+      } else {
+        const docs = await fetchPeriodBooks(
+          theme.params?.startDt || new Date(Date.now()-90*864e5).toISOString().split('T')[0],
+          theme.params?.endDt   || new Date().toISOString().split('T')[0],
+          { region: theme.params?.region }
+        );
+        data = docs.slice(0, 100).map((doc, i) => ({
+          rank: i+1, title: doc.bookname, author: doc.authors,
+          publisher: doc.publisher, kdc: doc.class_no?.[0]||'',
+          loans: parseInt(doc.loan_count)||0, isbn: doc.isbn13, cover:'📚', desc:'',
+        }));
+      }
+    }
+    if (!data.length) data = DEMO_CHART.map((b,i)=>({...b,rank:i+1}));
+    renderThemeDetail(data, isIntersect);
+    if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
+      attachCovers(data, d => { themeFullData = d; themeFilteredData = d; _renderThemePage(); });
+    }
+  } catch(e) {
+    console.error(e);
+    renderThemeDetail(DEMO_CHART, false);
+  }
+}
 function renderThemeList() {
   document.getElementById('theme-list').innerHTML = THEMES.map((t, i) => `
     <div class="theme-card ${t.colorClass}" onclick="openTheme(${i})" style="animation-delay:${i*0.06}s">
@@ -1334,11 +1447,34 @@ function closeThemeDetail() {
   document.getElementById('theme-chart-grid').innerHTML = '';
 }
 
-// 테마 상세 렌더
+// 테마 상세 렌더 — 페이지네이션 + 장르 필터 지원
+let themeFullData = [];
+let themeFilteredData = [];
+let themePage = 1;
+let currentThemeIsIntersect = false;
+
 function renderThemeDetail(data, isIntersect = false) {
-  const top3 = data.slice(0,3);
-  const rest = data.slice(3);
+  currentThemeIsIntersect = isIntersect;
+  themeFullData = data;
+  themeFilteredData = data;
+  themePage = 1;
+  // 장르 필터바 표시 & 초기화
+  const fb = document.getElementById('theme-filter-bar');
+  if (fb) {
+    fb.style.display = 'flex';
+    fb.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    fb.querySelector('.filter-chip')?.classList.add('active');
+  }
+  _renderThemePage();
+}
+
+function _renderThemePage() {
+  const data = themeFilteredData;
+  const top3 = data.slice(0, 3);
+  const pageData = data.slice(3, 3 + PAGE_SIZE * themePage);
+  const total = data.length;
   const crowns = ['👑','🥈','🥉'];
+
   document.getElementById('theme-featured-row').innerHTML = top3.map((b,i) => `
     <div class="featured-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${i*0.08}s">
       <span class="crown">${crowns[i]}</span>
@@ -1348,12 +1484,13 @@ function renderThemeDetail(data, isIntersect = false) {
       <div class="featured-author">${b.author}</div>
       <div class="featured-loan">
         📖 대출 ${(b.loans||0).toLocaleString()}회
-        ${isIntersect && b.years ? `<span style="margin-left:6px;font-size:0.65rem;background:rgba(200,131,58,0.15);color:var(--amber);padding:2px 6px;border-radius:3px">${b.years}년 연속 등장</span>` : ''}
+        ${currentThemeIsIntersect && b.years ? `<span style="margin-left:6px;font-size:0.65rem;background:rgba(200,131,58,0.15);color:var(--amber);padding:2px 6px;border-radius:3px">${b.years}년 연속 등장</span>` : ''}
       </div>
     </div>
   `).join('');
-  document.getElementById('theme-chart-grid').innerHTML = rest.map((b,i) => `
-    <div class="rank-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${(i+3)*0.05}s">
+
+  document.getElementById('theme-chart-grid').innerHTML = pageData.map((b,i) => `
+    <div class="rank-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${Math.min(i,10)*0.04}s">
       <div class="rank-num other">${b.rank}</div>
       ${coverHTML(b,'book-cover')}
       <div class="book-info">
@@ -1361,11 +1498,38 @@ function renderThemeDetail(data, isIntersect = false) {
         <div class="book-author">${b.author} · ${b.publisher||''}</div>
         <div class="book-meta">
           <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
-          ${isIntersect && b.years ? `<span class="genre-tag" style="color:var(--amber);border-color:var(--amber)">${b.years}년 연속</span>` : `<span class="genre-tag">${kdcLabel(b.kdc)}</span>`}
+          ${currentThemeIsIntersect && b.years
+            ? `<span class="genre-tag" style="color:var(--amber);border-color:var(--amber)">${b.years}년 연속</span>`
+            : `<span class="genre-tag">${kdcLabel(b.kdc)}</span>`}
         </div>
       </div>
     </div>
   `).join('');
+
+  const wrap = document.getElementById('theme-loadmore-wrap');
+  if (wrap) {
+    const shown = 3 + PAGE_SIZE * themePage;
+    if (shown < total) {
+      wrap.style.display = 'block';
+      document.getElementById('theme-loadmore-count').textContent = `(${shown}/${total})`;
+    } else {
+      wrap.style.display = 'none';
+    }
+  }
+}
+
+function loadMoreTheme() {
+  themePage++;
+  _renderThemePage();
+}
+
+function filterTheme(kdc, el) {
+  document.querySelectorAll('#theme-filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const filtered = kdc === 'all' ? themeFullData : themeFullData.filter(b => b.kdc === kdc);
+  themeFilteredData = (filtered.length ? filtered : themeFullData).map((b,i) => ({...b, rank: i+1}));
+  themePage = 1;
+  _renderThemePage();
 }
 
 // 테마 상세 모달
@@ -1443,21 +1607,25 @@ async function fetchLoanChart(kdc = '') {
   const today = new Date();
   const end = today.toISOString().split('T')[0];
   const start = new Date(today.setDate(today.getDate() - 30)).toISOString().split('T')[0];
-  let url = `https://data4library.kr/api/loanItemSrch?authKey=${API_KEY}&startDt=${start}&endDt=${end}&pageSize=20&format=json`;
+  // TOP100 확보를 위해 pageSize=100
+  let url = `https://data4library.kr/api/loanItemSrch?authKey=${API_KEY}&startDt=${start}&endDt=${end}&pageSize=100&format=json`;
   if (kdc) url += `&kdc=${kdc}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.response?.docs?.map((d, i) => ({
-    rank: i + 1,
-    title: d.doc.bookname,
-    author: d.doc.authors,
-    publisher: d.doc.publisher,
-    kdc: d.doc.class_no?.[0] || '',
-    loans: parseInt(d.doc.loan_count) || 0,
-    isbn: d.doc.isbn13,
-    cover: '📚',
-    desc: ''
-  })) || [];
+  const docs = json.response?.docs?.map(d => d.doc) || [];
+  // 아동도서 필터 적용
+  return docs
+    .filter(isAdultBook)
+    .map((d, i) => ({
+      rank: i + 1,
+      title: d.bookname,
+      author: d.authors,
+      publisher: d.publisher,
+      kdc: d.class_no?.[0] || '',
+      loans: parseInt(d.loan_count) || 0,
+      isbn: d.isbn13,
+      cover: '📚', desc: ''
+    }));
 }
 
 async function fetchRising() {
@@ -1465,7 +1633,7 @@ async function fetchRising() {
   const res = await fetch(url);
   const json = await res.json();
   const docs = json.response?.docs || [];
-  return docs.map((d, i) => ({
+  return docs.filter(d => isAdultBook(d.doc)).map((d, i) => ({
     rank: i + 1,
     title: d.doc.bookname,
     author: d.doc.authors,
@@ -1475,18 +1643,18 @@ async function fetchRising() {
 }
 
 async function loadChartData(kdc = '') {
-  if (!API_KEY) { renderChart(DEMO_CHART); return; }
+  if (!API_KEY) { renderChart(DEMO_CHART, 'chart'); return; }
   document.getElementById('chart-grid').innerHTML = loadingHTML();
   document.getElementById('featured-row').innerHTML = '';
+  document.getElementById('chart-loadmore-wrap') && (document.getElementById('chart-loadmore-wrap').style.display = 'none');
   try {
     const data = await fetchLoanChart(kdc);
     if (data.length) {
       currentChartData = data;
-      renderChart(data);
-      // 카카오 키 있으면 표지 이미지 비동기로 추가 로딩
-      if (KAKAO_KEY) attachCovers(currentChartData, renderChart);
-    } else renderChart(DEMO_CHART);
-  } catch(e) { renderChart(DEMO_CHART); }
+      renderChart(data, 'chart');
+      if (KAKAO_KEY) attachCovers(currentChartData, d => renderChart(d, 'chart'));
+    } else renderChart(DEMO_CHART, 'chart');
+  } catch(e) { renderChart(DEMO_CHART, 'chart'); }
 }
 
 async function loadRisingData() {
@@ -1504,42 +1672,76 @@ function loadingHTML() {
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────
+const PAGE_SIZE = 20; // 한 번에 보여줄 개수
+let chartPage = 1;    // 인기차트 현재 페이지
+let chartFilteredData = []; // 현재 필터된 전체 데이터
+
 function coverHTML(b, cls) {
   if (b.coverUrl) return `<img src="${b.coverUrl}" class="${cls}" alt="${b.title}" onerror="this.outerHTML='<div class=\'${cls} cover-placeholder\'>${b.cover||'📚'}</div>'">`;
   return `<div class="${cls} cover-placeholder">${b.cover || '📚'}</div>`;
 }
 
-function renderChart(data) {
+function renderChart(data, mode = 'chart') {
+  // 인기차트 모드: 페이지네이션 적용
+  if (mode === 'chart') {
+    chartFilteredData = data;
+    chartPage = 1;
+    _renderChartPage('chart');
+    return;
+  }
+}
+
+function _renderChartPage(mode) {
+  const data = chartFilteredData;
   const top3 = data.slice(0, 3);
-  const rest = data.slice(3);
+  const pageData = data.slice(3, 3 + PAGE_SIZE * chartPage);
+  const total = data.length;
   const crowns = ['👑', '🥈', '🥉'];
-  const featuredHTML = top3.map((b, i) => `
-    <div class="featured-card" onclick="openModal(${b.rank - 1},'chart')" style="animation-delay:${i*0.08}s">
+
+  document.getElementById('featured-row').innerHTML = top3.map((b, i) => `
+    <div class="featured-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${i*0.08}s">
       <span class="crown">${crowns[i]}</span>
       ${coverHTML(b, 'featured-cover')}
-      <div class="featured-rank">${['1ST', '2ND', '3RD'][i]} PLACE</div>
+      <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
       <div class="featured-title">${b.title}</div>
       <div class="featured-author">${b.author}</div>
-      <div class="featured-loan">📖 대출 ${b.loans.toLocaleString()}회</div>
+      <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
     </div>
   `).join('');
-  document.getElementById('featured-row').innerHTML = featuredHTML;
 
-  const gridHTML = rest.map((b, i) => `
-    <div class="rank-card" onclick="openModal(${b.rank - 1},'chart')" style="animation-delay:${(i+3)*0.05}s">
+  document.getElementById('chart-grid').innerHTML = pageData.map((b, i) => `
+    <div class="rank-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${Math.min(i,10)*0.04}s">
       <div class="rank-num other">${b.rank}</div>
       ${coverHTML(b, 'book-cover')}
       <div class="book-info">
         <div class="book-title">${b.title}</div>
-        <div class="book-author">${b.author} · ${b.publisher || ''}</div>
+        <div class="book-author">${b.author} · ${b.publisher||''}</div>
         <div class="book-meta">
-          <span class="loan-count">📖 ${b.loans.toLocaleString()}회</span>
+          <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
           <span class="genre-tag">${kdcLabel(b.kdc)}</span>
         </div>
       </div>
     </div>
   `).join('');
-  document.getElementById('chart-grid').innerHTML = gridHTML;
+
+  // 더보기 버튼
+  const wrap = document.getElementById('chart-loadmore-wrap');
+  const shown = 3 + PAGE_SIZE * chartPage;
+  if (wrap) {
+    if (shown < total) {
+      wrap.style.display = 'block';
+      document.getElementById('chart-loadmore-count').textContent = `(${shown}/${total})`;
+    } else {
+      wrap.style.display = 'none';
+    }
+  }
+}
+
+function loadMoreChart() {
+  chartPage++;
+  _renderChartPage('chart');
+  // 새로 추가된 항목에 표지 이미지 보완
+  if (KAKAO_KEY) attachCovers(chartFilteredData, d => { chartFilteredData = d; _renderChartPage('chart'); });
 }
 
 function renderRising(data) {
@@ -1685,11 +1887,16 @@ function switchTab(name, el) {
 }
 
 function filterChart(kdc, el) {
-  document.querySelectorAll('.filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('#chart-filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  const filtered = kdc === 'all' ? currentChartData : currentChartData.filter(b => b.kdc === kdc);
-  renderChart(filtered.length ? filtered : currentChartData);
-  if (API_KEY && kdc !== 'all') loadChartData(kdc);
+  if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
+    // API에서 해당 KDC로 다시 호출 (아동 필터 포함)
+    loadChartData(kdc === 'all' ? '' : kdc);
+  } else {
+    // 데모 데이터에서 필터
+    const filtered = kdc === 'all' ? DEMO_CHART : DEMO_CHART.filter(b => b.kdc === kdc);
+    renderChart(filtered.length ? filtered : DEMO_CHART, 'chart');
+  }
 }
 
 function filterCeleb(cat, el) {
@@ -1705,19 +1912,18 @@ function kdcLabel(kdc) {
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────
-renderChart(DEMO_CHART);
+renderChart(DEMO_CHART, 'chart');
 renderRising(DEMO_RISING);
 renderThemeList();
 renderCeleb();
 renderLibrary();
 
-// 실제 API 데이터 로딩 (키가 플레이스홀더가 아닐 때만)
 if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
   loadChartData();
   loadRisingData();
 }
 if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
-  attachCovers(DEMO_CHART, renderChart);
+  attachCovers(DEMO_CHART, d => renderChart(d, 'chart'));
   attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
   attachCovers(LIBRARY_PICKS, () => renderLibrary());
 }
