@@ -1930,12 +1930,11 @@ function filterTheme(kdc, el) {
 // ─── 공통 모달 렌더 ──────────────────────────────────────────────────
 async function renderBookModal(book) {
   const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(book.title)}`;
+  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(book.title)}`;
 
-  // 일단 가진 데이터로 먼저 모달 표시
-  _drawModal(book, null, aladin);
+  _drawModal(book, null, aladin, chaekieum);
   document.getElementById('modal-overlay').classList.add('open');
 
-  // 카카오 API로 표지 + 책 설명 비동기 업데이트
   if (KAKAO_KEY) {
     try {
       const query = book.isbn || book.title;
@@ -1952,13 +1951,13 @@ async function renderBookModal(book) {
           desc: doc.contents || book.desc || '',
           publisher: doc.publisher || book.publisher || '',
         };
-        _drawModal(enriched, doc, aladin);
+        _drawModal(enriched, doc, aladin, chaekieum);
       }
-    } catch(e) { /* 실패해도 기존 내용 유지 */ }
+    } catch(e) {}
   }
 }
 
-function _drawModal(b, kakaoDoc, aladin) {
+function _drawModal(b, kakaoDoc, aladin, chaekieum) {
   const coverHTML = b.coverUrl
     ? `<img src="${b.coverUrl}" style="width:88px;height:122px;border-radius:8px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,0.18);flex-shrink:0">`
     : `<div style="width:88px;height:122px;border-radius:8px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0">${b.cover||'📚'}</div>`;
@@ -1987,7 +1986,8 @@ function _drawModal(b, kakaoDoc, aladin) {
     <hr class="modal-divider">` : '<hr class="modal-divider">'}
     ${truncatedDesc ? `<p class="modal-desc" style="margin-bottom:20px;line-height:1.7">${truncatedDesc}</p>` : ''}
     <div class="modal-actions">
-      <a href="${aladin}" target="_blank" class="btn-primary">알라딘에서 보기</a>
+      <a href="${chaekieum}" target="_blank" class="btn-primary">대출 가능 확인</a>
+      <a href="${aladin}" target="_blank" class="btn-secondary">도서 소장하기</a>
     </div>
   `;
 }
@@ -2006,7 +2006,7 @@ function openModalDirect(b) {
 function openCelebModal(idx) {
   const c = CELEB_DATA[idx];
   const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(c.book)}`;
-  // 셀럽 모달은 별도 레이아웃 유지
+  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(c.book)}`;
   document.getElementById('modal-content').innerHTML = `
     <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
       <div class="celeb-avatar">${c.emoji}</div>
@@ -2029,7 +2029,8 @@ function openCelebModal(idx) {
     </div>
     <div style="font-size:0.68rem;color:var(--muted);margin-bottom:18px">📌 출처: ${c.source}</div>
     <div class="modal-actions">
-      <a href="${aladin}" target="_blank" class="btn-primary">알라딘에서 보기</a>
+      <a href="${chaekieum}" target="_blank" class="btn-primary">대출 가능 확인</a>
+      <a href="${aladin}" target="_blank" class="btn-secondary">도서 소장하기</a>
     </div>
   `;
   document.getElementById('modal-overlay').classList.add('open');
