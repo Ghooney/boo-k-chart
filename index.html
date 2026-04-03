@@ -699,27 +699,6 @@
   .loading-text { font-size: 0.82rem; color: var(--muted); }
 
   /* ── API KEY INPUT ── */
-  .apikey-banner {
-    background: rgba(200,131,58,0.08);
-    border: 1px solid rgba(200,131,58,0.3);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .apikey-banner p { font-size: 0.8rem; color: var(--muted); flex: 1; min-width: 200px; }
-  .apikey-input {
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.8rem;
-    width: 220px;
-    font-family: monospace;
-    background: white;
-  }
   .apikey-btn {
     padding: 8px 14px;
     background: var(--amber);
@@ -820,23 +799,6 @@
 </div>
 
 <div class="main">
-
-  <!-- API KEY BANNER -->
-  <div class="apikey-banner">
-    <p>🔑 API 키를 입력하면 실시간 데이터와 책 표지 이미지가 활성화됩니다. 없으면 데모 모드로 동작해요.</p>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="font-size:0.7rem;color:var(--muted);min-width:90px">📚 도서관나루</span>
-        <input class="apikey-input" type="password" id="apiKeyInput" placeholder="535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902" />
-        <button class="apikey-btn" onclick="setApiKey()">연결</button>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="font-size:0.7rem;color:var(--muted);min-width:90px">🖼️ 카카오 책</span>
-        <input class="apikey-input" type="password" id="kakaoKeyInput" placeholder="994f5ecb2932ab81ce7a1e747d1489df" />
-        <button class="apikey-btn" onclick="setKakaoKey()">연결</button>
-      </div>
-    </div>
-  </div>
 
   <!-- 📊 인기 차트 -->
   <div class="panel active" id="panel-chart">
@@ -1043,8 +1005,10 @@ const LIBRARY_PICKS = [
 ];
 
 // ─── STATE ───────────────────────────────────────────────────────────
-let API_KEY = '535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902';
-let KAKAO_KEY = '994f5ecb2932ab81ce7a1e747d1489df';
+// ⚠️ 아래 두 줄에 발급받은 API 키를 입력하세요
+const API_KEY = '535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902';
+const KAKAO_KEY = '994f5ecb2932ab81ce7a1e747d1489df';
+
 let currentChartData = DEMO_CHART;
 let currentRisingData = DEMO_RISING;
 
@@ -1081,43 +1045,6 @@ async function attachCovers(dataArr, renderFn) {
   });
   await Promise.all(promises);
   renderFn(dataArr);
-}
-
-// ─── API ─────────────────────────────────────────────────────────────
-function setApiKey() {
-  const input = document.getElementById('apiKeyInput').value.trim();
-  if (!input) return;
-  API_KEY = input;
-  loadChartData();
-  loadRisingData();
-  updateBannerStatus();
-}
-
-function setKakaoKey() {
-  const input = document.getElementById('kakaoKeyInput').value.trim();
-  if (!input) return;
-  KAKAO_KEY = input;
-  // 카카오 키 연결 시 현재 데이터에 표지 이미지 즉시 로딩
-  attachCovers(currentChartData, renderChart);
-  attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover })), () => renderCeleb());
-  attachCovers(LIBRARY_PICKS.map(b => ({ isbn: b.isbn, title: b.title, cover: b.cover })), () => renderLibrary());
-  updateBannerStatus();
-}
-
-function updateBannerStatus() {
-  const hasLib = !!API_KEY;
-  const hasKakao = !!KAKAO_KEY;
-  const p = document.querySelector('.apikey-banner p');
-  if (hasLib && hasKakao) {
-    document.querySelector('.apikey-banner').style.background = 'rgba(107,124,94,0.08)';
-    document.querySelector('.apikey-banner').style.borderColor = 'rgba(107,124,94,0.3)';
-    p.textContent = '✅ 도서관 정보나루 + 카카오 API 모두 연결됨 — 실시간 데이터 & 표지 이미지 활성화';
-  } else if (hasLib) {
-    document.querySelector('.apikey-banner').style.background = 'rgba(200,131,58,0.06)';
-    p.textContent = '✅ 도서관 정보나루 연결됨 · 카카오 키를 추가하면 책 표지 이미지가 나와요!';
-  } else if (hasKakao) {
-    p.textContent = '✅ 카카오 연결됨 · 도서관 정보나루 키를 추가하면 실시간 차트가 활성화돼요!';
-  }
 }
 
 async function fetchLoanChart(kdc = '') {
@@ -1390,6 +1317,17 @@ renderChart(DEMO_CHART);
 renderRising(DEMO_RISING);
 renderCeleb();
 renderLibrary();
+
+// 실제 API 데이터 로딩 (키가 플레이스홀더가 아닐 때만)
+if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
+  loadChartData();
+  loadRisingData();
+}
+if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
+  attachCovers(DEMO_CHART, renderChart);
+  attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
+  attachCovers(LIBRARY_PICKS, () => renderLibrary());
+}
 </script>
 </body>
 </html>
