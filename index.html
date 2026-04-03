@@ -3,28 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>북차트 — 진짜 인기 책 차트</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=DM+Serif+Display:ital@0;1&family=Pretendard:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>북차트 — 전국 공공도서관 빅데이터 기반 순수 독자 인기차트</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,900;1,700&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1612;
-    --paper: #f5f0e8;
-    --cream: #ede8dc;
-    --amber: #c8833a;
-    --amber-light: #e8a855;
-    --red: #b84040;
-    --sage: #6b7c5e;
-    --muted: #7a7269;
-    --border: #d4cec3;
+    --ink: #1c1917;
+    --paper: #fafaf8;
+    --cream: #f4f3ef;
+    --amber: #d97706;
+    --amber-light: #f59e0b;
+    --gold-bright: #fbbf24;
+    --red: #dc2626;
+    --sage: #65a37a;
+    --muted: #78716c;
+    --border: #e7e5e0;
     --card: #ffffff;
-    --shadow: 0 2px 16px rgba(26,22,18,0.08);
-    --shadow-hover: 0 8px 32px rgba(26,22,18,0.15);
+    --shadow: 0 1px 12px rgba(28,25,23,0.07);
+    --shadow-hover: 0 8px 28px rgba(28,25,23,0.13);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Pretendard', 'Noto Serif KR', serif;
+    font-family: 'Pretendard', -apple-system, sans-serif;
     background: var(--paper);
     color: var(--ink);
     min-height: 100vh;
@@ -48,10 +49,12 @@
     height: 60px;
   }
   .logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
     color: var(--paper);
     letter-spacing: -0.5px;
+    text-transform: uppercase;
   }
   .logo span { color: var(--amber-light); }
   .header-sub {
@@ -70,8 +73,8 @@
 
   /* ── HERO ── */
   .hero {
-    background: var(--ink);
-    padding: 40px 24px 48px;
+    background: #111827;
+    padding: 56px 24px 64px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -80,47 +83,78 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 40px,
-      rgba(200,131,58,0.04) 40px,
-      rgba(200,131,58,0.04) 80px
-    );
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(217,119,6,0.12), transparent);
   }
   .hero-eyebrow {
     font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    color: var(--amber);
+    letter-spacing: 0.22em;
+    color: var(--amber-light);
     text-transform: uppercase;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 500;
   }
   .hero-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    color: var(--paper);
-    line-height: 1.1;
-    margin-bottom: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    color: #f9fafb;
+    line-height: 1.0;
+    margin-bottom: 14px;
+    letter-spacing: -1px;
   }
-  .hero-title em { color: var(--amber-light); font-style: italic; }
+  /* 첫 줄 — 가늘게, 둘째 줄 — 굵게 대비 */
+  .hero-title .thin {
+    font-weight: 300;
+    color: #9ca3af;
+    display: block;
+    font-size: 0.65em;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .hero-title .bold {
+    font-weight: 900;
+    color: #f9fafb;
+    display: block;
+  }
+  .hero-title .accent {
+    color: var(--gold-bright);
+  }
   .hero-desc {
-    font-size: 0.9rem;
-    color: #a09890;
-    max-width: 480px;
-    margin: 0 auto 28px;
-    line-height: 1.7;
+    font-size: 0.82rem;
+    color: #6b7280;
+    margin-bottom: 36px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.03em;
   }
   .hero-stats {
     display: inline-flex;
-    gap: 32px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(200,131,58,0.3);
+    gap: 0;
+    border: 1px solid rgba(217,119,6,0.2);
     border-radius: 8px;
-    padding: 14px 28px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
   }
-  .stat { text-align: center; }
-  .stat-num { font-size: 1.4rem; font-weight: 600; color: var(--amber-light); }
-  .stat-label { font-size: 0.68rem; color: #807870; margin-top: 2px; letter-spacing: 0.05em; }
+  .stat {
+    text-align: center;
+    padding: 12px 24px;
+    border-right: 1px solid rgba(217,119,6,0.15);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--gold-bright);
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .stat-label {
+    font-size: 0.62rem;
+    color: #6b7280;
+    margin-top: 2px;
+    letter-spacing: 0.06em;
+    font-family: 'Pretendard', sans-serif;
+  }
 
   /* ── TABS ── */
   .tab-wrap {
@@ -168,9 +202,11 @@
     margin-bottom: 20px;
   }
   .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
     color: var(--ink);
+    letter-spacing: -0.3px;
   }
   .section-badge {
     font-size: 0.68rem;
@@ -227,7 +263,7 @@
   .rank-card:hover::before { background: var(--amber); }
 
   .rank-num {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Barlow Condensed', sans-serif;
     font-size: 2rem;
     font-weight: 400;
     min-width: 40px;
@@ -351,11 +387,13 @@
     background: var(--cream);
   }
   .featured-rank {
-    font-family: 'DM Serif Display', serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
     color: var(--muted);
     margin-bottom: 4px;
+    text-transform: uppercase;
   }
   .featured-title {
     font-size: 0.88rem;
@@ -452,7 +490,7 @@
     justify-content: center;
     font-size: 1.2rem;
     flex-shrink: 0;
-    font-family: serif;
+    font-family: 'Barlow Condensed', sans-serif;
     color: white;
   }
   .celeb-info { flex: 1; }
@@ -651,10 +689,12 @@
     background: var(--cream);
   }
   .modal-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    line-height: 1.3;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.2;
     margin-bottom: 4px;
+    letter-spacing: -0.2px;
   }
   .modal-author { font-size: 0.8rem; color: var(--muted); margin-bottom: 8px; }
   .modal-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
@@ -751,7 +791,7 @@
     );
   }
   .theme-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
-  .theme-card-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 6px; }
+  .theme-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.2rem; margin-bottom: 6px; }
   .theme-card-desc { font-size: 0.78rem; line-height: 1.6; opacity: 0.8; margin-bottom: 14px; }
   .theme-card-meta {
     display: flex; align-items: center; justify-content: space-between;
@@ -806,8 +846,11 @@
     margin: 0 auto;
   }
   .footer-logo {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     margin-bottom: 8px;
   }
   .footer-logo span { color: var(--amber); }
@@ -836,26 +879,34 @@
 
 <header>
   <div class="header-inner">
-    <div>
-      <div class="logo">북<span>나루</span></div>
+    <div style="display:flex;align-items:baseline;gap:10px">
+      <div class="logo">북<span>차트</span></div>
+      <div class="header-sub">Book Chart</div>
     </div>
-    <div class="header-sub">국립도서관 대출 빅데이터 기반</div>
-    <div class="api-badge">LIVE DATA</div>
+    <div class="header-sub" style="display:none;display:flex;align-items:center;gap:6px">
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="header-sub">전국 공공도서관 빅데이터</div>
+      <div class="api-badge">LIVE</div>
+    </div>
   </div>
 </header>
 
 <div class="hero">
-  <div class="hero-eyebrow">📚 서점이 아닌 독자가 만드는 차트</div>
-  <h1 class="hero-title">진짜 읽히는 책,<br><em>여기서 확인하세요</em></h1>
-  <p class="hero-desc">전국 공공도서관 대출 빅데이터 기반 · 상업적 이해관계 없는 순수 독자 인기 차트</p>
+  <div class="hero-eyebrow">전국 공공도서관 빅데이터 · 순수 독자 인기차트</div>
+  <h1 class="hero-title">
+    <span class="thin">읽힌 책이 증명한다</span>
+    <span class="bold"><span class="accent">100만</span> 대출이 선택한 북차트</span>
+  </h1>
+  <p class="hero-desc">서점 순위가 아닌 — 실제로 빌려 읽은 책들의 차트</p>
   <div class="hero-stats">
     <div class="stat">
-      <div class="stat-num" id="stat-libs">1,100+</div>
+      <div class="stat-num">1,100+</div>
       <div class="stat-label">참여 도서관</div>
     </div>
     <div class="stat">
-      <div class="stat-num" id="stat-loans">매주</div>
-      <div class="stat-label">데이터 갱신</div>
+      <div class="stat-num">10년</div>
+      <div class="stat-label">데이터 분석</div>
     </div>
     <div class="stat">
       <div class="stat-num">0원</div>
@@ -1029,9 +1080,10 @@
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo">북<span>나루</span></div>
+    <div class="footer-logo">북<span>차트</span></div>
     <div class="footer-text">
-      전국 공공도서관 대출 빅데이터 기반 · 상업적 이해관계 없는 순수 독자 차트
+      시간이 검증한 책을 찾는 사람들을 위한 차트<br>
+      서점 판매량이 아닌 전국 공공도서관 실제 대출 빅데이터 기반
     </div>
     <div class="footer-source">
       데이터 출처: 도서관 정보나루 (국립중앙도서관 운영) · data4library.kr<br>
@@ -1370,7 +1422,7 @@ async function openTheme(idx) {
     if (!data.length) data = DEMO_CHART.map((b,i)=>({...b,rank:i+1}));
     renderThemeDetail(data, isIntersect);
     if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
-      attachCovers(data, d => { themeFullData = d; themeFilteredData = d; _renderThemePage(); });
+      attachCovers(data, d => { themeFullData = d; themeFilteredData = d; _renderThemePage(false); });
     }
   } catch(e) {
     console.error(e);
@@ -1458,53 +1510,80 @@ function renderThemeDetail(data, isIntersect = false) {
   themeFullData = data;
   themeFilteredData = data;
   themePage = 1;
-  // 장르 필터바 표시 & 초기화
   const fb = document.getElementById('theme-filter-bar');
   if (fb) {
     fb.style.display = 'flex';
     fb.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
     fb.querySelector('.filter-chip')?.classList.add('active');
   }
-  _renderThemePage();
+  _renderThemePage(false); // 초기 렌더
 }
 
-function _renderThemePage() {
+function _renderThemePage(isAppend = false) {
   const data = themeFilteredData;
   const top3 = data.slice(0, 3);
-  const pageData = data.slice(3, 3 + PAGE_SIZE * themePage);
   const total = data.length;
   const crowns = ['👑','🥈','🥉'];
 
-  document.getElementById('theme-featured-row').innerHTML = top3.map((b,i) => `
-    <div class="featured-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${i*0.08}s">
-      <span class="crown">${crowns[i]}</span>
-      ${coverHTML(b,'featured-cover')}
-      <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
-      <div class="featured-title">${b.title}</div>
-      <div class="featured-author">${b.author}</div>
-      <div class="featured-loan">
-        📖 대출 ${(b.loans||0).toLocaleString()}회
-        ${currentThemeIsIntersect && b.years ? `<span style="margin-left:6px;font-size:0.65rem;background:rgba(200,131,58,0.15);color:var(--amber);padding:2px 6px;border-radius:3px">${b.years}년 연속 등장</span>` : ''}
-      </div>
-    </div>
-  `).join('');
-
-  document.getElementById('theme-chart-grid').innerHTML = pageData.map((b,i) => `
-    <div class="rank-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${Math.min(i,10)*0.04}s">
-      <div class="rank-num other">${b.rank}</div>
-      ${coverHTML(b,'book-cover')}
-      <div class="book-info">
-        <div class="book-title">${b.title}</div>
-        <div class="book-author">${b.author} · ${b.publisher||''}</div>
-        <div class="book-meta">
-          <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
-          ${currentThemeIsIntersect && b.years
-            ? `<span class="genre-tag" style="color:var(--amber);border-color:var(--amber)">${b.years}년 연속</span>`
-            : `<span class="genre-tag">${kdcLabel(b.kdc)}</span>`}
+  if (!isAppend) {
+    document.getElementById('theme-featured-row').innerHTML = top3.map((b,i) => `
+      <div class="featured-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${i*0.08}s">
+        <span class="crown">${crowns[i]}</span>
+        ${coverHTML(b,'featured-cover')}
+        <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
+        <div class="featured-title">${b.title}</div>
+        <div class="featured-author">${b.author}</div>
+        <div class="featured-loan">
+          📖 대출 ${(b.loans||0).toLocaleString()}회
+          ${currentThemeIsIntersect && b.years ? `<span style="margin-left:6px;font-size:0.65rem;background:rgba(200,131,58,0.15);color:var(--amber);padding:2px 6px;border-radius:3px">${b.years}년 연속 등장</span>` : ''}
         </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+
+    const firstPage = data.slice(3, 3 + PAGE_SIZE);
+    document.getElementById('theme-chart-grid').innerHTML = firstPage.map((b,i) => `
+      <div class="rank-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${Math.min(i,10)*0.04}s">
+        <div class="rank-num other">${b.rank}</div>
+        ${coverHTML(b,'book-cover')}
+        <div class="book-info">
+          <div class="book-title">${b.title}</div>
+          <div class="book-author">${b.author} · ${b.publisher||''}</div>
+          <div class="book-meta">
+            <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+            ${currentThemeIsIntersect && b.years
+              ? `<span class="genre-tag" style="color:var(--amber);border-color:var(--amber)">${b.years}년 연속</span>`
+              : `<span class="genre-tag">${kdcLabel(b.kdc)}</span>`}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } else {
+    // 더보기: 새 카드만 뒤에 추가
+    const start = 3 + PAGE_SIZE * (themePage - 1);
+    const end   = 3 + PAGE_SIZE * themePage;
+    const newItems = data.slice(start, end);
+    const grid = document.getElementById('theme-chart-grid');
+    newItems.forEach((b, i) => {
+      const div = document.createElement('div');
+      div.className = 'rank-card';
+      div.style.animationDelay = `${Math.min(i,10)*0.04}s`;
+      div.onclick = () => openModalDirect(b);
+      div.innerHTML = `
+        <div class="rank-num other">${b.rank}</div>
+        ${coverHTML(b,'book-cover')}
+        <div class="book-info">
+          <div class="book-title">${b.title}</div>
+          <div class="book-author">${b.author} · ${b.publisher||''}</div>
+          <div class="book-meta">
+            <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+            ${currentThemeIsIntersect && b.years
+              ? `<span class="genre-tag" style="color:var(--amber);border-color:var(--amber)">${b.years}년 연속</span>`
+              : `<span class="genre-tag">${kdcLabel(b.kdc)}</span>`}
+          </div>
+        </div>`;
+      grid.appendChild(div);
+    });
+  }
 
   const wrap = document.getElementById('theme-loadmore-wrap');
   if (wrap) {
@@ -1520,7 +1599,7 @@ function _renderThemePage() {
 
 function loadMoreTheme() {
   themePage++;
-  _renderThemePage();
+  _renderThemePage(true); // append 모드
 }
 
 function filterTheme(kdc, el) {
@@ -1529,7 +1608,7 @@ function filterTheme(kdc, el) {
   const filtered = kdc === 'all' ? themeFullData : themeFullData.filter(b => b.kdc === kdc);
   themeFilteredData = (filtered.length ? filtered : themeFullData).map((b,i) => ({...b, rank: i+1}));
   themePage = 1;
-  _renderThemePage();
+  _renderThemePage(false); // 필터 변경 시 초기 렌더
 }
 
 // 테마 상세 모달
@@ -1682,49 +1761,72 @@ function coverHTML(b, cls) {
 }
 
 function renderChart(data, mode = 'chart') {
-  // 인기차트 모드: 페이지네이션 적용
-  if (mode === 'chart') {
-    chartFilteredData = data;
-    chartPage = 1;
-    _renderChartPage('chart');
-    return;
-  }
+  chartFilteredData = data;
+  chartPage = 1;
+  _renderChartPage(false); // 초기 렌더
 }
 
-function _renderChartPage(mode) {
+function _renderChartPage(isAppend = false) {
   const data = chartFilteredData;
   const top3 = data.slice(0, 3);
-  const pageData = data.slice(3, 3 + PAGE_SIZE * chartPage);
   const total = data.length;
   const crowns = ['👑', '🥈', '🥉'];
 
-  document.getElementById('featured-row').innerHTML = top3.map((b, i) => `
-    <div class="featured-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${i*0.08}s">
-      <span class="crown">${crowns[i]}</span>
-      ${coverHTML(b, 'featured-cover')}
-      <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
-      <div class="featured-title">${b.title}</div>
-      <div class="featured-author">${b.author}</div>
-      <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
-    </div>
-  `).join('');
+  // 초기 렌더 시에만 TOP3 + 그리드 전체 교체
+  if (!isAppend) {
+    document.getElementById('featured-row').innerHTML = top3.map((b, i) => `
+      <div class="featured-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${i*0.08}s">
+        <span class="crown">${crowns[i]}</span>
+        ${coverHTML(b, 'featured-cover')}
+        <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
+        <div class="featured-title">${b.title}</div>
+        <div class="featured-author">${b.author}</div>
+        <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
+      </div>
+    `).join('');
 
-  document.getElementById('chart-grid').innerHTML = pageData.map((b, i) => `
-    <div class="rank-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${Math.min(i,10)*0.04}s">
-      <div class="rank-num other">${b.rank}</div>
-      ${coverHTML(b, 'book-cover')}
-      <div class="book-info">
-        <div class="book-title">${b.title}</div>
-        <div class="book-author">${b.author} · ${b.publisher||''}</div>
-        <div class="book-meta">
-          <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
-          <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+    const firstPage = data.slice(3, 3 + PAGE_SIZE);
+    document.getElementById('chart-grid').innerHTML = firstPage.map((b, i) => `
+      <div class="rank-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${Math.min(i,10)*0.04}s">
+        <div class="rank-num other">${b.rank}</div>
+        ${coverHTML(b, 'book-cover')}
+        <div class="book-info">
+          <div class="book-title">${b.title}</div>
+          <div class="book-author">${b.author} · ${b.publisher||''}</div>
+          <div class="book-meta">
+            <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+            <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+          </div>
         </div>
       </div>
-    </div>
-  `).join('');
+    `).join('');
+  } else {
+    // 더보기: 새 카드만 뒤에 추가
+    const start = 3 + PAGE_SIZE * (chartPage - 1);
+    const end   = 3 + PAGE_SIZE * chartPage;
+    const newItems = data.slice(start, end);
+    const grid = document.getElementById('chart-grid');
+    newItems.forEach((b, i) => {
+      const div = document.createElement('div');
+      div.className = 'rank-card';
+      div.style.animationDelay = `${Math.min(i,10)*0.04}s`;
+      div.onclick = () => openModal(b.rank-1, 'chart');
+      div.innerHTML = `
+        <div class="rank-num other">${b.rank}</div>
+        ${coverHTML(b, 'book-cover')}
+        <div class="book-info">
+          <div class="book-title">${b.title}</div>
+          <div class="book-author">${b.author} · ${b.publisher||''}</div>
+          <div class="book-meta">
+            <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+            <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+          </div>
+        </div>`;
+      grid.appendChild(div);
+    });
+  }
 
-  // 더보기 버튼
+  // 더보기 버튼 상태 업데이트
   const wrap = document.getElementById('chart-loadmore-wrap');
   const shown = 3 + PAGE_SIZE * chartPage;
   if (wrap) {
@@ -1739,9 +1841,7 @@ function _renderChartPage(mode) {
 
 function loadMoreChart() {
   chartPage++;
-  _renderChartPage('chart');
-  // 새로 추가된 항목에 표지 이미지 보완
-  if (KAKAO_KEY) attachCovers(chartFilteredData, d => { chartFilteredData = d; _renderChartPage('chart'); });
+  _renderChartPage(true); // append 모드
 }
 
 function renderRising(data) {
