@@ -743,6 +743,7 @@
   .theme-year    { background: linear-gradient(135deg, #2a2420, #3a3028); color: #e8d8c0; border-color: #6a5840; }
   .theme-region  { background: linear-gradient(135deg, #c8f0d8, #a0e0b8); color: #103020; border-color: #70c890; }
   .theme-season  { background: linear-gradient(135deg, #e8c8f0, #d0a0e8); color: #300840; border-color: #b870d8; }
+  .theme-autumn  { background: linear-gradient(135deg, #f0e0c0, #e0c090); color: #402800; border-color: #c89040; }
   .theme-holiday { background: linear-gradient(135deg, #f0d8c8, #e8b8a0); color: #401808; border-color: #d89070; }
 
   .theme-back {
@@ -1092,88 +1093,177 @@ const LIBRARY_PICKS = [
 ];
 
 // ─── THEME DATA ──────────────────────────────────────────────────────
+// ─── 아동도서 KDC 제외 목록 ──────────────────────────────────────────
+// KDC 아동(아동문학·유아 관련) 분류 제외 → 성인 도서만 추출
+const ADULT_KDC_FILTER = ['0','1','2','3','4','5','6','7','8','9']; // 전체 허용 후 title 기반 필터
+function isAdultBook(doc) {
+  const title = (doc.bookname || '').toLowerCase();
+  const author = (doc.authors || '').toLowerCase();
+  // 아동/유아/만화 키워드 제외
+  const childKeywords = ['흔한남매','어린이','유아','초등','그림책','동화','만화','학습만화','마법천자문','도라에몽','짱구','코믹','학습','quiz','퀴즈'];
+  return !childKeywords.some(k => title.includes(k) || author.includes(k));
+}
+
 const THEMES = [
+  // ── 계절 (10년 교집합) ──
   {
-    id: 'spring', emoji: '🌸', colorClass: 'theme-spring',
-    title: '봄에 많이 읽힌 책', badge: '계절 데이터',
-    desc: '3월~5월, 전국 도서관에서 가장 많이 대출된 책들. 새 출발의 계절에 사람들이 선택한 이야기.',
-    params: { startDt: `${new Date().getFullYear()}-03-01`, endDt: `${new Date().getFullYear()}-05-31` },
+    id: 'spring', emoji: '🌸', colorClass: 'theme-spring', type: 'intersect',
+    title: '10년간 봄마다 읽힌 책', badge: '10년 교집합',
+    desc: '2015~2024년 봄(3~5월) 마다 꾸준히 상위 대출된 책. 유행이 아닌 시간이 검증한 봄의 스테디셀러.',
+    seasonMonths: ['03-01', '05-31'],
   },
   {
-    id: 'summer', emoji: '☀️', colorClass: 'theme-season',
-    title: '여름에 많이 읽힌 책', badge: '계절 데이터',
-    desc: '6월~8월, 무더위 속에서 전국 독자들이 선택한 책. 여름 휴가철 독서 트렌드.',
-    params: { startDt: `${new Date().getFullYear()-1}-06-01`, endDt: `${new Date().getFullYear()-1}-08-31` },
+    id: 'summer', emoji: '☀️', colorClass: 'theme-season', type: 'intersect',
+    title: '10년간 여름마다 읽힌 책', badge: '10년 교집합',
+    desc: '2015~2024년 여름(6~8월) 마다 꾸준히 대출된 책. 휴가철 독서 트렌드를 10년으로 증류했어.',
+    seasonMonths: ['06-01', '08-31'],
   },
   {
-    id: 'winter', emoji: '❄️', colorClass: 'theme-season',
-    title: '겨울에 많이 읽힌 책', badge: '계절 데이터',
-    desc: '12월~2월, 긴 밤과 함께한 책들. 연말연시 독서 분위기를 담은 차트.',
-    params: { startDt: `${new Date().getFullYear()-1}-12-01`, endDt: `${new Date().getFullYear()}-02-28` },
+    id: 'autumn', emoji: '🍂', colorClass: 'theme-autumn', type: 'intersect',
+    title: '10년간 가을마다 읽힌 책', badge: '10년 교집합',
+    desc: '2015~2024년 가을(9~11월) 마다 꾸준히 대출된 책. 독서의 계절이 10년간 선택한 책들.',
+    seasonMonths: ['09-01', '11-30'],
   },
   {
-    id: 'age20', emoji: '🎓', colorClass: 'theme-age',
-    title: '20대가 가장 많이 빌린 책', badge: '연령대 데이터',
-    desc: '전국 공공도서관에서 20대 독자들이 선택한 책. 같은 세대의 관심사를 엿볼 수 있어.',
-    params: { age: '20' },
+    id: 'winter', emoji: '❄️', colorClass: 'theme-season', type: 'intersect',
+    title: '10년간 겨울마다 읽힌 책', badge: '10년 교집합',
+    desc: '2015~2024년 겨울(12~2월) 마다 꾸준히 대출된 책. 긴 밤을 함께한 진짜 겨울 책.',
+    seasonMonths: ['12-01', '02-28'],
+  },
+  // ── 연령대 (10년 교집합) ──
+  {
+    id: 'age20', emoji: '🎓', colorClass: 'theme-age', type: 'intersect',
+    title: '20대가 10년간 꾸준히 빌린 책', badge: '10년 교집합',
+    desc: '2015~2024년 20대 독자들이 해마다 빠지지 않고 선택한 책. 세대를 관통한 진짜 20대 책.',
+    ageParam: '20',
   },
   {
-    id: 'age40', emoji: '💼', colorClass: 'theme-age',
-    title: '40대가 가장 많이 빌린 책', badge: '연령대 데이터',
-    desc: '인생의 중반을 달리는 40대가 선택한 책. 삶의 무게와 통찰이 담긴 독서 취향.',
-    params: { age: '40' },
+    id: 'age30', emoji: '🌿', colorClass: 'theme-age', type: 'intersect',
+    title: '30대가 10년간 꾸준히 빌린 책', badge: '10년 교집합',
+    desc: '2015~2024년 30대 독자들이 해마다 선택한 책. 사회 초년기와 성장의 독서 취향.',
+    ageParam: '30',
   },
   {
-    id: 'year2024', emoji: '📅', colorClass: 'theme-year',
+    id: 'age40', emoji: '💼', colorClass: 'theme-age', type: 'intersect',
+    title: '40대가 10년간 꾸준히 빌린 책', badge: '10년 교집합',
+    desc: '2015~2024년 40대 독자들이 해마다 선택한 책. 인생의 무게가 담긴 10년의 독서.',
+    ageParam: '40',
+  },
+  // ── 연도별 렌탈 아카이브 (단년도, 성인 필터) ──
+  {
+    id: 'year2024', emoji: '📅', colorClass: 'theme-year', type: 'single',
     title: '2024년 베스트 렌탈', badge: '연도별 아카이브',
-    desc: '판매량이 아닌 실제 대출 횟수 기준. 2024년 전국 도서관에서 가장 많이 읽힌 책들.',
+    desc: '판매량이 아닌 실제 대출 횟수 기준 · 아동도서 제외. 2024년 성인 독자들이 가장 많이 빌린 책.',
     params: { startDt: '2024-01-01', endDt: '2024-12-31' },
   },
   {
-    id: 'year2023', emoji: '📅', colorClass: 'theme-year',
+    id: 'year2023', emoji: '📅', colorClass: 'theme-year', type: 'single',
     title: '2023년 베스트 렌탈', badge: '연도별 아카이브',
-    desc: '판매량이 아닌 실제 대출 횟수 기준. 2023년 전국 도서관에서 가장 많이 읽힌 책들.',
+    desc: '판매량이 아닌 실제 대출 횟수 기준 · 아동도서 제외. 2023년 성인 독자들이 가장 많이 빌린 책.',
     params: { startDt: '2023-01-01', endDt: '2023-12-31' },
   },
   {
-    id: 'year2022', emoji: '📅', colorClass: 'theme-year',
+    id: 'year2022', emoji: '📅', colorClass: 'theme-year', type: 'single',
     title: '2022년 베스트 렌탈', badge: '연도별 아카이브',
-    desc: '판매량이 아닌 실제 대출 횟수 기준. 2022년 전국 도서관에서 가장 많이 읽힌 책들.',
+    desc: '판매량이 아닌 실제 대출 횟수 기준 · 아동도서 제외. 2022년 성인 독자들이 가장 많이 빌린 책.',
     params: { startDt: '2022-01-01', endDt: '2022-12-31' },
   },
   {
-    id: 'region_seoul', emoji: '🗼', colorClass: 'theme-region',
+    id: 'year2020', emoji: '😷', colorClass: 'theme-year', type: 'single',
+    title: '팬데믹 시대의 책 (2020)', badge: '연도별 아카이브',
+    desc: '코로나로 집에 머물던 2020년, 사람들이 도서관에서 가장 많이 빌린 책은 무엇이었을까.',
+    params: { startDt: '2020-01-01', endDt: '2020-12-31' },
+  },
+  // ── 지역별 ──
+  {
+    id: 'region_seoul', emoji: '🗼', colorClass: 'theme-region', type: 'single',
     title: '서울 독자들의 선택', badge: '지역 데이터',
-    desc: '서울 지역 공공도서관 대출 기준. 서울 시민들이 가장 많이 빌린 책은?',
+    desc: '서울 공공도서관 대출 기준 · 아동도서 제외. 서울 성인 독자들이 가장 많이 빌린 책.',
     params: { region: '11' },
   },
   {
-    id: 'region_busan', emoji: '🌊', colorClass: 'theme-region',
+    id: 'region_busan', emoji: '🌊', colorClass: 'theme-region', type: 'single',
     title: '부산 독자들의 선택', badge: '지역 데이터',
-    desc: '부산 지역 공공도서관 대출 기준. 서울과 어떻게 다를까?',
+    desc: '부산 공공도서관 대출 기준 · 아동도서 제외. 서울과 취향이 어떻게 다를까?',
     params: { region: '21' },
   },
 ];
 
-// 테마 API 호출
-async function fetchThemeBooks(theme) {
-  const today = new Date();
-  const defaultEnd = today.toISOString().split('T')[0];
-  const past90 = new Date(Date.now() - 90*24*60*60*1000).toISOString().split('T')[0];
-  let url = `https://data4library.kr/api/loanItemSrch?authKey=${API_KEY}&pageSize=20&format=json`;
-  url += `&startDt=${theme.params.startDt || past90}&endDt=${theme.params.endDt || defaultEnd}`;
-  if (theme.params.age)    url += `&age=${theme.params.age}`;
-  if (theme.params.region) url += `&region=${theme.params.region}`;
+// ─── 단일 기간 API 호출 (아동 필터 포함) ────────────────────────────
+async function fetchPeriodBooks(startDt, endDt, extraParams = {}, pageSize = 100) {
+  let url = `https://data4library.kr/api/loanItemSrch?authKey=${API_KEY}&pageSize=${pageSize}&format=json`;
+  url += `&startDt=${startDt}&endDt=${endDt}`;
+  if (extraParams.age)    url += `&age=${extraParams.age}`;
+  if (extraParams.region) url += `&region=${extraParams.region}`;
   const res = await fetch(url);
   const json = await res.json();
-  return json.response?.docs?.map((d, i) => ({
-    rank: i+1, title: d.doc.bookname, author: d.doc.authors,
-    publisher: d.doc.publisher, kdc: d.doc.class_no?.[0]||'',
-    loans: parseInt(d.doc.loan_count)||0, isbn: d.doc.isbn13, cover:'📚', desc:'',
-  })) || [];
+  return (json.response?.docs || [])
+    .map(d => d.doc)
+    .filter(isAdultBook);
 }
 
-// 테마 목록 렌더
+// ─── 10년 교집합 알고리즘 ────────────────────────────────────────────
+// 각 연도별 TOP100 가져와서 ISBN 기준으로 등장 횟수 카운트
+// 많이 등장할수록 상위 → "시간이 검증한 책"
+async function fetchIntersectBooks(theme, onProgress) {
+  const years = [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+  const isWinter = theme.id === 'winter';
+  const scoreMap = {}; // isbn → { count, totalLoans, doc }
+
+  for (let i = 0; i < years.length; i++) {
+    const y = years[i];
+    onProgress && onProgress(i + 1, years.length, y);
+
+    let startDt, endDt;
+    if (theme.seasonMonths) {
+      if (isWinter) {
+        startDt = `${y}-${theme.seasonMonths[0]}`;
+        endDt   = `${y+1 > 2024 ? 2024 : y+1}-${theme.seasonMonths[1]}`;
+      } else {
+        startDt = `${y}-${theme.seasonMonths[0]}`;
+        endDt   = `${y}-${theme.seasonMonths[1]}`;
+      }
+    } else {
+      // 연령대 테마: 연간 전체
+      startDt = `${y}-01-01`;
+      endDt   = `${y}-12-31`;
+    }
+
+    try {
+      const docs = await fetchPeriodBooks(startDt, endDt, {
+        age: theme.ageParam,
+      }, 50);
+
+      docs.forEach((doc, rank) => {
+        const isbn = doc.isbn13 || doc.bookname; // isbn 없으면 제목으로 키
+        if (!isbn) return;
+        if (!scoreMap[isbn]) {
+          scoreMap[isbn] = { count: 0, totalLoans: 0, doc };
+        }
+        scoreMap[isbn].count++;
+        scoreMap[isbn].totalLoans += parseInt(doc.loan_count) || 0;
+      });
+    } catch(e) { /* 연도 하나 실패해도 계속 */ }
+  }
+
+  // 등장 횟수 많은 순 → 같으면 총 대출 횟수 순
+  return Object.values(scoreMap)
+    .sort((a, b) => b.count - a.count || b.totalLoans - a.totalLoans)
+    .slice(0, 20)
+    .map((item, i) => ({
+      rank: i + 1,
+      title: item.doc.bookname,
+      author: item.doc.authors,
+      publisher: item.doc.publisher,
+      kdc: item.doc.class_no?.[0] || '',
+      loans: item.totalLoans,
+      isbn: item.doc.isbn13,
+      cover: '📚', desc: '',
+      years: item.count, // 몇 년도에 등장했는지
+    }));
+}
+
+// ─── 테마 목록 렌더 ──────────────────────────────────────────────────
 function renderThemeList() {
   document.getElementById('theme-list').innerHTML = THEMES.map((t, i) => `
     <div class="theme-card ${t.colorClass}" onclick="openTheme(${i})" style="animation-delay:${i*0.06}s">
@@ -1188,7 +1278,7 @@ function renderThemeList() {
   `).join('');
 }
 
-// 테마 상세 열기
+// ─── 테마 상세 열기 ──────────────────────────────────────────────────
 async function openTheme(idx) {
   const theme = THEMES[idx];
   document.getElementById('theme-list').style.display = 'none';
@@ -1197,17 +1287,46 @@ async function openTheme(idx) {
   document.getElementById('theme-detail-title').textContent = `${theme.emoji} ${theme.title}`;
   document.getElementById('theme-detail-sub').textContent = theme.desc;
   document.getElementById('theme-detail-badge').textContent = theme.badge;
-  document.getElementById('theme-chart-grid').innerHTML = loadingHTML();
   document.getElementById('theme-featured-row').innerHTML = '';
+  document.getElementById('theme-chart-grid').innerHTML = `
+    <div class="loading-wrap" style="grid-column:1/-1">
+      <div class="loading-spinner"></div>
+      <div class="loading-text" id="theme-loading-text">데이터 불러오는 중...</div>
+      ${theme.type === 'intersect' ? `<div style="font-size:0.72rem;color:var(--muted);margin-top:6px">10년치 데이터를 분석 중이에요 (약 10~20초 소요)</div>` : ''}
+    </div>`;
+
   try {
-    let data = (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') ? await fetchThemeBooks(theme) : [];
-    if (!data.length) data = DEMO_CHART.map((b,i) => ({...b, rank:i+1}));
-    renderThemeDetail(data);
-    if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') attachCovers(data, renderThemeDetail);
-  } catch(e) { renderThemeDetail(DEMO_CHART); }
+    let data = [];
+    if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
+      if (theme.type === 'intersect') {
+        data = await fetchIntersectBooks(theme, (cur, total, year) => {
+          const el = document.getElementById('theme-loading-text');
+          if (el) el.textContent = `${year}년 데이터 분석 중... (${cur}/${total})`;
+        });
+      } else {
+        // 단일 기간 — 아동 필터 후 정렬
+        const docs = await fetchPeriodBooks(
+          theme.params.startDt || new Date(Date.now()-90*864e5).toISOString().split('T')[0],
+          theme.params.endDt   || new Date().toISOString().split('T')[0],
+          { region: theme.params?.region }
+        );
+        data = docs.slice(0, 20).map((doc, i) => ({
+          rank: i+1, title: doc.bookname, author: doc.authors,
+          publisher: doc.publisher, kdc: doc.class_no?.[0]||'',
+          loans: parseInt(doc.loan_count)||0, isbn: doc.isbn13, cover:'📚', desc:'',
+        }));
+      }
+    }
+    if (!data.length) data = DEMO_CHART.map((b,i)=>({...b,rank:i+1}));
+    renderThemeDetail(data, theme.type === 'intersect');
+    if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') attachCovers(data, d => renderThemeDetail(d, theme.type === 'intersect'));
+  } catch(e) {
+    console.error(e);
+    renderThemeDetail(DEMO_CHART, false);
+  }
 }
 
-// 테마 목록으로 돌아가기
+// ─── 테마 목록으로 돌아가기 ──────────────────────────────────────────
 function closeThemeDetail() {
   document.getElementById('theme-list').style.display = 'grid';
   document.getElementById('theme-detail').style.display = 'none';
@@ -1216,7 +1335,7 @@ function closeThemeDetail() {
 }
 
 // 테마 상세 렌더
-function renderThemeDetail(data) {
+function renderThemeDetail(data, isIntersect = false) {
   const top3 = data.slice(0,3);
   const rest = data.slice(3);
   const crowns = ['👑','🥈','🥉'];
@@ -1227,7 +1346,10 @@ function renderThemeDetail(data) {
       <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
       <div class="featured-title">${b.title}</div>
       <div class="featured-author">${b.author}</div>
-      <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
+      <div class="featured-loan">
+        📖 대출 ${(b.loans||0).toLocaleString()}회
+        ${isIntersect && b.years ? `<span style="margin-left:6px;font-size:0.65rem;background:rgba(200,131,58,0.15);color:var(--amber);padding:2px 6px;border-radius:3px">${b.years}년 연속 등장</span>` : ''}
+      </div>
     </div>
   `).join('');
   document.getElementById('theme-chart-grid').innerHTML = rest.map((b,i) => `
@@ -1239,7 +1361,7 @@ function renderThemeDetail(data) {
         <div class="book-author">${b.author} · ${b.publisher||''}</div>
         <div class="book-meta">
           <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
-          <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+          ${isIntersect && b.years ? `<span class="genre-tag" style="color:var(--amber);border-color:var(--amber)">${b.years}년 연속</span>` : `<span class="genre-tag">${kdcLabel(b.kdc)}</span>`}
         </div>
       </div>
     </div>
@@ -1276,8 +1398,8 @@ function openModalDirect(b) {
 
 // ─── STATE ───────────────────────────────────────────────────────────
 // ⚠️ 아래 두 줄에 발급받은 API 키를 입력하세요
-const API_KEY = 'YOUR_DATA4LIBRARY_KEY';
-const KAKAO_KEY = 'YOUR_KAKAO_REST_KEY';
+const API_KEY = '535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902';
+const KAKAO_KEY = '994f5ecb2932ab81ce7a1e747d1489df';
 
 let currentChartData = DEMO_CHART;
 let currentRisingData = DEMO_RISING;
