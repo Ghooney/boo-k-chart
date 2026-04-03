@@ -698,28 +698,63 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-size: 0.82rem; color: var(--muted); }
 
+  /* ── THEME ── */
+  .theme-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .theme-card {
+    border-radius: 14px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+  }
+  .theme-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 20px,
+      rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px
+    );
+  }
+  .theme-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+  .theme-card-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 6px; }
+  .theme-card-desc { font-size: 0.78rem; line-height: 1.6; opacity: 0.8; margin-bottom: 14px; }
+  .theme-card-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.68rem; opacity: 0.7;
+  }
+  .theme-card-tag {
+    padding: 3px 8px; border-radius: 20px;
+    background: rgba(255,255,255,0.15); font-size: 0.65rem;
+  }
+  .theme-arrow { font-size: 1rem; }
+
+  /* 테마별 색상 */
+  .theme-spring  { background: linear-gradient(135deg, #f9e4c8, #f5c8a0); color: #5a3010; border-color: #e8b870; }
+  .theme-age     { background: linear-gradient(135deg, #c8dff9, #a0c4f5); color: #102040; border-color: #70a8e8; }
+  .theme-year    { background: linear-gradient(135deg, #2a2420, #3a3028); color: #e8d8c0; border-color: #6a5840; }
+  .theme-region  { background: linear-gradient(135deg, #c8f0d8, #a0e0b8); color: #103020; border-color: #70c890; }
+  .theme-season  { background: linear-gradient(135deg, #e8c8f0, #d0a0e8); color: #300840; border-color: #b870d8; }
+  .theme-holiday { background: linear-gradient(135deg, #f0d8c8, #e8b8a0); color: #401808; border-color: #d89070; }
+
+  .theme-back {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.82rem; color: var(--amber); font-weight: 600;
+    background: none; border: none; cursor: pointer;
+    padding: 8px 0; font-family: 'Pretendard', sans-serif;
+    transition: gap 0.2s;
+  }
+  .theme-back:hover { gap: 10px; }
+
   /* ── API KEY INPUT ── */
-  .apikey-banner {
-    background: rgba(200,131,58,0.08);
-    border: 1px solid rgba(200,131,58,0.3);
-    border-radius: 8px;
-    padding: 14px 18px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .apikey-banner p { font-size: 0.8rem; color: var(--muted); flex: 1; min-width: 200px; }
-  .apikey-input {
-    padding: 8px 12px;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    font-size: 0.8rem;
-    width: 220px;
-    font-family: monospace;
-    background: white;
-  }
   .apikey-btn {
     padding: 8px 14px;
     background: var(--amber);
@@ -810,33 +845,19 @@
     <button class="tab" onclick="switchTab('rising', this)">
       <span class="tab-icon">🔥</span>급상승
     </button>
+    <button class="tab" onclick="switchTab('theme', this)">
+      <span class="tab-icon">🎨</span>테마 차트
+    </button>
     <button class="tab" onclick="switchTab('celeb', this)">
       <span class="tab-icon">⭐</span>셀럽 추천
     </button>
     <button class="tab" onclick="switchTab('library', this)">
-      <span class="tab-icon">🏛️</span>도서관 이달의 책
+      <span class="tab-icon">🏛️</span>이달의 책
     </button>
   </div>
 </div>
 
 <div class="main">
-
-  <!-- API KEY BANNER -->
-  <div class="apikey-banner">
-    <p>🔑 API 키를 입력하면 실시간 데이터와 책 표지 이미지가 활성화됩니다. 없으면 데모 모드로 동작해요.</p>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="font-size:0.7rem;color:var(--muted);min-width:90px">📚 도서관나루</span>
-        <input class="apikey-input" type="password" id="apiKeyInput" placeholder="535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902" />
-        <button class="apikey-btn" onclick="setApiKey()">연결</button>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="font-size:0.7rem;color:var(--muted);min-width:90px">🖼️ 카카오 책</span>
-        <input class="apikey-input" type="password" id="kakaoKeyInput" placeholder="994f5ecb2932ab81ce7a1e747d1489df" />
-        <button class="apikey-btn" onclick="setKakaoKey()">연결</button>
-      </div>
-    </div>
-  </div>
 
   <!-- 📊 인기 차트 -->
   <div class="panel active" id="panel-chart">
@@ -864,6 +885,34 @@
         <div class="loading-spinner"></div>
         <div class="loading-text">도서관 빅데이터 불러오는 중...</div>
       </div>
+    </div>
+  </div>
+
+  <!-- 🎨 테마 차트 -->
+  <div class="panel" id="panel-theme">
+    <div class="section-header">
+      <div>
+        <div class="section-title">테마 차트</div>
+        <div class="section-sub">데이터로 발견하는 흥미로운 독서 트렌드</div>
+      </div>
+      <span class="section-badge">기획 큐레이션</span>
+    </div>
+
+    <!-- 테마 카드 목록 -->
+    <div class="theme-list" id="theme-list"></div>
+
+    <!-- 테마 상세 뷰 (카드 클릭 시 펼쳐짐) -->
+    <div class="theme-detail" id="theme-detail" style="display:none">
+      <button class="theme-back" onclick="closeThemeDetail()">← 테마 목록으로</button>
+      <div class="section-header" style="margin-top:20px">
+        <div>
+          <div class="section-title" id="theme-detail-title"></div>
+          <div class="section-sub" id="theme-detail-sub"></div>
+        </div>
+        <span class="section-badge" id="theme-detail-badge"></span>
+      </div>
+      <div class="featured-row" id="theme-featured-row"></div>
+      <div class="chart-grid" id="theme-chart-grid"></div>
     </div>
   </div>
 
@@ -1042,9 +1091,194 @@ const LIBRARY_PICKS = [
   },
 ];
 
+// ─── THEME DATA ──────────────────────────────────────────────────────
+const THEMES = [
+  {
+    id: 'spring', emoji: '🌸', colorClass: 'theme-spring',
+    title: '봄에 많이 읽힌 책', badge: '계절 데이터',
+    desc: '3월~5월, 전국 도서관에서 가장 많이 대출된 책들. 새 출발의 계절에 사람들이 선택한 이야기.',
+    params: { startDt: `${new Date().getFullYear()}-03-01`, endDt: `${new Date().getFullYear()}-05-31` },
+  },
+  {
+    id: 'summer', emoji: '☀️', colorClass: 'theme-season',
+    title: '여름에 많이 읽힌 책', badge: '계절 데이터',
+    desc: '6월~8월, 무더위 속에서 전국 독자들이 선택한 책. 여름 휴가철 독서 트렌드.',
+    params: { startDt: `${new Date().getFullYear()-1}-06-01`, endDt: `${new Date().getFullYear()-1}-08-31` },
+  },
+  {
+    id: 'winter', emoji: '❄️', colorClass: 'theme-season',
+    title: '겨울에 많이 읽힌 책', badge: '계절 데이터',
+    desc: '12월~2월, 긴 밤과 함께한 책들. 연말연시 독서 분위기를 담은 차트.',
+    params: { startDt: `${new Date().getFullYear()-1}-12-01`, endDt: `${new Date().getFullYear()}-02-28` },
+  },
+  {
+    id: 'age20', emoji: '🎓', colorClass: 'theme-age',
+    title: '20대가 가장 많이 빌린 책', badge: '연령대 데이터',
+    desc: '전국 공공도서관에서 20대 독자들이 선택한 책. 같은 세대의 관심사를 엿볼 수 있어.',
+    params: { age: '20' },
+  },
+  {
+    id: 'age40', emoji: '💼', colorClass: 'theme-age',
+    title: '40대가 가장 많이 빌린 책', badge: '연령대 데이터',
+    desc: '인생의 중반을 달리는 40대가 선택한 책. 삶의 무게와 통찰이 담긴 독서 취향.',
+    params: { age: '40' },
+  },
+  {
+    id: 'year2024', emoji: '📅', colorClass: 'theme-year',
+    title: '2024년 베스트 렌탈', badge: '연도별 아카이브',
+    desc: '판매량이 아닌 실제 대출 횟수 기준. 2024년 전국 도서관에서 가장 많이 읽힌 책들.',
+    params: { startDt: '2024-01-01', endDt: '2024-12-31' },
+  },
+  {
+    id: 'year2023', emoji: '📅', colorClass: 'theme-year',
+    title: '2023년 베스트 렌탈', badge: '연도별 아카이브',
+    desc: '판매량이 아닌 실제 대출 횟수 기준. 2023년 전국 도서관에서 가장 많이 읽힌 책들.',
+    params: { startDt: '2023-01-01', endDt: '2023-12-31' },
+  },
+  {
+    id: 'year2022', emoji: '📅', colorClass: 'theme-year',
+    title: '2022년 베스트 렌탈', badge: '연도별 아카이브',
+    desc: '판매량이 아닌 실제 대출 횟수 기준. 2022년 전국 도서관에서 가장 많이 읽힌 책들.',
+    params: { startDt: '2022-01-01', endDt: '2022-12-31' },
+  },
+  {
+    id: 'region_seoul', emoji: '🗼', colorClass: 'theme-region',
+    title: '서울 독자들의 선택', badge: '지역 데이터',
+    desc: '서울 지역 공공도서관 대출 기준. 서울 시민들이 가장 많이 빌린 책은?',
+    params: { region: '11' },
+  },
+  {
+    id: 'region_busan', emoji: '🌊', colorClass: 'theme-region',
+    title: '부산 독자들의 선택', badge: '지역 데이터',
+    desc: '부산 지역 공공도서관 대출 기준. 서울과 어떻게 다를까?',
+    params: { region: '21' },
+  },
+];
+
+// 테마 API 호출
+async function fetchThemeBooks(theme) {
+  const today = new Date();
+  const defaultEnd = today.toISOString().split('T')[0];
+  const past90 = new Date(Date.now() - 90*24*60*60*1000).toISOString().split('T')[0];
+  let url = `https://data4library.kr/api/loanItemSrch?authKey=${API_KEY}&pageSize=20&format=json`;
+  url += `&startDt=${theme.params.startDt || past90}&endDt=${theme.params.endDt || defaultEnd}`;
+  if (theme.params.age)    url += `&age=${theme.params.age}`;
+  if (theme.params.region) url += `&region=${theme.params.region}`;
+  const res = await fetch(url);
+  const json = await res.json();
+  return json.response?.docs?.map((d, i) => ({
+    rank: i+1, title: d.doc.bookname, author: d.doc.authors,
+    publisher: d.doc.publisher, kdc: d.doc.class_no?.[0]||'',
+    loans: parseInt(d.doc.loan_count)||0, isbn: d.doc.isbn13, cover:'📚', desc:'',
+  })) || [];
+}
+
+// 테마 목록 렌더
+function renderThemeList() {
+  document.getElementById('theme-list').innerHTML = THEMES.map((t, i) => `
+    <div class="theme-card ${t.colorClass}" onclick="openTheme(${i})" style="animation-delay:${i*0.06}s">
+      <span class="theme-emoji">${t.emoji}</span>
+      <div class="theme-card-title">${t.title}</div>
+      <div class="theme-card-desc">${t.desc}</div>
+      <div class="theme-card-meta">
+        <span class="theme-card-tag">${t.badge}</span>
+        <span class="theme-arrow">→</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 테마 상세 열기
+async function openTheme(idx) {
+  const theme = THEMES[idx];
+  document.getElementById('theme-list').style.display = 'none';
+  const detail = document.getElementById('theme-detail');
+  detail.style.display = 'block';
+  document.getElementById('theme-detail-title').textContent = `${theme.emoji} ${theme.title}`;
+  document.getElementById('theme-detail-sub').textContent = theme.desc;
+  document.getElementById('theme-detail-badge').textContent = theme.badge;
+  document.getElementById('theme-chart-grid').innerHTML = loadingHTML();
+  document.getElementById('theme-featured-row').innerHTML = '';
+  try {
+    let data = (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') ? await fetchThemeBooks(theme) : [];
+    if (!data.length) data = DEMO_CHART.map((b,i) => ({...b, rank:i+1}));
+    renderThemeDetail(data);
+    if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') attachCovers(data, renderThemeDetail);
+  } catch(e) { renderThemeDetail(DEMO_CHART); }
+}
+
+// 테마 목록으로 돌아가기
+function closeThemeDetail() {
+  document.getElementById('theme-list').style.display = 'grid';
+  document.getElementById('theme-detail').style.display = 'none';
+  document.getElementById('theme-featured-row').innerHTML = '';
+  document.getElementById('theme-chart-grid').innerHTML = '';
+}
+
+// 테마 상세 렌더
+function renderThemeDetail(data) {
+  const top3 = data.slice(0,3);
+  const rest = data.slice(3);
+  const crowns = ['👑','🥈','🥉'];
+  document.getElementById('theme-featured-row').innerHTML = top3.map((b,i) => `
+    <div class="featured-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${i*0.08}s">
+      <span class="crown">${crowns[i]}</span>
+      ${coverHTML(b,'featured-cover')}
+      <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
+      <div class="featured-title">${b.title}</div>
+      <div class="featured-author">${b.author}</div>
+      <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
+    </div>
+  `).join('');
+  document.getElementById('theme-chart-grid').innerHTML = rest.map((b,i) => `
+    <div class="rank-card" onclick='openModalDirect(${JSON.stringify(b)})' style="animation-delay:${(i+3)*0.05}s">
+      <div class="rank-num other">${b.rank}</div>
+      ${coverHTML(b,'book-cover')}
+      <div class="book-info">
+        <div class="book-title">${b.title}</div>
+        <div class="book-author">${b.author} · ${b.publisher||''}</div>
+        <div class="book-meta">
+          <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+          <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 테마 상세 모달
+function openModalDirect(b) {
+  if (typeof b === 'string') b = JSON.parse(b);
+  const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(b.title)}`;
+  const lib = `https://www.nl.go.kr/NL/search/total.do?query=${encodeURIComponent(b.title)}`;
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
+      <div style="flex-shrink:0">${b.coverUrl?`<img src="${b.coverUrl}" style="width:80px;height:110px;border-radius:6px;object-fit:cover;box-shadow:3px 5px 16px rgba(0,0,0,0.18)">`:`<div style="font-size:3rem">${b.cover||'📚'}</div>`}</div>
+      <div>
+        <div class="modal-title">${b.title}</div>
+        <div class="modal-author">${b.author} · ${b.publisher||''}</div>
+        <div class="modal-tags"><span class="modal-tag">${kdcLabel(b.kdc)}</span><span class="modal-tag">공공도서관 인기</span></div>
+      </div>
+    </div>
+    <div class="modal-stat-row">
+      <div class="modal-stat"><div class="modal-stat-num">${b.rank}위</div><div class="modal-stat-label">테마 내 순위</div></div>
+      <div class="modal-stat"><div class="modal-stat-num">${(b.loans||0).toLocaleString()}</div><div class="modal-stat-label">대출 횟수</div></div>
+    </div>
+    <hr class="modal-divider">
+    <p class="modal-desc">${b.desc||'전국 공공도서관에서 많은 독자들이 선택한 도서입니다.'}</p>
+    <div class="modal-actions">
+      <a href="${aladin}" target="_blank" class="btn-primary">알라딘에서 구매</a>
+      <a href="${lib}" target="_blank" class="btn-secondary">도서관 대출 확인</a>
+    </div>
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
 // ─── STATE ───────────────────────────────────────────────────────────
-let API_KEY = '535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902';
-let KAKAO_KEY = '994f5ecb2932ab81ce7a1e747d1489df';
+// ⚠️ 아래 두 줄에 발급받은 API 키를 입력하세요
+const API_KEY = '535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902';
+const KAKAO_KEY = '994f5ecb2932ab81ce7a1e747d1489df';
+
 let currentChartData = DEMO_CHART;
 let currentRisingData = DEMO_RISING;
 
@@ -1081,43 +1315,6 @@ async function attachCovers(dataArr, renderFn) {
   });
   await Promise.all(promises);
   renderFn(dataArr);
-}
-
-// ─── API ─────────────────────────────────────────────────────────────
-function setApiKey() {
-  const input = document.getElementById('apiKeyInput').value.trim();
-  if (!input) return;
-  API_KEY = input;
-  loadChartData();
-  loadRisingData();
-  updateBannerStatus();
-}
-
-function setKakaoKey() {
-  const input = document.getElementById('kakaoKeyInput').value.trim();
-  if (!input) return;
-  KAKAO_KEY = input;
-  // 카카오 키 연결 시 현재 데이터에 표지 이미지 즉시 로딩
-  attachCovers(currentChartData, renderChart);
-  attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover })), () => renderCeleb());
-  attachCovers(LIBRARY_PICKS.map(b => ({ isbn: b.isbn, title: b.title, cover: b.cover })), () => renderLibrary());
-  updateBannerStatus();
-}
-
-function updateBannerStatus() {
-  const hasLib = !!API_KEY;
-  const hasKakao = !!KAKAO_KEY;
-  const p = document.querySelector('.apikey-banner p');
-  if (hasLib && hasKakao) {
-    document.querySelector('.apikey-banner').style.background = 'rgba(107,124,94,0.08)';
-    document.querySelector('.apikey-banner').style.borderColor = 'rgba(107,124,94,0.3)';
-    p.textContent = '✅ 도서관 정보나루 + 카카오 API 모두 연결됨 — 실시간 데이터 & 표지 이미지 활성화';
-  } else if (hasLib) {
-    document.querySelector('.apikey-banner').style.background = 'rgba(200,131,58,0.06)';
-    p.textContent = '✅ 도서관 정보나루 연결됨 · 카카오 키를 추가하면 책 표지 이미지가 나와요!';
-  } else if (hasKakao) {
-    p.textContent = '✅ 카카오 연결됨 · 도서관 정보나루 키를 추가하면 실시간 차트가 활성화돼요!';
-  }
 }
 
 async function fetchLoanChart(kdc = '') {
@@ -1388,8 +1585,20 @@ function kdcLabel(kdc) {
 // ─── INIT ─────────────────────────────────────────────────────────────
 renderChart(DEMO_CHART);
 renderRising(DEMO_RISING);
+renderThemeList();
 renderCeleb();
 renderLibrary();
+
+// 실제 API 데이터 로딩 (키가 플레이스홀더가 아닐 때만)
+if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
+  loadChartData();
+  loadRisingData();
+}
+if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
+  attachCovers(DEMO_CHART, renderChart);
+  attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
+  attachCovers(LIBRARY_PICKS, () => renderLibrary());
+}
 </script>
 </body>
 </html>
