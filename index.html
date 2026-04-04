@@ -144,14 +144,22 @@
     margin-top: 36px;
     padding-top: 28px;
     border-top: 1px solid rgba(255,255,255,0.15);
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-feat-viewport {
+    overflow: hidden;
+    border-radius: 14px;
   }
   .hero-feat-track {
     display: flex;
-    gap: 12px;
-    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
   }
   .hero-feat-card {
     flex: 0 0 100%;
+    min-width: 100%;
     background: rgba(255,255,255,0.1);
     border: 1px solid rgba(255,255,255,0.18);
     border-radius: 14px;
@@ -159,8 +167,8 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    backdrop-filter: blur(4px);
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    text-align: left;
+    box-sizing: border-box;
   }
   .hero-feat-icon {
     font-size: 2rem;
@@ -1175,6 +1183,7 @@
     <span class="line2">BOOK CHART</span>
   </h1>
   <div class="hero-features">
+    <div class="hero-feat-viewport">
     <div class="hero-feat-track" id="heroFeatTrack">
       <div class="hero-feat-card">
         <div class="hero-feat-icon">📊</div>
@@ -1197,6 +1206,7 @@
           <div class="hero-feat-desc">배우·CEO·크리에이터가 방송과 인터뷰에서<br>직접 언급한 추천도서 모음</div>
         </div>
       </div>
+    </div>
     </div>
     <div class="hero-feat-dots">
       <div class="hero-feat-dot active" onclick="heroFeatGo(0)"></div>
@@ -2242,7 +2252,7 @@ function filterTheme(kdc, el) {
 async function renderBookModal(book) {
   const cleanT = cleanTitle(book.title);
   const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(cleanT)}`;
-  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(cleanT)}`;
+  const chaekieum = `https://books.nl.go.kr/nill/contents/NI2010000000.do?page_move_status=0&page_num=1&sort=&logic2=and&collection=dan&first_search=Y&search_type=SIMPLE&search_field1=total&page_size=10&hanja_trans=N&schM=searchResultList&value1=${encodeURIComponent(cleanT)}`;
 
   // 1) 일단 현재 데이터로 바로 모달 오픈
   const enriched = { ...book, desc: book.desc || book.reason || '' };
@@ -2310,7 +2320,7 @@ function openCelebModal(idx) {
   const c = CELEB_DATA[idx];
   const cleanB = cleanTitle(c.book);
   const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(cleanB)}`;
-  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(cleanB)}`;
+  const chaekieum = `https://books.nl.go.kr/nill/contents/NI2010000000.do?page_move_status=0&page_num=1&sort=&logic2=and&collection=dan&first_search=Y&search_type=SIMPLE&search_field1=total&page_size=10&hanja_trans=N&schM=searchResultList&value1=${encodeURIComponent(cleanB)}`;
   document.getElementById('modal-content').innerHTML = `
     <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
       <div class="celeb-avatar">${c.emoji}</div>
@@ -2363,15 +2373,14 @@ let currentRisingData = DEMO_RISING;
 // 네이버 검색 API는 브라우저에서 직접 호출 가능 (CORS 허용)
 async function naverBookSearch(query) {
   try {
-    const res = await fetch(
-      `https://openapi.naver.com/v1/search/book.json?query=${encodeURIComponent(query)}&display=1`,
-      {
-        headers: {
-          'X-Naver-Client-Id': NAVER_CLIENT_ID,
-          'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-        }
+    const apiUrl = `https://openapi.naver.com/v1/search/book.json?query=${encodeURIComponent(query)}&display=1`;
+    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
+    const res = await fetch(proxyUrl, {
+      headers: {
+        'X-Naver-Client-Id': NAVER_CLIENT_ID,
+        'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
       }
-    );
+    });
     if (!res.ok) return null;
     const json = await res.json();
     return json.items?.[0] || null;
@@ -2835,7 +2844,7 @@ function heroFeatGo(idx) {
   heroFeatIdx = idx;
   const track = document.getElementById('heroFeatTrack');
   if (!track) return;
-  track.style.transform = `translateX(calc(-${idx * 100}% - ${idx * 12}px))`;
+  track.style.transform = `translateX(-${idx * 100}%)`;
   document.querySelectorAll('.hero-feat-dot').forEach((d, i) => {
     d.classList.toggle('active', i === idx);
   });
