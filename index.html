@@ -133,28 +133,72 @@
     display: block;
     font-size: clamp(2.2rem, 6vw, 4rem);
     font-weight: 900;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     color: #ffffff;
     line-height: 1.1;
   }
-  .hero-desc {
-    margin-bottom: 20px;
+  /* ── HERO FEATURE SLIDER ── */
+  .hero-features {
     position: relative;
     z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.15);
   }
-  .hero-feat {
+  .hero-feat-track {
+    display: flex;
+    gap: 12px;
+    overflow: hidden;
+  }
+  .hero-feat-card {
+    flex: 0 0 100%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    backdrop-filter: blur(4px);
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .hero-feat-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-feat-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  .hero-feat-desc {
     font-size: 0.72rem;
-    color: rgba(255,255,255,0.55);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    letter-spacing: 0.02em;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
   }
-  .feat-icon { font-size: 0.85rem; }
+  .hero-feat-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .hero-feat-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .hero-feat-dot.active {
+    background: #fff;
+    width: 18px;
+    border-radius: 3px;
+  }
   .hero-stats {
     display: inline-flex;
     gap: 0;
@@ -918,14 +962,17 @@
   }
   .theme-arrow { font-size: 1rem; }
 
-  /* 테마별 색상 */
-  .theme-spring  { background: linear-gradient(135deg, #f9e4c8, #f5c8a0); color: #5a3010; border-color: #e8b870; }
-  .theme-age     { background: linear-gradient(135deg, #c8dff9, #a0c4f5); color: #102040; border-color: #70a8e8; }
-  .theme-year    { background: linear-gradient(135deg, #2a2420, #3a3028); color: #e8d8c0; border-color: #6a5840; }
-  .theme-region  { background: linear-gradient(135deg, #c8f0d8, #a0e0b8); color: #103020; border-color: #70c890; }
-  .theme-season  { background: linear-gradient(135deg, #e8c8f0, #d0a0e8); color: #300840; border-color: #b870d8; }
-  .theme-autumn  { background: linear-gradient(135deg, #f0e0c0, #e0c090); color: #402800; border-color: #c89040; }
-  .theme-holiday { background: linear-gradient(135deg, #f0d8c8, #e8b8a0); color: #401808; border-color: #d89070; }
+  /* 테마 카드 — 브랜드 컬러 교차 (코랄 / 바이올렛) */
+  .theme-card:nth-child(odd)  {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: #fff; border-color: rgba(255,255,255,0.2);
+  }
+  .theme-card:nth-child(even) {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: #fff; border-color: rgba(255,255,255,0.2);
+  }
+  .theme-spring, .theme-age, .theme-year, .theme-region,
+  .theme-season, .theme-autumn, .theme-holiday { /* 기존 클래스 무력화 */ }
 
   .theme-back {
     display: inline-flex; align-items: center; gap: 6px;
@@ -1127,23 +1174,34 @@
     <span class="line1">진짜 독자들은 어떤 책을 읽을까?</span>
     <span class="line2">BOOK CHART</span>
   </h1>
-  <p class="hero-desc">
-    <span class="hero-feat"><span class="feat-icon">📊</span> 전국 1,296개 도서관 실시간 대출 순위</span>
-    <span class="hero-feat"><span class="feat-icon">🏛️</span> 국립중앙도서관 사서 직접 선정 추천도서</span>
-    <span class="hero-feat"><span class="feat-icon">⭐</span> 셀럽·작가들이 추천한 인생 책</span>
-  </p>
-  <div class="hero-stats">
-    <div class="stat">
-      <div class="stat-num">TOP 100</div>
-      <div class="stat-label">월간 실시간 순위</div>
+  <div class="hero-features">
+    <div class="hero-feat-track" id="heroFeatTrack">
+      <div class="hero-feat-card">
+        <div class="hero-feat-icon">📊</div>
+        <div>
+          <div class="hero-feat-title">전국 실시간 대출 순위</div>
+          <div class="hero-feat-desc">전국 1,296개 공공도서관 대출 빅데이터 기반<br>매월 갱신되는 TOP 100 순위</div>
+        </div>
+      </div>
+      <div class="hero-feat-card">
+        <div class="hero-feat-icon">🏛️</div>
+        <div>
+          <div class="hero-feat-title">사서 직접 선정 추천도서</div>
+          <div class="hero-feat-desc">국립중앙도서관 사서들이 직접 엄선한<br>이달의 추천도서 · 5년치 282권</div>
+        </div>
+      </div>
+      <div class="hero-feat-card">
+        <div class="hero-feat-icon">⭐</div>
+        <div>
+          <div class="hero-feat-title">셀럽 추천 인생 책</div>
+          <div class="hero-feat-desc">배우·CEO·크리에이터가 방송과 인터뷰에서<br>직접 언급한 추천도서 모음</div>
+        </div>
+      </div>
     </div>
-    <div class="stat">
-      <div class="stat-num">1,296</div>
-      <div class="stat-label">전국 공공도서관</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num">1.4억+</div>
-      <div class="stat-label">연간 대출 건수</div>
+    <div class="hero-feat-dots">
+      <div class="hero-feat-dot active" onclick="heroFeatGo(0)"></div>
+      <div class="hero-feat-dot" onclick="heroFeatGo(1)"></div>
+      <div class="hero-feat-dot" onclick="heroFeatGo(2)"></div>
     </div>
   </div>
 </div>
@@ -1354,16 +1412,16 @@ const DEMO_CHART = [
 ];
 
 const DEMO_RISING = [
-  { rank:1, title:'소년이 온다', author:'한강', pct:'+340%', cover:'📕', isbn:'9788936434108' },
-  { rank:2, title:'작별하지 않는다', author:'한강', pct:'+280%', cover:'📗', isbn:'9788936434459' },
-  { rank:3, title:'흰', author:'한강', pct:'+210%', cover:'📘', isbn:'9788936434373' },
-  { rank:4, title:'트렌드 코리아 2025', author:'김난도 외', pct:'+145%', cover:'📙', isbn:'9791190132466' },
-  { rank:5, title:'도파민네이션', author:'애나 렘키', pct:'+98%', cover:'📒', isbn:'9791197685217' },
-  { rank:6, title:'나는 메트로폴리탄 미술관의 경비원입니다', author:'패트릭 브링리', pct:'+76%', cover:'📔', isbn:'9791192842189' },
-  { rank:7, title:'불편한 편의점', author:'김호연', pct:'+64%', cover:'📕', isbn:'9791191934120' },
-  { rank:8, title:'파친코', author:'이민진', pct:'+52%', cover:'📗', isbn:'9791188565252' },
-  { rank:9, title:'채식주의자', author:'한강', pct:'+48%', cover:'📘', isbn:'9788936433598' },
-  { rank:10, title:'세이노의 가르침', author:'세이노', pct:'+39%', cover:'📙', isbn:'9791168473690' },
+  { rank:1, title:'소년이 온다', author:'한강', pct:'+340%', cover:'📕', isbn:'9788936434108', desc:'5.18 광주민주화운동을 배경으로 역사의 상처와 인간 존엄을 탐구한 한강의 역작. 노벨문학상 수상 후 폭발적으로 주목받았다.' },
+  { rank:2, title:'작별하지 않는다', author:'한강', pct:'+280%', cover:'📗', isbn:'9788936434459', desc:'제주 4.3을 배경으로 상실과 기억, 슬픔을 탐구한 한강의 소설.' },
+  { rank:3, title:'흰', author:'한강', pct:'+210%', cover:'📘', isbn:'9788936434373', desc:'흰색을 매개로 삶과 죽음, 존재를 탐구한 한강의 산문시집.' },
+  { rank:4, title:'트렌드 코리아 2025', author:'김난도 외', pct:'+145%', cover:'📙', isbn:'9791190132466', desc:'2025년 대한민국 소비 트렌드를 10가지 키워드로 전망한 베스트셀러 트렌드 분석서.' },
+  { rank:5, title:'도파민네이션', author:'애나 렘키', pct:'+98%', cover:'📒', isbn:'9791197685217', desc:'쾌락과 고통의 균형에 대한 정신과 의사의 통찰. 과잉 자극 시대를 살아가는 현대인 필독서.' },
+  { rank:6, title:'나는 메트로폴리탄 미술관의 경비원입니다', author:'패트릭 브링리', pct:'+76%', cover:'📔', isbn:'9791192842189', desc:'동생을 잃은 슬픔을 안고 미술관 경비원이 된 저자의 10년간의 이야기.' },
+  { rank:7, title:'불편한 편의점', author:'김호연', pct:'+64%', cover:'📕', isbn:'9791191934120', desc:'편의점을 배경으로 펼쳐지는 따뜻한 인간 이야기. 노숙인 독고와 편의점 사람들의 성장 소설.' },
+  { rank:8, title:'파친코', author:'이민진', pct:'+52%', cover:'📗', isbn:'9791188565252', desc:'재일 조선인 4대의 삶을 그린 역사 소설. 정체성과 차별, 가족에 대한 방대한 서사.' },
+  { rank:9, title:'채식주의자', author:'한강', pct:'+48%', cover:'📘', isbn:'9788936433598', desc:'고기를 거부하는 한 여성의 내면을 통해 폭력성과 순수함을 탐구한 한강의 대표작.' },
+  { rank:10, title:'세이노의 가르침', author:'세이노', pct:'+39%', cover:'📙', isbn:'9791168473690', desc:'20년간 인터넷에서 무료로 공유된 삶의 지혜. 냉혹하지만 진실된 조언들.' },
 ];
 
 const CELEB_DATA = [
@@ -2192,15 +2250,12 @@ async function renderBookModal(book) {
   document.getElementById('modal-overlay').classList.add('open');
 
   // 2) 카카오 SDK로 표지 + 설명 가져와서 업데이트
-  // 표지: ISBN으로 알라딘 패턴 시도
-  const coverUrl = await fetchCoverByIsbn(book.isbn);
-  if (coverUrl) { enriched.coverUrl = coverUrl; _drawModal(enriched, null, aladin, chaekieum); }
-  // 설명: 카카오 REST API 시도
-  const desc = await fetchBookDesc(cleanT, book.isbn);
-  if (desc) {
-    if (desc.thumbnail && !enriched.coverUrl) enriched.coverUrl = desc.thumbnail;
-    if (desc.contents) enriched.desc = desc.contents;
-    if (desc.publisher) enriched.publisher = desc.publisher;
+  // 네이버 API로 표지 + 설명 동시 로딩
+  const info = await fetchBookInfo(cleanT, book.isbn);
+  if (info) {
+    if (info.thumbnail) enriched.coverUrl = info.thumbnail;
+    if (info.contents) enriched.desc = info.contents;
+    if (info.publisher) enriched.publisher = info.publisher;
     _drawModal(enriched, null, aladin, chaekieum);
   }
 }
@@ -2284,101 +2339,90 @@ function openCelebModal(idx) {
   `;
   document.getElementById('modal-overlay').classList.add('open');
 
-  // 알라딘 ISBN 패턴으로 셀럽 추천책 표지 로딩
-  if (c.isbn) {
-    fetchCoverByIsbn(c.isbn).then(url => {
-      if (!url) return;
-      const existing = document.querySelector('#modal-content img');
-      if (existing) { existing.src = url; return; }
-      const div = document.querySelector('#modal-content [style*="font-size:2.2rem"]');
-      if (div) div.outerHTML = `<img src="${url}" style="width:52px;height:72px;border-radius:5px;object-fit:cover;box-shadow:2px 3px 8px rgba(0,0,0,0.14)">`;
-    });
-  }
+  // 네이버 API로 셀럽 추천책 표지 로딩
+  fetchBookInfo(c.book, c.isbn).then(info => {
+    if (!info?.thumbnail) return;
+    const existing = document.querySelector('#modal-content img');
+    if (existing) { existing.src = info.thumbnail; return; }
+    const div = document.querySelector('#modal-content [style*="font-size:2.2rem"]');
+    if (div) div.outerHTML = `<img src="${info.thumbnail}" style="width:52px;height:72px;border-radius:5px;object-fit:cover;box-shadow:2px 3px 8px rgba(0,0,0,0.14)">`;
+  });
 }
 
 // ─── STATE ───────────────────────────────────────────────────────────
 // ⚠️ 아래 두 줄에 발급받은 API 키를 입력하세요
 const API_KEY = '535d67f0866ec00bbb34a1c5bc52a4b417a3b671dee9c10b46f2756d3fd3c902';
-const KAKAO_KEY = '8a6440a3dee00f4c195520b4f7edb0b7';
+const KAKAO_KEY = '8a6440a3dee00f4c195520b4f7edb0b7'; // 미사용 (유지)
+const NAVER_CLIENT_ID     = 'uLaCm42l2_xHCYpYuzpI';
+const NAVER_CLIENT_SECRET = 'cp0w4KIOQL';
 
 let currentChartData = DEMO_CHART;
 let currentRisingData = DEMO_RISING;
 
-// ── 표지 이미지 (알라딘 ISBN URL 패턴) ──────────────────────────────
-// 알라딘은 ISBN13 기반 표지 URL을 공개 제공 — CORS 없음, API 불필요
-function getCoverUrl(isbn) {
-  if (!isbn) return null;
-  const id = String(isbn).replace(/[^0-9]/g, '');
-  if (id.length < 10) return null;
-  // 알라딘 표지 URL 패턴 (소형)
-  return `https://image.aladin.co.kr/product/${id.slice(-4)}/${id.slice(-8,-4)}/cover/cover${id.slice(-4)}.jpg`;
-}
-
-// img 로드 테스트 후 성공하면 URL, 실패하면 null 반환
-function testImgUrl(url) {
-  return new Promise(resolve => {
-    if (!url) { resolve(null); return; }
-    const img = new Image();
-    img.onload  = () => resolve(url);
-    img.onerror = () => resolve(null);
-    img.src = url + '?t=' + Date.now(); // 캐시 방지
-  });
-}
-
-// ISBN13으로 알라딘 표지 URL 3가지 패턴 시도
-async function fetchCoverByIsbn(isbn) {
-  if (!isbn) return null;
-  const id = String(isbn).replace(/[^0-9]/g, '');
-  if (id.length < 10) return null;
-
-  // 알라딘 표지 URL 패턴들
-  const patterns = [
-    `https://image.aladin.co.kr/product/cover/s/${id}.jpg`,
-    `https://image.aladin.co.kr/product/${id.slice(-4)}/${id.slice(-8,-4)}/cover/cover${id.slice(-4)}.jpg`,
-    `https://covers.openlibrary.org/b/isbn/${id}-M.jpg`,
-  ];
-
-  for (const url of patterns) {
-    const result = await testImgUrl(url);
-    if (result) return result;
-  }
-  return null;
-}
-
-async function fetchCoverByTitle(title) {
-  return null; // 제목만으론 URL 패턴 생성 불가
-}
-
-// 데이터 배열 표지 병렬 로딩
-async function attachCovers(dataArr, renderFn) {
-  await Promise.all(dataArr.map(async (b) => {
-    if (!b.isbn) return;
-    const url = await fetchCoverByIsbn(b.isbn);
-    if (url) b.coverUrl = url;
-  }));
-  renderFn(dataArr);
-}
-
-// 모달용 책 설명 — 카카오 REST API (CORS 시도, 실패해도 무방)
-async function fetchBookDesc(title, isbn) {
+// ── 네이버 책 검색 API ────────────────────────────────────────────────
+// 네이버 검색 API는 브라우저에서 직접 호출 가능 (CORS 허용)
+async function naverBookSearch(query) {
   try {
-    const isbnStr = isbn ? String(isbn).replace(/[^0-9]/g,'') : '';
-    const query = isbnStr.length >= 10 ? isbnStr : encodeURIComponent(title);
-    const target = isbnStr.length >= 10 ? '&target=isbn' : '';
     const res = await fetch(
-      `https://dapi.kakao.com/v3/search/book?query=${query}&size=1${target}`,
-      { headers: { Authorization: `KakaoAK ${KAKAO_KEY}` } }
+      `https://openapi.naver.com/v1/search/book.json?query=${encodeURIComponent(query)}&display=1`,
+      {
+        headers: {
+          'X-Naver-Client-Id': NAVER_CLIENT_ID,
+          'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
+        }
+      }
     );
     if (!res.ok) return null;
     const json = await res.json();
-    const doc = json.documents?.[0];
-    if (!doc) return null;
-    return {
-      contents: doc.contents || '',
-      publisher: doc.publisher || '',
-      thumbnail: doc.thumbnail?.replace(/^http:\/\//, 'https://') || null,
-    };
+    return json.items?.[0] || null;
   } catch(e) { return null; }
+}
+
+async function naverBookSearchByIsbn(isbn) {
+  if (!isbn) return null;
+  const id = String(isbn).replace(/[^0-9]/g, '');
+  if (id.length < 10) return null;
+  return naverBookSearch(id);
+}
+
+// 표지 URL 반환
+async function fetchCoverByIsbn(isbn) {
+  const item = await naverBookSearchByIsbn(isbn);
+  return item?.image || null;
+}
+
+async function fetchCoverByTitle(title) {
+  const item = await naverBookSearch(title);
+  return item?.image || null;
+}
+
+// 데이터 배열 표지 로딩 — 순차 (네이버 API rate limit 방지)
+async function attachCovers(dataArr, renderFn) {
+  for (const b of dataArr) {
+    const query = b.isbn || cleanTitle(b.title);
+    const item = await naverBookSearch(query);
+    if (item?.image) b.coverUrl = item.image;
+    await new Promise(r => setTimeout(r, 100));
+  }
+  renderFn(dataArr);
+}
+
+// 표지 + 설명 동시에 반환
+async function fetchBookInfo(title, isbn) {
+  const item = isbn
+    ? (await naverBookSearchByIsbn(isbn)) || (await naverBookSearch(title))
+    : await naverBookSearch(title);
+  if (!item) return null;
+  return {
+    thumbnail: item.image || null,
+    contents: item.description || '',
+    publisher: item.publisher || '',
+    author: item.author || '',
+  };
+}
+
+async function fetchBookDesc(title, isbn) {
+  return fetchBookInfo(title, isbn);
 }
 
 async function fetchLoanChart(kdc = '') {
@@ -2402,7 +2446,8 @@ async function fetchLoanChart(kdc = '') {
       kdc: d.class_no?.[0] || '',
       loans: parseInt(d.loan_count) || 0,
       isbn: d.isbn13,
-      cover: '📚', desc: ''
+      cover: '📚',
+      desc: d.bookIntro || d.description || ''
     }));
 }
 
@@ -2594,8 +2639,14 @@ function loadMoreChart() {
 }
 
 function renderRising(data) {
-  const html = data.slice(0, 10).map((b, i) => `
-    <div class="rising-item" style="animation-delay:${i*0.06}s">
+  const list = data.slice(0, 10);
+  const html = list.map((b, i) => `
+    <div class="rising-item" style="animation-delay:${i*0.06}s;cursor:pointer"
+      onclick='openModalDirect(${JSON.stringify({
+        title: b.title, author: b.author, publisher: b.publisher||"",
+        isbn: b.isbn||"", cover: b.cover||"📚", desc: b.desc||"",
+        rank: b.rank, rankLabel: "급상승 순위", loans: b.loans||0
+      })})'>
       <div class="rising-rank-badge">${b.rank}위</div>
       <div class="rising-cover-wrap">
         ${b.coverUrl
@@ -2742,22 +2793,26 @@ function renderLibrary() {
 
   document.getElementById('lib-grid').innerHTML = html;
 
-  // 알라딘 ISBN 패턴으로 표지 병렬 로딩
-  picks.forEach(async (b) => {
-    const url = await fetchCoverByIsbn(b.isbn);
-    if (!url) return;
-    const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`);
-    if (el && el.tagName !== 'IMG') {
-      const img = document.createElement('img');
-      img.src = url;
-      img.className = 'lib-cover';
-      img.alt = cleanTitle(b.title);
-      img.style.objectFit = 'cover';
-      img.dataset.isbn = b.isbn;
-      img.onerror = () => { img.style.display='none'; };
-      el.replaceWith(img);
+  // 네이버 책 API로 표지 순차 로딩
+  (async () => {
+    for (const b of picks) {
+      const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
+      if (url) {
+        const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`);
+        if (el && el.tagName !== 'IMG') {
+          const img = document.createElement('img');
+          img.src = url;
+          img.className = 'lib-cover';
+          img.alt = cleanTitle(b.title);
+          img.style.objectFit = 'cover';
+          img.dataset.isbn = b.isbn;
+          img.onerror = () => { img.style.display = 'none'; };
+          el.replaceWith(img);
+        }
+      }
+      await new Promise(r => setTimeout(r, 100));
     }
-  });
+  })();
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
@@ -2771,6 +2826,23 @@ function kdcLabel(kdc) {
   const map = { '0':'총류','1':'철학','2':'종교','3':'사회과학','4':'자연과학','5':'기술과학','6':'예술','7':'언어','8':'문학','9':'역사' };
   return map[kdc?.[0]] || '기타';
 }
+
+// ─── HERO FEATURE SLIDER ─────────────────────────────────────────────
+let heroFeatIdx = 0;
+const heroFeatTotal = 3;
+
+function heroFeatGo(idx) {
+  heroFeatIdx = idx;
+  const track = document.getElementById('heroFeatTrack');
+  if (!track) return;
+  track.style.transform = `translateX(calc(-${idx * 100}% - ${idx * 12}px))`;
+  document.querySelectorAll('.hero-feat-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+
+// 자동 슬라이드 3초 간격
+setInterval(() => heroFeatGo((heroFeatIdx + 1) % heroFeatTotal), 3000);
 
 // ─── INIT ─────────────────────────────────────────────────────────────
 renderChart(DEMO_CHART, 'chart');
