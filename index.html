@@ -2186,11 +2186,11 @@ async function renderBookModal(book) {
   _drawModal(book, null, aladin, chaekieum);
   document.getElementById('modal-overlay').classList.add('open');
 
-  if (KAKAO_KEY) {
+  if (KAKAO_KEY && KAKAO_KEY.length > 10) {
     try {
-      const query = book.isbn || book.title;
+      const query = (book.isbn ? String(book.isbn).replace(/[^0-9]/g,"") : "") || book.title;
       const res = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(query)}&size=1${book.isbn ? '&target=isbn' : ''}`,
+        `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(query)}&size=1${(book.isbn && String(book.isbn).length >= 10) ? '&target=isbn' : ''}`,
         { headers: { Authorization: `KakaoAK ${KAKAO_KEY}` } }
       );
       const json = await res.json();
@@ -2317,11 +2317,15 @@ let currentRisingData = DEMO_RISING;
 async function fetchCoverByIsbn(isbn) {
   if (!KAKAO_KEY || !isbn) return null;
   try {
-    const res = await fetch(`https://dapi.kakao.com/v3/search/book?query=${isbn}&target=isbn`, {
+    const isbnStr = String(isbn).replace(/[^0-9]/g, '');
+    if (isbnStr.length < 10) return null;
+    const res = await fetch(`https://dapi.kakao.com/v3/search/book?query=${isbnStr}&target=isbn&size=1`, {
       headers: { Authorization: `KakaoAK ${KAKAO_KEY}` }
     });
+    if (!res.ok) return null;
     const json = await res.json();
-    return json.documents?.[0]?.thumbnail || null;
+    const thumb = json.documents?.[0]?.thumbnail;
+    return (thumb && thumb.length > 0) ? thumb : null;
   } catch(e) { return null; }
 }
 
@@ -2332,8 +2336,10 @@ async function fetchCoverByTitle(title) {
     const res = await fetch(`https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(title)}&size=1`, {
       headers: { Authorization: `KakaoAK ${KAKAO_KEY}` }
     });
+    if (!res.ok) return null;
     const json = await res.json();
-    return json.documents?.[0]?.thumbnail || null;
+    const thumb = json.documents?.[0]?.thumbnail;
+    return (thumb && thumb.length > 0) ? thumb : null;
   } catch(e) { return null; }
 }
 
@@ -2758,6 +2764,14 @@ if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
   loadRisingData();
 }
 if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
+  // 카카오 API 응답 테스트
+  fetchCoverByTitle('불편한 편의점').then(url => {
+    if (url) {
+      console.log('✅ 카카오 API 정상 - 표지 URL:', url);
+    } else {
+      console.warn('⚠️ 카카오 API 응답 없음 - 키 확인 필요');
+    }
+  });
   attachCovers(DEMO_CHART, d => renderChart(d, 'chart'));
   attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
 }
