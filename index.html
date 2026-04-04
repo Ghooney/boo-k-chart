@@ -2343,14 +2343,14 @@ async function fetchCoverByTitle(title) {
   } catch(e) { return null; }
 }
 
-// 데이터 배열 전체에 표지 이미지 비동기 로딩
+// 데이터 배열에 표지 이미지 로딩 — 순차적으로 딜레이 두고 요청 (429 방지)
 async function attachCovers(dataArr, renderFn) {
   if (!KAKAO_KEY) return;
-  const promises = dataArr.map(async (b) => {
-    const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(b.title);
+  for (const b of dataArr) {
+    const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
     if (url) b.coverUrl = url;
-  });
-  await Promise.all(promises);
+    await new Promise(r => setTimeout(r, 120)); // 120ms 간격
+  }
   renderFn(dataArr);
 }
 
@@ -2715,27 +2715,30 @@ function renderLibrary() {
 
   document.getElementById('lib-grid').innerHTML = html;
 
-  // 카카오 API 표지 이미지 — data-isbn/data-title 속성으로 안정적 교체
+  // 카카오 API 표지 이미지 — 순차 요청 (429 방지)
   if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
-    picks.forEach(async (b) => {
-      try {
-        const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
-        if (!url) return;
-        const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`)
-                || document.querySelector(`.lib-cover[data-title="${cleanTitle(b.title)}"]`);
-        if (el && el.tagName !== 'IMG') {
-          const img = document.createElement('img');
-          img.src = url;
-          img.className = 'lib-cover';
-          img.alt = cleanTitle(b.title);
-          img.style.objectFit = 'cover';
-          img.dataset.isbn = b.isbn;
-          img.dataset.title = cleanTitle(b.title);
-          img.onerror = () => img.remove();
-          el.replaceWith(img);
-        }
-      } catch(e) {}
-    });
+    (async () => {
+      for (const b of picks) {
+        try {
+          const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
+          if (url) {
+            const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`)
+                    || document.querySelector(`.lib-cover[data-title="${cleanTitle(b.title)}"]`);
+            if (el && el.tagName !== 'IMG') {
+              const img = document.createElement('img');
+              img.src = url;
+              img.className = 'lib-cover';
+              img.alt = cleanTitle(b.title);
+              img.style.objectFit = 'cover';
+              img.dataset.isbn = b.isbn;
+              img.onerror = () => img.remove();
+              el.replaceWith(img);
+            }
+          }
+        } catch(e) {}
+        await new Promise(r => setTimeout(r, 120)); // 120ms 간격
+      }
+    })();
   }
 }
 
