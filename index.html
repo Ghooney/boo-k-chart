@@ -82,7 +82,7 @@
 
   /* ── HERO ── */
   .hero {
-    background: linear-gradient(160deg, #1a0a2e 0%, #2d0a1e 50%, #1a0f2e 100%);
+    background: linear-gradient(135deg, #f43f5e 0%, #a855f7 50%, #8b5cf6 100%);
     padding: 40px 20px 52px;
     text-align: center;
     position: relative;
@@ -91,10 +91,8 @@
   .hero::before {
     content: '';
     position: absolute;
-    width: 800px; height: 500px;
-    top: -100px; left: 50%;
-    transform: translateX(-50%);
-    background: radial-gradient(ellipse, rgba(139,92,246,0.25) 0%, rgba(244,63,94,0.15) 50%, transparent 70%);
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 60%);
     pointer-events: none;
   }
   .hero-eyebrow {
@@ -103,7 +101,7 @@
     gap: 8px;
     font-size: 0.65rem;
     letter-spacing: 0.2em;
-    color: rgba(244,63,94,0.75);
+    color: rgba(255,255,255,0.7);
     text-transform: uppercase;
     margin-bottom: 24px;
     font-weight: 500;
@@ -114,70 +112,75 @@
     content: '';
     display: block;
     width: 20px; height: 1px;
-    background: rgba(244,63,94,0.25);
+    background: rgba(255,255,255,0.3);
   }
   .hero-title {
     font-family: 'Noto Sans KR', sans-serif;
     line-height: 1.0;
-    margin-bottom: 18px;
+    margin-bottom: 28px;
     position: relative;
     z-index: 1;
   }
   .hero-title .line1 {
     display: block;
-    font-size: clamp(0.95rem, 2.2vw, 1.2rem);
-    font-weight: 300;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
+    font-size: clamp(0.88rem, 2vw, 1.1rem);
+    font-weight: 400;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
   }
   .hero-title .line2 {
     display: block;
-    font-size: clamp(2rem, 5.5vw, 3.6rem);
+    font-size: clamp(2.2rem, 6vw, 4rem);
     font-weight: 900;
-    letter-spacing: -0.5px;
-    background: linear-gradient(90deg, #f43f5e, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    line-height: 1.1;
   }
   .hero-desc {
-    font-size: 0.78rem;
-    color: rgba(210,200,230,0.4);
-    margin-bottom: 40px;
-    letter-spacing: 0.04em;
+    margin-bottom: 20px;
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
   }
+  .hero-feat {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.02em;
+  }
+  .feat-icon { font-size: 0.85rem; }
   .hero-stats {
     display: inline-flex;
     gap: 0;
-    border: 1px solid rgba(139,92,246,0.18);
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 12px;
     overflow: hidden;
-    background: rgba(139,92,246,0.04);
+    background: rgba(255,255,255,0.12);
     position: relative;
     z-index: 1;
   }
   .stat {
     text-align: center;
     padding: 14px 28px;
-    border-right: 1px solid rgba(139,92,246,0.1);
+    border-right: 1px solid rgba(255,255,255,0.2);
   }
   .stat:last-child { border-right: none; }
   .stat-num {
     font-size: 1.3rem;
     font-weight: 800;
     font-family: 'Noto Sans KR', sans-serif;
-    background: linear-gradient(90deg, #f43f5e, #8b5cf6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #ffffff;
     letter-spacing: 0.02em;
   }
   .stat-label {
     font-size: 0.6rem;
-    color: rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.65);
     margin-top: 2px;
     letter-spacing: 0.08em;
   }
@@ -1007,10 +1010,7 @@
       letter-spacing: -1px;
       line-height: 1.0;
     }
-    .hero-desc {
-      font-size: 0.72rem;
-      margin-bottom: 28px;
-    }
+    .hero-feat { font-size: 0.67rem; gap: 4px; }
     .hero-stats {
       display: flex;
       width: 100%;
@@ -1116,31 +1116,34 @@
   <div class="header-inner">
     <div class="logo">북<span>차트</span></div>
     <div style="display:flex;align-items:center;gap:8px">
-      <div class="header-sub pc-only">전국 공공도서관 빅데이터</div>
       <div class="api-badge">LIVE</div>
     </div>
   </div>
 </header>
 
 <div class="hero">
-  <div class="hero-eyebrow">전국 공공도서관 빅데이터</div>
+  <div class="hero-eyebrow">전국 공공도서관 대출 빅데이터 차트</div>
   <h1 class="hero-title">
-    <span class="line1">읽힌 책이 증명한다</span>
-    <span class="line2">북차트</span>
+    <span class="line1">진짜 독자들은 어떤 책을 읽을까?</span>
+    <span class="line2">BOOK CHART</span>
   </h1>
-  <p class="hero-desc">서점 순위가 아닌 실제 대출로 증명된 차트</p>
+  <p class="hero-desc">
+    <span class="hero-feat"><span class="feat-icon">📊</span> 전국 1,296개 도서관 실시간 대출 순위</span>
+    <span class="hero-feat"><span class="feat-icon">🏛️</span> 국립중앙도서관 사서 직접 선정 추천도서</span>
+    <span class="hero-feat"><span class="feat-icon">⭐</span> 셀럽·작가들이 추천한 인생 책</span>
+  </p>
   <div class="hero-stats">
     <div class="stat">
-      <div class="stat-num">1,100+</div>
-      <div class="stat-label">참여 도서관</div>
+      <div class="stat-num">TOP 100</div>
+      <div class="stat-label">월간 실시간 순위</div>
     </div>
     <div class="stat">
-      <div class="stat-num">10년</div>
-      <div class="stat-label">데이터 분석</div>
+      <div class="stat-num">1,296</div>
+      <div class="stat-label">전국 공공도서관</div>
     </div>
     <div class="stat">
-      <div class="stat-num">0원</div>
-      <div class="stat-label">광고비 영향</div>
+      <div class="stat-num">1.4억+</div>
+      <div class="stat-label">연간 대출 건수</div>
     </div>
   </div>
 </div>
@@ -2183,29 +2186,35 @@ async function renderBookModal(book) {
   const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(cleanT)}`;
   const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(cleanT)}`;
 
-  _drawModal(book, null, aladin, chaekieum);
+  // 로딩 상태로 먼저 오픈
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
+      <div style="width:88px;height:122px;border-radius:8px;background:var(--cream);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem">${book.cover||'📚'}</div>
+      <div style="flex:1">
+        <div class="modal-title">${cleanT}</div>
+        <div class="modal-author">${book.author||''}</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px;color:var(--muted);font-size:0.8rem">책 정보 불러오는 중...</div>`;
   document.getElementById('modal-overlay').classList.add('open');
 
+  // 카카오 API로 표지 + 설명 가져오기
+  let enriched = { ...book };
   if (KAKAO_KEY && KAKAO_KEY.length > 10) {
     try {
-      const query = (book.isbn ? String(book.isbn).replace(/[^0-9]/g,"") : "") || book.title;
-      const res = await fetch(
-        `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(query)}&size=1${(book.isbn && String(book.isbn).length >= 10) ? '&target=isbn' : ''}`,
-        { headers: { Authorization: `KakaoAK ${KAKAO_KEY}` } }
-      );
-      const json = await res.json();
-      const doc = json.documents?.[0];
-      if (doc) {
-        const enriched = {
-          ...book,
-          coverUrl: doc.thumbnail || book.coverUrl,
-          desc: doc.contents || book.desc || '',
-          publisher: doc.publisher || book.publisher || '',
-        };
-        _drawModal(enriched, doc, aladin, chaekieum);
+      const isbnStr = book.isbn ? String(book.isbn).replace(/[^0-9]/g,'') : '';
+      const info = isbnStr.length >= 10
+        ? (await fetchBookInfo(isbnStr, true)) || (await fetchBookInfo(cleanT, false))
+        : await fetchBookInfo(cleanT, false);
+      if (info) {
+        enriched.coverUrl = info.thumbnail || book.coverUrl || null;
+        enriched.desc = info.contents || book.desc || book.reason || '';
+        enriched.publisher = info.publisher || book.publisher || '';
       }
     } catch(e) {}
   }
+  if (!enriched.desc) enriched.desc = book.reason || book.desc || '';
+  _drawModal(enriched, null, aladin, chaekieum);
 }
 
 function _drawModal(b, kakaoDoc, aladin, chaekieum) {
@@ -2314,33 +2323,44 @@ let currentChartData = DEMO_CHART;
 let currentRisingData = DEMO_RISING;
 
 // 카카오 API로 표지 이미지 가져오기 (ISBN 기반)
-async function fetchCoverByIsbn(isbn) {
-  if (!KAKAO_KEY || !isbn) return null;
+// http → https 변환 (Mixed Content 차단 방지)
+function toHttps(url) {
+  if (!url) return null;
+  return url.replace(/^http:\/\//, 'https://');
+}
+
+async function fetchBookInfo(query, byIsbn = false) {
+  if (!KAKAO_KEY || !query) return null;
   try {
-    const isbnStr = String(isbn).replace(/[^0-9]/g, '');
-    if (isbnStr.length < 10) return null;
-    const res = await fetch(`https://dapi.kakao.com/v3/search/book?query=${isbnStr}&target=isbn&size=1`, {
-      headers: { Authorization: `KakaoAK ${KAKAO_KEY}` }
-    });
+    const url = byIsbn
+      ? `https://dapi.kakao.com/v3/search/book?query=${query}&target=isbn&size=1`
+      : `https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(query)}&size=1`;
+    const res = await fetch(url, { headers: { Authorization: `KakaoAK ${KAKAO_KEY}` } });
     if (!res.ok) return null;
     const json = await res.json();
-    const thumb = json.documents?.[0]?.thumbnail;
-    return (thumb && thumb.length > 0) ? thumb : null;
+    const doc = json.documents?.[0];
+    if (!doc) return null;
+    return {
+      thumbnail: toHttps(doc.thumbnail) || null,
+      contents: doc.contents || '',
+      publisher: doc.publisher || '',
+      authors: doc.authors?.join(', ') || '',
+    };
   } catch(e) { return null; }
 }
 
-// 카카오 API로 표지 이미지 제목 기반 검색 (ISBN 없을 때 fallback)
+async function fetchCoverByIsbn(isbn) {
+  if (!isbn) return null;
+  const isbnStr = String(isbn).replace(/[^0-9]/g, '');
+  if (isbnStr.length < 10) return null;
+  const info = await fetchBookInfo(isbnStr, true);
+  return info?.thumbnail || null;
+}
+
 async function fetchCoverByTitle(title) {
-  if (!KAKAO_KEY || !title) return null;
-  try {
-    const res = await fetch(`https://dapi.kakao.com/v3/search/book?query=${encodeURIComponent(title)}&size=1`, {
-      headers: { Authorization: `KakaoAK ${KAKAO_KEY}` }
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    const thumb = json.documents?.[0]?.thumbnail;
-    return (thumb && thumb.length > 0) ? thumb : null;
-  } catch(e) { return null; }
+  if (!title) return null;
+  const info = await fetchBookInfo(title, false);
+  return info?.thumbnail || null;
 }
 
 // 데이터 배열에 표지 이미지 로딩 — 순차적으로 딜레이 두고 요청 (429 방지)
@@ -2348,7 +2368,7 @@ async function attachCovers(dataArr, renderFn) {
   if (!KAKAO_KEY) return;
   for (const b of dataArr) {
     const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
-    if (url) b.coverUrl = url;
+    if (url) b.coverUrl = toHttps(url);
     await new Promise(r => setTimeout(r, 120)); // 120ms 간격
   }
   renderFn(dataArr);
