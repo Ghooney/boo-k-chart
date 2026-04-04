@@ -2213,8 +2213,8 @@ function _drawModal(b, kakaoDoc, aladin, chaekieum) {
     ? `<img src="${b.coverUrl}" style="width:88px;height:122px;border-radius:8px;object-fit:cover;box-shadow:0 4px 16px rgba(0,0,0,0.18);flex-shrink:0">`
     : `<div style="width:88px;height:122px;border-radius:8px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0">${b.cover||'📚'}</div>`;
 
-  const desc = b.desc || '';
-  const truncatedDesc = desc.length > 120 ? desc.slice(0, 120) + '...' : desc;
+  const desc = b.desc || b.reason || '';
+  const truncatedDesc = desc.length > 200 ? desc.slice(0, 200) + '...' : desc;
 
   document.getElementById('modal-content').innerHTML = `
     <div style="display:flex;gap:16px;margin-bottom:16px;align-items:flex-start">
@@ -2614,6 +2614,8 @@ function switchTab(name, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-' + name).classList.add('active');
+  // 이달의 책 탭 첫 진입 시 렌더 (표지 포함)
+  if (name === 'library') renderLibrary();
 }
 
 function filterChart(kdc, el) {
@@ -2684,7 +2686,8 @@ function renderLibrary() {
     }[b.category] || '#888';
     const bookData = JSON.stringify({
       title: b.title, author: b.author, publisher: b.publisher,
-      isbn: b.isbn, cover: b.cover, desc: b.reason,
+      isbn: b.isbn, cover: b.cover,
+      desc: b.reason,
       rank: i+1, loans: b.total_loans, rankLabel: yearMonth + ' 사서추천'
     });
     return `
@@ -2694,7 +2697,7 @@ function renderLibrary() {
         ${b.category ? `<span style="font-size:0.62rem;padding:2px 7px;border-radius:20px;background:${categoryColor}18;color:${categoryColor};font-weight:600">${b.category}</span>` : ''}
       </div>
       <div class="lib-book-row">
-        <div class="lib-cover lib-cover-${i}" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover || '📚'}</div>
+        <div class="lib-cover" data-isbn="${b.isbn}" data-title="${cleanTitle(b.title)}" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream);border-radius:6px;flex-shrink:0">${b.cover || '📚'}</div>
         <div class="lib-book-info">
           <div class="lib-book-title">${cleanTitle(b.title)}</div>
           <div class="lib-book-author">${b.author}</div>
@@ -2706,15 +2709,24 @@ function renderLibrary() {
 
   document.getElementById('lib-grid').innerHTML = html;
 
-  // 카카오 API로 표지 이미지 비동기 업데이트 (무한루프 없이 DOM 직접 교체)
+  // 카카오 API 표지 이미지 — data-isbn/data-title 속성으로 안정적 교체
   if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
-    picks.forEach(async (b, i) => {
+    picks.forEach(async (b) => {
       try {
-        const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(b.title);
+        const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
         if (!url) return;
-        const el = document.querySelector(`.lib-cover-${i}`);
-        if (el) {
-          el.outerHTML = `<img src="${url}" class="lib-cover lib-cover-${i}" alt="${b.title}" style="object-fit:cover" onerror="this.style.display='none'">`;
+        const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`)
+                || document.querySelector(`.lib-cover[data-title="${cleanTitle(b.title)}"]`);
+        if (el && el.tagName !== 'IMG') {
+          const img = document.createElement('img');
+          img.src = url;
+          img.className = 'lib-cover';
+          img.alt = cleanTitle(b.title);
+          img.style.objectFit = 'cover';
+          img.dataset.isbn = b.isbn;
+          img.dataset.title = cleanTitle(b.title);
+          img.onerror = () => img.remove();
+          el.replaceWith(img);
         }
       } catch(e) {}
     });
