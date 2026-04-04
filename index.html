@@ -1159,9 +1159,11 @@
 
     <!-- 연도 탭 -->
     <div class="filter-bar" id="lib-year-bar">
-      <button class="filter-chip active" onclick="filterLibYear('2025', this)">2025년</button>
-      <button class="filter-chip" onclick="filterLibYear('2024', this)">2024년</button>
-      <button class="filter-chip" onclick="filterLibYear('2023', this)">2023년</button>
+      <button class="filter-chip active" onclick="filterLibYear('2025', this)">2025</button>
+      <button class="filter-chip" onclick="filterLibYear('2024', this)">2024</button>
+      <button class="filter-chip" onclick="filterLibYear('2023', this)">2023</button>
+      <button class="filter-chip" onclick="filterLibYear('2022', this)">2022</button>
+      <button class="filter-chip" onclick="filterLibYear('2021', this)">2021</button>
     </div>
 
     <!-- 월별 탭 -->
@@ -1266,269 +1268,361 @@ const CELEB_DATA = [
 
 // ─── 이달의 책 월별 아카이브 ─────────────────────────────────────────
 const LIBRARY_ARCHIVE = {
-  '2025': {
-    '4': [
-      { lib: '국립중앙도서관', title: '파친코', author: '이민진', cover: '📕', reason: '재일 조선인 4대의 삶을 통해 정체성과 역사를 탐구. 노벨문학상 직후 전국 사서들이 주목한 작품.' },
-      { lib: '서울도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📘', reason: '삶의 다양한 가능성을 탐구하며 현재의 소중함을 일깨워주는 따뜻한 소설.' },
-      { lib: '부산시립도서관', title: '불편한 편의점', author: '김호연', cover: '📗', reason: '평범한 공간과 사람들 속 따뜻함을 발견하게 하는 소설.' },
-      { lib: '인천시립도서관', title: '82년생 김지영', author: '조남주', cover: '📙', reason: '한국 여성의 일상 속 사회적 차별을 사실적으로 그린 문제작.' },
-      { lib: '대구시립도서관', title: '세이노의 가르침', author: '세이노', cover: '📔', reason: '냉철하지만 진실된 삶의 조언을 담은 자기계발서의 역작.' },
-      { lib: '광주시립도서관', title: '소년이 온다', author: '한강', cover: '📒', reason: '5.18을 배경으로 역사의 상처와 인간 존엄을 탐구한 한강의 역작.' },
-    ],
-    '3': [
-      { lib: '국립중앙도서관', title: '채식주의자', author: '한강', cover: '📕', reason: '노벨문학상 수상작가 한강의 대표작. 폭력성과 순수함을 탐구한 소설.' },
-      { lib: '서울도서관', title: '아몬드', author: '손원평', cover: '📗', reason: '감정을 느끼지 못하는 소년의 성장 이야기. 공감에 대한 깊은 통찰.' },
-      { lib: '부산시립도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📘', reason: '현대인의 집중력 위기를 파헤친 책. 디지털 시대 필독서.' },
-      { lib: '인천시립도서관', title: '트렌드 코리아 2025', author: '김난도 외', cover: '📙', reason: '2025년 대한민국 소비 트렌드를 10가지 키워드로 전망.' },
-      { lib: '대구시립도서관', title: '역행자', author: '자청', cover: '📔', reason: '남들과 다른 역행의 길을 통해 성공한 저자의 자기계발 전략.' },
-      { lib: '광주시립도서관', title: '어린 왕자', author: '생텍쥐페리', cover: '📒', reason: '봄의 시작에 다시 읽는 어른을 위한 동화. 세대를 초월한 고전.' },
+  '2021': {
+    '1': [
+      { lib: '국립중앙도서관', title: '실례지만, 이 책이 시급합니다', author: '이수은', publisher: '민음사', category: '인문과학', isbn: '9788937479946', cover: '📚', total_loans: 7144, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 7,144건 대출' },
+      { lib: '국립중앙도서관', title: '스노볼', author: '박소영', publisher: '창비', category: '문학', isbn: '9788936438647', cover: '📚', total_loans: 5742, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 5,742건 대출' },
+      { lib: '국립중앙도서관', title: '우주를 만지다', author: '권재술', publisher: '특별한서재', category: '자연과학', isbn: '9791188912872', cover: '📚', total_loans: 4458, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 4,458건 대출' },
+      { lib: '국립중앙도서관', title: '지금 여기, 무탈한가요?', author: '오찬호', publisher: '북트리거', category: '사회과학', isbn: '9791189799304', cover: '📚', total_loans: 4120, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 4,120건 대출' },
+      { lib: '국립중앙도서관', title: '상상이 현실이 되는 순간', author: '조엘 레비', publisher: '행북', category: '자연과학', isbn: '9791196434649', cover: '📚', total_loans: 2873, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 2,873건 대출' },
+      { lib: '국립중앙도서관', title: '열다섯 마리 개', author: '앙드레 알렉시스', publisher: '삐삐북스', category: '문학', isbn: '9791197145100', cover: '📚', total_loans: 1493, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 1,493건 대출' },
+      { lib: '국립중앙도서관', title: '걸작과 졸작 사이', author: '김이산', publisher: '반니', category: '인문과학', isbn: '9791189653194', cover: '📚', total_loans: 911, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 911건 대출' },
+      { lib: '국립중앙도서관', title: '음식에도 마스크를 씌워야 하나요', author: '임선영', publisher: '마음의숲', category: '사회과학', isbn: '9791162850640', cover: '📚', total_loans: 708, reason: '국립중앙도서관 사서추천도서 (2021년 1월 선정) · 전국 도서관 708건 대출' },
     ],
     '2': [
-      { lib: '국립중앙도서관', title: '작별하지 않는다', author: '한강', cover: '📕', reason: '제주 4.3을 배경으로 한 한강의 소설. 상실과 기억에 대한 깊은 탐구.' },
-      { lib: '서울도서관', title: '파과', author: '구병모', cover: '📗', reason: '노년의 여성 킬러를 주인공으로 한 독창적인 소설. 삶과 죽음에 대한 성찰.' },
-      { lib: '부산시립도서관', title: '세상에서 가장 긴 저녁', author: '줄리아 지니', cover: '📘', reason: '현대인의 외로움을 섬세하게 담아낸 작품.' },
-      { lib: '인천시립도서관', title: '나는 메트로폴리탄 미술관의 경비원입니다', author: '패트릭 브링리', cover: '📙', reason: '미술관 경비원의 시선으로 바라본 예술과 삶에 대한 에세이.' },
-      { lib: '대구시립도서관', title: '흰', author: '한강', cover: '📔', reason: '흰색을 매개로 삶과 죽음, 존재를 탐구한 산문시집.' },
-      { lib: '광주시립도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📒', reason: '철학자들의 지혜를 여행을 통해 풀어낸 철학 에세이.' },
+      { lib: '국립중앙도서관', title: '엘리트 세습', author: '대니얼 마코비츠', publisher: '세종', category: '사회과학', isbn: '9788984078017', cover: '📚', total_loans: 8189, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 8,189건 대출' },
+      { lib: '국립중앙도서관', title: '백년식사', author: '주영하', publisher: '휴머니스트', category: '사회과학', isbn: '9791160805031', cover: '📚', total_loans: 3542, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 3,542건 대출' },
+      { lib: '국립중앙도서관', title: '국보, 역사의 명장면을 담다', author: '배한철', publisher: '매경경제신문사', category: '인문과학', isbn: '9791164841882', cover: '📚', total_loans: 3231, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 3,231건 대출' },
+      { lib: '국립중앙도서관', title: '최고의 수학자가 사랑한 문제들', author: '이언 스튜어트', publisher: '반니', category: '자연과학', isbn: '9791190467803', cover: '📚', total_loans: 2259, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 2,259건 대출' },
+      { lib: '국립중앙도서관', title: '당신에게 일시 정지를 권유합니다', author: '김종관', publisher: '혜화동', category: '문학', isbn: '9791190049160', cover: '📚', total_loans: 1586, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 1,586건 대출' },
+      { lib: '국립중앙도서관', title: '건축, 근대소설을 거닐다', author: '김소연', publisher: '루아크', category: '자연과학', isbn: '9791188296439', cover: '📚', total_loans: 1388, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 1,388건 대출' },
+      { lib: '국립중앙도서관', title: '철학자의 음악서재, C#', author: '최대환', publisher: '책밥상', category: '인문과학', isbn: '9791191749151', cover: '📚', total_loans: 74, reason: '국립중앙도서관 사서추천도서 (2021년 2월 선정) · 전국 도서관 74건 대출' },
     ],
-    '1': [
-      { lib: '국립중앙도서관', title: '2025 트렌드 노트', author: '북이십일', cover: '📕', reason: '새해 첫 달 전국 도서관이 주목한 2025년 트렌드 해설서.' },
-      { lib: '서울도서관', title: '가장 빛나는 것들', author: '앤 패쳇', cover: '📗', reason: '우정과 사랑, 상실에 관한 섬세한 이야기.' },
-      { lib: '부산시립도서관', title: '어른이 되면', author: '박상영', cover: '📘', reason: '청춘의 방황과 성장을 유머러스하게 담은 소설.' },
-      { lib: '인천시립도서관', title: '도파민네이션', author: '애나 렘키', cover: '📙', reason: '쾌락과 고통의 균형에 대한 정신과 의사의 통찰.' },
-      { lib: '대구시립도서관', title: '인생이 빛나는 정리의 마법', author: '곤도 마리에', cover: '📔', reason: '새해에 읽기 딱 좋은 정리와 삶의 재발견에 관한 책.' },
-      { lib: '광주시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📒', reason: '인류 문명의 불평등 기원을 탐구한 역작.' },
-    ],
-  },
-  '2024': {
-    '12': [
-      { lib: '국립중앙도서관', title: '소년이 온다', author: '한강', cover: '📕', reason: '노벨문학상 수상 직후 전국 도서관이 가장 주목한 책.' },
-      { lib: '서울도서관', title: '채식주의자', author: '한강', cover: '📗', reason: '노벨문학상 수상작가 한강의 대표작.' },
-      { lib: '부산시립도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📘', reason: '용서와 구원을 다룬 아프가니스탄 배경의 감동 소설.' },
-      { lib: '인천시립도서관', title: '오리진', author: '댄 브라운', cover: '📙', reason: '종교와 과학의 충돌을 다룬 스릴러. 연말 독서로 추천.' },
-      { lib: '대구시립도서관', title: '파친코', author: '이민진', cover: '📔', reason: '재일 조선인 4대의 삶을 그린 방대한 서사.' },
-      { lib: '광주시립도서관', title: '흰', author: '한강', cover: '📒', reason: '한강 노벨문학상 수상 기념 사서 추천.' },
-    ],
-    '11': [
-      { lib: '국립중앙도서관', title: '작별하지 않는다', author: '한강', cover: '📕', reason: '제주 4.3의 상처를 담은 한강의 소설.' },
-      { lib: '서울도서관', title: '82년생 김지영', author: '조남주', cover: '📗', reason: '한국 여성의 삶을 사실적으로 담은 소설.' },
-      { lib: '부산시립도서관', title: '나는 메트로폴리탄 미술관의 경비원입니다', author: '패트릭 브링리', cover: '📘', reason: '예술과 삶을 바라보는 독특한 시선의 에세이.' },
-      { lib: '인천시립도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📙', reason: '현대인의 집중력 문제를 파헤친 필독서.' },
-      { lib: '대구시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📔', reason: '삶의 가능성에 대한 따뜻한 탐구.' },
-      { lib: '광주시립도서관', title: '아몬드', author: '손원평', cover: '📒', reason: '공감에 대한 이야기. 청소년부터 어른까지 추천.' },
-    ],
-    '10': [
-      { lib: '국립중앙도서관', title: '도파민네이션', author: '애나 렘키', cover: '📕', reason: '쾌락과 중독에 대한 정신과 의사의 통찰.' },
-      { lib: '서울도서관', title: '세이노의 가르침', author: '세이노', cover: '📗', reason: '냉철한 삶의 조언을 담은 베스트셀러.' },
-      { lib: '부산시립도서관', title: '역행자', author: '자청', cover: '📘', reason: '남다른 시각으로 성공을 이야기하는 자기계발서.' },
-      { lib: '인천시립도서관', title: '파과', author: '구병모', cover: '📙', reason: '독창적인 설정의 한국 소설.' },
-      { lib: '대구시립도서관', title: '불편한 편의점', author: '김호연', cover: '📔', reason: '따뜻한 인간 이야기의 소설.' },
-      { lib: '광주시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📒', reason: '인류 문명의 기원을 탐구한 역작.' },
-    ],
-    '9': [
-      { lib: '국립중앙도서관', title: '어른이 되면', author: '박상영', cover: '📕', reason: '청춘의 방황과 성장을 담은 소설.' },
-      { lib: '서울도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📗', reason: '철학을 여행으로 풀어낸 철학 에세이.' },
-      { lib: '부산시립도서관', title: '가장 빛나는 것들', author: '앤 패쳇', cover: '📘', reason: '우정과 상실에 관한 섬세한 이야기.' },
-      { lib: '인천시립도서관', title: '파친코', author: '이민진', cover: '📙', reason: '재일 조선인의 삶을 그린 방대한 역사 소설.' },
-      { lib: '대구시립도서관', title: '아몬드', author: '손원평', cover: '📔', reason: '공감에 대한 깊은 통찰의 소설.' },
-      { lib: '광주시립도서관', title: '82년생 김지영', author: '조남주', cover: '📒', reason: '한국 여성의 삶을 사실적으로 그린 작품.' },
-    ],
-    '8': [
-      { lib: '국립중앙도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📕', reason: '여름휴가 독서로 추천. 용서와 구원의 감동 소설.' },
-      { lib: '서울도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📗', reason: '여름 밤에 읽기 좋은 따뜻한 소설.' },
-      { lib: '부산시립도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📘', reason: '현대인 필독서. 집중력 회복을 위한 책.' },
-      { lib: '인천시립도서관', title: '오리진', author: '댄 브라운', cover: '📙', reason: '휴가철 손에서 놓기 어려운 스릴러.' },
-      { lib: '대구시립도서관', title: '세이노의 가르침', author: '세이노', cover: '📔', reason: '삶의 방향을 재설정하게 해주는 책.' },
-      { lib: '광주시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📒', reason: '여름 독서로 읽기 좋은 지적 탐구.' },
-    ],
-    '7': [
-      { lib: '국립중앙도서관', title: '파친코', author: '이민진', cover: '📕', reason: '역사와 정체성에 대한 방대한 서사.' },
-      { lib: '서울도서관', title: '채식주의자', author: '한강', cover: '📗', reason: '한강 작가의 대표작.' },
-      { lib: '부산시립도서관', title: '도파민네이션', author: '애나 렘키', cover: '📘', reason: '쾌락과 고통의 균형에 대한 통찰.' },
-      { lib: '인천시립도서관', title: '역행자', author: '자청', cover: '📙', reason: '남다른 성공 전략을 담은 자기계발서.' },
-      { lib: '대구시립도서관', title: '파과', author: '구병모', cover: '📔', reason: '독창적인 한국 소설.' },
-      { lib: '광주시립도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📒', reason: '철학을 쉽고 재미있게 읽는 방법.' },
+    '4': [
+      { lib: '국립중앙도서관', title: '습관의 디테일', author: 'BJ 포그', publisher: '흐름출판', category: '인문과학', isbn: '9788965964049', cover: '📚', total_loans: 13611, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 13,611건 대출' },
+      { lib: '국립중앙도서관', title: '균형이라는 삶의 기술', author: '이진우', publisher: '인플루엔셜', category: '인문과학', isbn: '9791191056341', cover: '📚', total_loans: 3057, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 3,057건 대출' },
+      { lib: '국립중앙도서관', title: '누가 내 이름을 이렇게 지었어?', author: '오스카르 아란다', publisher: '동녘', category: '자연과학', isbn: '9788972979777', cover: '📚', total_loans: 2542, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 2,542건 대출' },
+      { lib: '국립중앙도서관', title: '뉴노멀 교양수업', author: '필리프 비옹뒤리, 레미 노용', publisher: '문예출판사', category: '사회과학', isbn: '9788931021301', cover: '📚', total_loans: 1604, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 1,604건 대출' },
+      { lib: '국립중앙도서관', title: '실험실의 진화', author: '홍성욱', publisher: '김영사', category: '자연과학', isbn: '9788934992615', cover: '📚', total_loans: 1592, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 1,592건 대출' },
+      { lib: '국립중앙도서관', title: '노라와 모라', author: '김선재', publisher: '다산책방', category: '문학', isbn: '9791130632896', cover: '📚', total_loans: 1491, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 1,491건 대출' },
+      { lib: '국립중앙도서관', title: '인크루서파이', author: '스테파니 K. 존슨', publisher: '비즈니스맵', category: '사회과학', isbn: '9788986022278', cover: '📚', total_loans: 313, reason: '국립중앙도서관 사서추천도서 (2021년 4월 선정) · 전국 도서관 313건 대출' },
     ],
     '6': [
-      { lib: '국립중앙도서관', title: '아몬드', author: '손원평', cover: '📕', reason: '공감에 대한 이야기. 청소년부터 어른까지 추천.' },
-      { lib: '서울도서관', title: '불편한 편의점', author: '김호연', cover: '📗', reason: '평범한 일상의 따뜻함을 발견하게 하는 소설.' },
-      { lib: '부산시립도서관', title: '82년생 김지영', author: '조남주', cover: '📘', reason: '한국 여성의 삶을 담은 소설.' },
-      { lib: '인천시립도서관', title: '세이노의 가르침', author: '세이노', cover: '📙', reason: '냉철한 삶의 지혜를 담은 책.' },
-      { lib: '대구시립도서관', title: '나는 메트로폴리탄 미술관의 경비원입니다', author: '패트릭 브링리', cover: '📔', reason: '예술과 삶에 대한 독특한 에세이.' },
-      { lib: '광주시립도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📒', reason: '용서와 구원의 감동 소설.' },
+      { lib: '국립중앙도서관', title: '스노볼 드라이브', author: '조예은', publisher: '민음사', category: '테마', isbn: '9788937473319', cover: '📚', total_loans: 29491, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 29,491건 대출' },
+      { lib: '국립중앙도서관', title: '두 번째 지구는 없다', author: '타일러 라쉬', publisher: '알에이치코리아', category: '테마', isbn: '9788925556253', cover: '📚', total_loans: 24983, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 24,983건 대출' },
+      { lib: '국립중앙도서관', title: '나는 풍요로웠고, 지구는 달라졌다', author: '호프 자런', publisher: '김영사', category: '테마', isbn: '9788934990307', cover: '📚', total_loans: 19710, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 19,710건 대출' },
+      { lib: '국립중앙도서관', title: '착한 소비는 없다', author: '최원형', publisher: '자연과생태', category: '테마', isbn: '9791164500154', cover: '📚', total_loans: 10258, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 10,258건 대출' },
+      { lib: '국립중앙도서관', title: '우리가 날씨다', author: '조너선 사프란 포어', publisher: '민음사', category: '테마', isbn: '9788937479984', cover: '📚', total_loans: 3363, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 3,363건 대출' },
+      { lib: '국립중앙도서관', title: '(인류를 식량 위기에서 구할) 음식의 모험가들', author: '아만다 리틀', publisher: '세종서적', category: '테마', isbn: '9788984078048', cover: '📚', total_loans: 2180, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 2,180건 대출' },
+      { lib: '국립중앙도서관', title: '쓰레기에 관한 모든 것', author: '피에로 마르틴, 알레산드라 비올라', publisher: '북스힐', category: '테마', isbn: '9791159712937', cover: '📚', total_loans: 1979, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 1,979건 대출' },
+      { lib: '국립중앙도서관', title: '생명을 보는 마음', author: '김성호', publisher: '풀빛', category: '테마', isbn: '9791161727783', cover: '📚', total_loans: 1528, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 1,528건 대출' },
+      { lib: '국립중앙도서관', title: '더 월', author: '존 란체스터', publisher: '서울문화사', category: '테마', isbn: '9791164380244', cover: '📚', total_loans: 1511, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 1,511건 대출' },
+      { lib: '국립중앙도서관', title: '동물을 위해 책을 읽습니다', author: '김보경', publisher: '책공장더불어', category: '테마', isbn: '9788997137435', cover: '📚', total_loans: 1349, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 1,349건 대출' },
+      { lib: '국립중앙도서관', title: '이규보의 화원을 거닐다', author: '홍희창', publisher: '책과나무', category: '테마', isbn: '9791157769117', cover: '📚', total_loans: 1259, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 1,259건 대출' },
+      { lib: '국립중앙도서관', title: '지구별 생태사상가', author: '황대권 외', publisher: '작은것이 아름답다', category: '테마', isbn: '9788996360094', cover: '📚', total_loans: 537, reason: '국립중앙도서관 사서추천도서 (2021년 6월 선정) · 전국 도서관 537건 대출' },
     ],
-    '5': [
-      { lib: '국립중앙도서관', title: '소년이 온다', author: '한강', cover: '📕', reason: '5.18 기념월 도서관 특별 추천도서.' },
-      { lib: '서울도서관', title: '어른이 되면', author: '박상영', cover: '📗', reason: '청춘의 성장 이야기.' },
-      { lib: '부산시립도서관', title: '가장 빛나는 것들', author: '앤 패쳇', cover: '📘', reason: '우정과 삶에 관한 따뜻한 소설.' },
-      { lib: '인천시립도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📙', reason: '현대인의 집중력 문제를 다룬 필독서.' },
-      { lib: '대구시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📔', reason: '인류 문명의 기원에 대한 지적 탐구.' },
-      { lib: '광주시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📒', reason: '삶의 가능성에 대한 따뜻한 탐구.' },
+    '8': [
+      { lib: '국립중앙도서관', title: '불편한 편의점', author: '김호연', publisher: '나무옆의자', category: '문학', isbn: '9791161571188', cover: '📚', total_loans: 210151, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 210,151건 대출' },
+      { lib: '국립중앙도서관', title: '메트로폴리스', author: '벤 윌슨', publisher: '매일경제신문사', category: '사회과학', isbn: '9791164842254', cover: '📚', total_loans: 6217, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 6,217건 대출' },
+      { lib: '국립중앙도서관', title: '숲은 고요하지 않다', author: '마들렌 치게', publisher: '흐름출판', category: '자연과학', isbn: '9788965964377', cover: '📚', total_loans: 5110, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 5,110건 대출' },
+      { lib: '국립중앙도서관', title: '경험의 함정', author: '로빈 M. 호가스, 엠레 소이야르', publisher: '사이', category: '사회과학', isbn: '9788993178944', cover: '📚', total_loans: 3401, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 3,401건 대출' },
+      { lib: '국립중앙도서관', title: '시시콜콜한 조선의 일기들', author: '박영서', publisher: '들녘', category: '인문과학', isbn: '9791159256189', cover: '📚', total_loans: 2099, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 2,099건 대출' },
+      { lib: '국립중앙도서관', title: '보이지 않는 침입자들의 세계', author: '신의철', publisher: '21세기북스', category: '자연과학', isbn: '9788950994716', cover: '📚', total_loans: 1762, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 1,762건 대출' },
+      { lib: '국립중앙도서관', title: '보이지 않는 것들', author: '로이 야콥센', publisher: '잔', category: '문학', isbn: '9791190234139', cover: '📚', total_loans: 1585, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 1,585건 대출' },
+      { lib: '국립중앙도서관', title: '디자인은 어떻게 세상을 만들어가는가', author: '스콧 버쿤', publisher: 'Haru(하루)', category: '인문과학', isbn: '9791161340876', cover: '📚', total_loans: 1243, reason: '국립중앙도서관 사서추천도서 (2021년 8월 선정) · 전국 도서관 1,243건 대출' },
+    ],
+    '10': [
+      { lib: '국립중앙도서관', title: '숲속의 자본주의자', author: '박혜윤', publisher: '다산초당', category: '인문과학', isbn: '9791130638294', cover: '📚', total_loans: 18734, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 18,734건 대출' },
+      { lib: '국립중앙도서관', title: '있지만 없는 아이들', author: '은유', publisher: '창비', category: '사회과학', isbn: '9788936478735', cover: '📚', total_loans: 8449, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 8,449건 대출' },
+      { lib: '국립중앙도서관', title: '하란사', author: '권비영', publisher: '특별한서재', category: '문학', isbn: '9791167030191', cover: '📚', total_loans: 4769, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 4,769건 대출' },
+      { lib: '국립중앙도서관', title: '지속가능한 여행을 하고 있습니다', author: '홀리 터펜', publisher: '한스미디어', category: '자연과학', isbn: '9791160076110', cover: '📚', total_loans: 2854, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 2,854건 대출' },
+      { lib: '국립중앙도서관', title: '넥스트 그린 레볼루션', author: '조원경', publisher: '페이지2북스', category: '사회과학', isbn: '9791190977302', cover: '📚', total_loans: 2815, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 2,815건 대출' },
+      { lib: '국립중앙도서관', title: '(내 안의 잠든 사유를 깨우는) 아티스트 인사이트', author: '정인호', publisher: '카시오페아', category: '인문과학', isbn: '9791190776653', cover: '📚', total_loans: 1590, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 1,590건 대출' },
+      { lib: '국립중앙도서관', title: '루시의 발자국', author: '후안 호세 미야스, 후안 루이스 아르수아가', publisher: '틈새책방', category: '자연과학', isbn: '9791188949304', cover: '📚', total_loans: 1233, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 1,233건 대출' },
+      { lib: '국립중앙도서관', title: '허수아비 일기', author: '싼마오', publisher: '지나북스', category: '문학', isbn: '9788991934856', cover: '📚', total_loans: 212, reason: '국립중앙도서관 사서추천도서 (2021년 10월 선정) · 전국 도서관 212건 대출' },
+    ],
+    '12': [
+      { lib: '국립중앙도서관', title: '나는 미술관에 간다', author: '김영애', publisher: '마로니에북스', category: '테마', isbn: '9788960536074', cover: '📚', total_loans: 6973, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 6,973건 대출' },
+      { lib: '국립중앙도서관', title: '우리, 이토록 작은 존재들을 위하여', author: '사샤 세이건', publisher: '문학동네', category: '테마', isbn: '9788954679923', cover: '📚', total_loans: 6910, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 6,910건 대출' },
+      { lib: '국립중앙도서관', title: '감염병 인류', author: '박한선, 구형찬', publisher: '창비', category: '테마', isbn: '9788936478674', cover: '📚', total_loans: 2636, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 2,636건 대출' },
+      { lib: '국립중앙도서관', title: '코로나 시대의 역발상 트렌드', author: '민병운, 정휘관, 진대연, 유주리, 장차오', publisher: '부키', category: '테마', isbn: '9788960518735', cover: '📚', total_loans: 2353, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 2,353건 대출' },
+      { lib: '국립중앙도서관', title: '남극에서 대한민국까지', author: '김태훈', publisher: '푸른향기', category: '테마', isbn: '9788967821296', cover: '📚', total_loans: 928, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 928건 대출' },
+      { lib: '국립중앙도서관', title: '코로나 이후 생존 도시', author: '홍윤철', publisher: '포르체', category: '테마', isbn: '9791191393071', cover: '📚', total_loans: 909, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 909건 대출' },
+      { lib: '국립중앙도서관', title: '코로나 이후의 교육을 말하다', author: '김용, 곽덕주, 김민성, 이승은', publisher: '지식의 날개', category: '테마', isbn: '9788920040603', cover: '📚', total_loans: 597, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 597건 대출' },
+      { lib: '국립중앙도서관', title: '잠시 멈춘 세계 앞에서', author: '이영석', publisher: '푸른역사', category: '테마', isbn: '9791156121718', cover: '📚', total_loans: 419, reason: '국립중앙도서관 사서추천도서 (2021년 12월 선정) · 전국 도서관 419건 대출' },
+    ],
+  },
+  '2022': {
+    '2': [
+      { lib: '국립중앙도서관', title: '플라멩코 추는 남자', author: '허태연', publisher: '다산책방', category: '문학', isbn: '9791130641225', cover: '📚', total_loans: 16334, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 16,334건 대출' },
+      { lib: '국립중앙도서관', title: '예민한 사람을 위한 좋은 심리 습관', author: '캐린 홀', publisher: '빌리버튼', category: '인문과학', isbn: '9791191228694', cover: '📚', total_loans: 4754, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 4,754건 대출' },
+      { lib: '국립중앙도서관', title: '보라선 열차와 사라진 아이들', author: '디파 아나파라', publisher: '북로드', category: '문학', isbn: '9791158791759', cover: '📚', total_loans: 3631, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 3,631건 대출' },
+      { lib: '국립중앙도서관', title: '다크 데이터', author: '데이비드 핸드', publisher: '더퀘스트', category: '자연과학', isbn: '9791165217099', cover: '📚', total_loans: 2518, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 2,518건 대출' },
+      { lib: '국립중앙도서관', title: '법정에서 못다 한 이야기', author: '박형남', publisher: 'Humanist(휴머니스트출판그룹)', category: '사회과학', isbn: '9791160807240', cover: '📚', total_loans: 2401, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 2,401건 대출' },
+      { lib: '국립중앙도서관', title: '카이사르의 마지막 숨', author: '샘 킨', publisher: '해나무', category: '자연과학', isbn: '9791164051298', cover: '📚', total_loans: 1419, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 1,419건 대출' },
+      { lib: '국립중앙도서관', title: '조선의 위기 대응 노트', author: '김준태', publisher: '민음사', category: '인문과학', isbn: '9788937444654', cover: '📚', total_loans: 1402, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 1,402건 대출' },
+      { lib: '국립중앙도서관', title: '리얼 월드 러닝', author: '김하늬', publisher: '푸른들녘', category: '사회과학', isbn: '9791159256547', cover: '📚', total_loans: 428, reason: '국립중앙도서관 사서추천도서 (2022년 2월 선정) · 전국 도서관 428건 대출' },
     ],
     '4': [
-      { lib: '국립중앙도서관', title: '봄날은 간다', author: '이영도', cover: '📕', reason: '봄에 읽기 좋은 한국 판타지의 고전.' },
-      { lib: '서울도서관', title: '파친코', author: '이민진', cover: '📗', reason: '재일 조선인의 삶을 그린 방대한 역사 소설.' },
-      { lib: '부산시립도서관', title: '채식주의자', author: '한강', cover: '📘', reason: '한강 작가의 대표작. 봄에 다시 읽는 작품.' },
-      { lib: '인천시립도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📙', reason: '철학적 여행 에세이.' },
-      { lib: '대구시립도서관', title: '역행자', author: '자청', cover: '📔', reason: '남다른 성공 전략의 자기계발서.' },
-      { lib: '광주시립도서관', title: '아몬드', author: '손원평', cover: '📒', reason: '공감에 대한 깊은 탐구의 소설.' },
+      { lib: '국립중앙도서관', title: '헌책방 기담수집가', author: '윤성근', publisher: '프시케의숲', category: '문학', isbn: '9791189336462', cover: '📚', total_loans: 8935, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 8,935건 대출' },
+      { lib: '국립중앙도서관', title: '보이지 않는 것에 의미가 있다', author: '김혜남', publisher: '포르체', category: '인문과학', isbn: '9791191393460', cover: '📚', total_loans: 5881, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 5,881건 대출' },
+      { lib: '국립중앙도서관', title: '잔류 인구', author: '엘리자베스 문', publisher: '푸른숲', category: '문학', isbn: '9791156759201', cover: '📚', total_loans: 5723, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 5,723건 대출' },
+      { lib: '국립중앙도서관', title: '과일로 읽는 세계사', author: '윤덕노', publisher: '타인의 사유', category: '사회과학', isbn: '9791136290700', cover: '📚', total_loans: 3383, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 3,383건 대출' },
+      { lib: '국립중앙도서관', title: '화려한 화학의 시대', author: '프랭크 A. 폰 히펠', publisher: '까치', category: '자연과학', isbn: '9788972917564', cover: '📚', total_loans: 1943, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 1,943건 대출' },
+      { lib: '국립중앙도서관', title: '(식물 심고 그림책 읽으며) 아이들과 열두 달', author: '이태용', publisher: '세로', category: '자연과학', isbn: '9791197020063', cover: '📚', total_loans: 1014, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 1,014건 대출' },
+      { lib: '국립중앙도서관', title: '현대 한국어로 철학하기', author: '신우승, 김은정, 이승택', publisher: '메멘토', category: '인문과학', isbn: '9791192099002', cover: '📚', total_loans: 697, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 697건 대출' },
+      { lib: '국립중앙도서관', title: '취향의 경제', author: '유승호', publisher: '따비', category: '사회과학', isbn: '9791192169170', cover: '📚', total_loans: 84, reason: '국립중앙도서관 사서추천도서 (2022년 4월 선정) · 전국 도서관 84건 대출' },
     ],
-    '3': [
-      { lib: '국립중앙도서관', title: '작별하지 않는다', author: '한강', cover: '📕', reason: '제주 4.3을 배경으로 한 상실의 소설.' },
-      { lib: '서울도서관', title: '도파민네이션', author: '애나 렘키', cover: '📗', reason: '중독과 균형에 대한 정신과 의사의 통찰.' },
-      { lib: '부산시립도서관', title: '82년생 김지영', author: '조남주', cover: '📘', reason: '한국 여성의 사회적 현실을 담은 소설.' },
-      { lib: '인천시립도서관', title: '불편한 편의점', author: '김호연', cover: '📙', reason: '평범한 공간의 따뜻한 이야기.' },
-      { lib: '대구시립도서관', title: '세이노의 가르침', author: '세이노', cover: '📔', reason: '삶의 현실을 냉철하게 바라보는 책.' },
-      { lib: '광주시립도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📒', reason: '용서와 구원에 관한 감동 소설.' },
+    '6': [
+      { lib: '국립중앙도서관', title: '내가 원하는 것을 나도 모를 때', author: '전승환', publisher: '다산초당', category: '테마', isbn: '9791130627878', cover: '📚', total_loans: 25882, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 25,882건 대출' },
+      { lib: '국립중앙도서관', title: '요즘 애들', author: '앤 헬렌 피터슨', publisher: 'RHK(알에이치코리아)', category: '테마', isbn: '9788925579313', cover: '📚', total_loans: 9094, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 9,094건 대출' },
+      { lib: '국립중앙도서관', title: '청년 도배사 이야기', author: '배윤슬', publisher: '궁리(궁리출판)', category: '테마', isbn: '9788958207269', cover: '📚', total_loans: 8490, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 8,490건 대출' },
+      { lib: '국립중앙도서관', title: '풍덩!', author: '우지현', publisher: '위즈덤하우스', category: '테마', isbn: '9791191583984', cover: '📚', total_loans: 6629, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 6,629건 대출' },
+      { lib: '국립중앙도서관', title: '바람이 강하게 불고 있다', author: '미우라 시온', publisher: '청미래', category: '테마', isbn: '9788986836769', cover: '📚', total_loans: 5187, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 5,187건 대출' },
+      { lib: '국립중앙도서관', title: '나를 힘들게 한 건 언제나 나였다', author: '데일 카네기', publisher: '예문', category: '테마', isbn: '9788956594316', cover: '📚', total_loans: 5101, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 5,101건 대출' },
+      { lib: '국립중앙도서관', title: '결국 Z세대가 세상을 지배한다', author: '김용섭', publisher: '퍼블리온', category: '테마', isbn: '9791191587067', cover: '📚', total_loans: 3228, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 3,228건 대출' },
+      { lib: '국립중앙도서관', title: '삶은 속도가 아니라 방향이다', author: '수영, 전성민', publisher: '루이앤휴잇', category: '테마', isbn: '9791186273555', cover: '📚', total_loans: 1033, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 1,033건 대출' },
+      { lib: '국립중앙도서관', title: '불안해 보여서 불안한 당신에게', author: '한창욱', publisher: '레몬북스', category: '테마', isbn: '9791191107166', cover: '📚', total_loans: 934, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 934건 대출' },
+      { lib: '국립중앙도서관', title: '밀레니얼은 어떻게 배우고 일하며 성장하는가', author: '이상준', publisher: '다른상상', category: '테마', isbn: '9791190312226', cover: '📚', total_loans: 611, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 611건 대출' },
+      { lib: '국립중앙도서관', title: '제트코노미', author: '제이슨 도시, 더니스 빌라', publisher: '서울문화사', category: '테마', isbn: '9791164389582', cover: '📚', total_loans: 468, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 468건 대출' },
+      { lib: '국립중앙도서관', title: '꾸역꾸역이 뭐 어때서!', author: '윤진오', publisher: '바이북스', category: '테마', isbn: '9791158772253', cover: '📚', total_loans: 394, reason: '국립중앙도서관 사서추천도서 (2022년 6월 선정) · 전국 도서관 394건 대출' },
     ],
-    '2': [
-      { lib: '국립중앙도서관', title: '흰', author: '한강', cover: '📕', reason: '흰색을 매개로 삶과 존재를 탐구한 산문시집.' },
-      { lib: '서울도서관', title: '나는 메트로폴리탄 미술관의 경비원입니다', author: '패트릭 브링리', cover: '📗', reason: '예술을 통한 삶의 위로.' },
-      { lib: '부산시립도서관', title: '파과', author: '구병모', cover: '📘', reason: '독창적인 한국 소설.' },
-      { lib: '인천시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📙', reason: '삶의 다양한 가능성에 대한 탐구.' },
-      { lib: '대구시립도서관', title: '어른이 되면', author: '박상영', cover: '📔', reason: '청춘의 방황과 성장 이야기.' },
-      { lib: '광주시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📒', reason: '인류 문명의 기원에 대한 역작.' },
+    '8': [
+      { lib: '국립중앙도서관', title: '유령의 마음으로', author: '임선우', publisher: '민음사', category: '문학', isbn: '9788937442698', cover: '📚', total_loans: 16241, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 16,241건 대출' },
+      { lib: '국립중앙도서관', title: '마음챙김 미술관', author: '김소울', publisher: '타인의사유 : 대원씨아이', category: '자연과학', isbn: '9791192290270', cover: '📚', total_loans: 3570, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 3,570건 대출' },
+      { lib: '국립중앙도서관', title: '가구, 집을 갖추다', author: '김지수', publisher: '싱긋 : 교유당', category: '인문과학', isbn: '9791191278330', cover: '📚', total_loans: 3074, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 3,074건 대출' },
+      { lib: '국립중앙도서관', title: '경이로운 수 이야기', author: '알브레히트 보이텔슈파허', publisher: '해리북스', category: '자연과학', isbn: '9791191689068', cover: '📚', total_loans: 1757, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 1,757건 대출' },
+      { lib: '국립중앙도서관', title: '잠자는 추억들', author: '파트릭 모디아노', publisher: '문학동네', category: '문학', isbn: '9788954685542', cover: '📚', total_loans: 1274, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 1,274건 대출' },
+      { lib: '국립중앙도서관', title: '나는, 휴먼', author: '주디스 휴먼, 크리스틴 조이너', publisher: '사계절(사계절출판사)', category: '사회과학', isbn: '9791160949117', cover: '📚', total_loans: 1155, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 1,155건 대출' },
+      { lib: '국립중앙도서관', title: '숨을 참다', author: '김종진, 박내현, 박점규, 박혜리, 변정윤, 송경동, 시야, 연정, 이다혜, 이병희, 정슬', publisher: '후마니타스', category: '사회과학', isbn: '9788964373989', cover: '📚', total_loans: 503, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 503건 대출' },
+      { lib: '국립중앙도서관', title: '낯선 삼일운동', author: '정병욱', publisher: '역사비평사', category: '인문과학', isbn: '9788976965653', cover: '📚', total_loans: 466, reason: '국립중앙도서관 사서추천도서 (2022년 8월 선정) · 전국 도서관 466건 대출' },
     ],
-    '1': [
-      { lib: '국립중앙도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📕', reason: '새해 첫 달 추천. 현대인의 집중력 위기를 다룬 책.' },
-      { lib: '서울도서관', title: '역행자', author: '자청', cover: '📗', reason: '새해에 읽기 좋은 자기계발서.' },
-      { lib: '부산시립도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📘', reason: '철학적 사유를 통한 삶의 탐구.' },
-      { lib: '인천시립도서관', title: '파친코', author: '이민진', cover: '📙', reason: '재일 조선인의 삶을 그린 방대한 소설.' },
-      { lib: '대구시립도서관', title: '채식주의자', author: '한강', cover: '📔', reason: '한강의 대표작. 새해에 다시 읽는 소설.' },
-      { lib: '광주시립도서관', title: '가장 빛나는 것들', author: '앤 패쳇', cover: '📒', reason: '우정과 삶에 관한 따뜻한 이야기.' },
+    '10': [
+      { lib: '국립중앙도서관', title: '여덟 건의 완벽한 살인', author: '피터 스완슨', publisher: '푸른 숲', category: '문학', isbn: '9791156759454', cover: '📚', total_loans: 14588, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 14,588건 대출' },
+      { lib: '국립중앙도서관', title: '도시로 보는 동남아시아사', author: '강희정, 김종호, 신윤환, 이한우, 정정훈, 현시내', publisher: '사우', category: '인문과학', isbn: '9791187332749', cover: '📚', total_loans: 3976, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 3,976건 대출' },
+      { lib: '국립중앙도서관', title: '8초 인류', author: '리사 이오띠', publisher: '미래의창', category: '사회과학', isbn: '9791191464870', cover: '📚', total_loans: 3483, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 3,483건 대출' },
+      { lib: '국립중앙도서관', title: '코끝의 언어', author: '주드 스튜어트', publisher: '월북', category: '인문과학', isbn: '9791155814796', cover: '📚', total_loans: 2443, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 2,443건 대출' },
+      { lib: '국립중앙도서관', title: '은하환담', author: '곽재식, 김설아, 김성일, 이경희, 소렐, 송경아, 이한, 문녹주, 전혜진', publisher: '달다 : 현암사', category: '문학', isbn: '9788932322001', cover: '📚', total_loans: 2408, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 2,408건 대출' },
+      { lib: '국립중앙도서관', title: 'Z의 스마트폰', author: '박준영', publisher: '쌤앤파커스', category: '사회과학', isbn: '9791165345303', cover: '📚', total_loans: 1821, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 1,821건 대출' },
+      { lib: '국립중앙도서관', title: '화성 탐사선을 탄 걸리버', author: '곽재식', publisher: '문학수첩', category: '자연과학', isbn: '9788983929808', cover: '📚', total_loans: 1685, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 1,685건 대출' },
+      { lib: '국립중앙도서관', title: '소년은 어떻게 과학자가 되었나', author: '오구리 히로시', publisher: '바다출판사', category: '자연과학', isbn: '9791166890796', cover: '📚', total_loans: 910, reason: '국립중앙도서관 사서추천도서 (2022년 10월 선정) · 전국 도서관 910건 대출' },
+    ],
+    '12': [
+      { lib: '국립중앙도서관', title: '위로의 미술관', author: '진병관', publisher: '빅피시', category: '테마', isbn: '9791191825145', cover: '📚', total_loans: 12257, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 12,257건 대출' },
+      { lib: '국립중앙도서관', title: '나로서 충분히 괜찮은 사람', author: '김재식', publisher: '북로망스', category: '테마', isbn: '9791191891096', cover: '📚', total_loans: 11946, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 11,946건 대출' },
+      { lib: '국립중앙도서관', title: '나는 불안할 때 논어를 읽는다', author: '판덩', publisher: '미디어숲', category: '테마', isbn: '9791158741426', cover: '📚', total_loans: 10911, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 10,911건 대출' },
+      { lib: '국립중앙도서관', title: '고립의 시대', author: '노리나 허츠', publisher: '웅진지식하우스', category: '테마', isbn: '9788901254517', cover: '📚', total_loans: 8307, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 8,307건 대출' },
+      { lib: '국립중앙도서관', title: '봄은 언제나 찾아온다', author: '데이비드 호크니, 마틴 게이퍼드', publisher: 'Sigongart: 시공사', category: '테마', isbn: '9791165797034', cover: '📚', total_loans: 5298, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 5,298건 대출' },
+      { lib: '국립중앙도서관', title: '가족 공부', author: '최광현', publisher: 'EBS Books', category: '테마', isbn: '9788954766333', cover: '📚', total_loans: 4918, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 4,918건 대출' },
+      { lib: '국립중앙도서관', title: '지구를 살리는 옷장', author: '박진영', publisher: '창비', category: '테마', isbn: '9788936479084', cover: '📚', total_loans: 3920, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 3,920건 대출' },
+      { lib: '국립중앙도서관', title: '마음은 괜찮냐고 시가 물었다', author: '황인환', publisher: 'Whale Books(웨일북)', category: '테마', isbn: '9791192097053', cover: '📚', total_loans: 2751, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 2,751건 대출' },
+      { lib: '국립중앙도서관', title: '언제 올지 모를 희망 말고 지금 행복했으면', author: '송정림', publisher: '자음과 모음', category: '테마', isbn: '9788954448215', cover: '📚', total_loans: 2254, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 2,254건 대출' },
+      { lib: '국립중앙도서관', title: '그럴수록 우리에겐 친구가 필요하다', author: '이름트라우트 타르', publisher: '갤리온', category: '테마', isbn: '9788901258201', cover: '📚', total_loans: 1483, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 1,483건 대출' },
+      { lib: '국립중앙도서관', title: '나에게 오늘을 선물합니다', author: '김나위', publisher: '다연', category: '테마', isbn: '9791190456425', cover: '📚', total_loans: 1355, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 1,355건 대출' },
+      { lib: '국립중앙도서관', title: '안녕을 위하여', author: '이승연', publisher: '초록비책공방', category: '테마', isbn: '9791191266566', cover: '📚', total_loans: 949, reason: '국립중앙도서관 사서추천도서 (2022년 12월 선정) · 전국 도서관 949건 대출' },
     ],
   },
   '2023': {
-    '12': [
-      { lib: '국립중앙도서관', title: '세이노의 가르침', author: '세이노', cover: '📕', reason: '2023년 최고 화제작. 연말에 다시 읽는 삶의 지혜.' },
-      { lib: '서울도서관', title: '불편한 편의점', author: '김호연', cover: '📗', reason: '2023년 대출 1위. 따뜻한 인간 이야기.' },
-      { lib: '부산시립도서관', title: '역행자', author: '자청', cover: '📘', reason: '2023년 자기계발 분야 최고 화제작.' },
-      { lib: '인천시립도서관', title: '파친코', author: '이민진', cover: '📙', reason: '연말에 읽기 좋은 방대한 역사 소설.' },
-      { lib: '대구시립도서관', title: '아몬드', author: '손원평', cover: '📔', reason: '2023년 꾸준히 사랑받은 소설.' },
-      { lib: '광주시립도서관', title: '채식주의자', author: '한강', cover: '📒', reason: '한강 작가의 대표작.' },
-    ],
-    '11': [
-      { lib: '국립중앙도서관', title: '도파민네이션', author: '애나 렘키', cover: '📕', reason: '쾌락과 고통의 균형에 대한 정신과 의사의 통찰.' },
-      { lib: '서울도서관', title: '82년생 김지영', author: '조남주', cover: '📗', reason: '한국 여성의 삶을 담은 소설.' },
-      { lib: '부산시립도서관', title: '소년이 온다', author: '한강', cover: '📘', reason: '역사의 상처와 인간 존엄을 탐구한 소설.' },
-      { lib: '인천시립도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📙', reason: '용서와 구원의 감동 소설.' },
-      { lib: '대구시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📔', reason: '삶의 가능성에 대한 따뜻한 탐구.' },
-      { lib: '광주시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📒', reason: '인류 문명의 기원에 대한 역작.' },
-    ],
-    '10': [
-      { lib: '국립중앙도서관', title: '작별하지 않는다', author: '한강', cover: '📕', reason: '제주 4.3을 배경으로 한 한강의 소설.' },
-      { lib: '서울도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📗', reason: '현대인 필독서. 집중력 회복을 위한 책.' },
-      { lib: '부산시립도서관', title: '세이노의 가르침', author: '세이노', cover: '📘', reason: '냉철한 삶의 조언.' },
-      { lib: '인천시립도서관', title: '불편한 편의점', author: '김호연', cover: '📙', reason: '따뜻한 인간 이야기.' },
-      { lib: '대구시립도서관', title: '파과', author: '구병모', cover: '📔', reason: '독창적인 한국 소설.' },
-      { lib: '광주시립도서관', title: '역행자', author: '자청', cover: '📒', reason: '자기계발서의 화제작.' },
-    ],
-    '9': [
-      { lib: '국립중앙도서관', title: '파친코', author: '이민진', cover: '📕', reason: '독서의 계절에 추천하는 방대한 역사 소설.' },
-      { lib: '서울도서관', title: '아몬드', author: '손원평', cover: '📗', reason: '공감에 대한 깊은 탐구.' },
-      { lib: '부산시립도서관', title: '채식주의자', author: '한강', cover: '📘', reason: '한강의 대표작.' },
-      { lib: '인천시립도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📙', reason: '철학적 사유를 통한 삶의 탐구.' },
-      { lib: '대구시립도서관', title: '나는 메트로폴리탄 미술관의 경비원입니다', author: '패트릭 브링리', cover: '📔', reason: '예술을 통한 삶의 위로.' },
-      { lib: '광주시립도서관', title: '82년생 김지영', author: '조남주', cover: '📒', reason: '한국 여성의 삶을 담은 소설.' },
-    ],
-    '8': [
-      { lib: '국립중앙도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📕', reason: '여름 독서로 강력 추천. 감동적인 소설.' },
-      { lib: '서울도서관', title: '세이노의 가르침', author: '세이노', cover: '📗', reason: '여름에 다시 읽는 삶의 지혜.' },
-      { lib: '부산시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📘', reason: '여름 밤에 읽기 좋은 소설.' },
-      { lib: '인천시립도서관', title: '역행자', author: '자청', cover: '📙', reason: '자기계발의 화제작.' },
-      { lib: '대구시립도서관', title: '불편한 편의점', author: '김호연', cover: '📔', reason: '따뜻한 인간 이야기.' },
-      { lib: '광주시립도서관', title: '도파민네이션', author: '애나 렘키', cover: '📒', reason: '중독과 균형에 대한 통찰.' },
-    ],
-    '7': [
-      { lib: '국립중앙도서관', title: '소년이 온다', author: '한강', cover: '📕', reason: '역사의 상처를 다룬 한강의 소설.' },
-      { lib: '서울도서관', title: '파과', author: '구병모', cover: '📗', reason: '독창적인 한국 소설.' },
-      { lib: '부산시립도서관', title: '아몬드', author: '손원평', cover: '📘', reason: '공감에 대한 깊은 통찰.' },
-      { lib: '인천시립도서관', title: '채식주의자', author: '한강', cover: '📙', reason: '한강의 대표작.' },
-      { lib: '대구시립도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📔', reason: '현대인 필독서.' },
-      { lib: '광주시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📒', reason: '인류 문명의 기원에 대한 역작.' },
-    ],
-    '6': [
-      { lib: '국립중앙도서관', title: '불편한 편의점', author: '김호연', cover: '📕', reason: '2023년 상반기 최다 대출 도서.' },
-      { lib: '서울도서관', title: '역행자', author: '자청', cover: '📗', reason: '자기계발 분야 화제작.' },
-      { lib: '부산시립도서관', title: '파친코', author: '이민진', cover: '📘', reason: '재일 조선인의 삶을 담은 역사 소설.' },
-      { lib: '인천시립도서관', title: '작별하지 않는다', author: '한강', cover: '📙', reason: '한강 작가의 소설.' },
-      { lib: '대구시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📔', reason: '삶의 가능성에 대한 탐구.' },
-      { lib: '광주시립도서관', title: '세이노의 가르침', author: '세이노', cover: '📒', reason: '삶의 지혜를 담은 화제작.' },
-    ],
-    '5': [
-      { lib: '국립중앙도서관', title: '소년이 온다', author: '한강', cover: '📕', reason: '5.18 기념월 특별 추천도서.' },
-      { lib: '서울도서관', title: '82년생 김지영', author: '조남주', cover: '📗', reason: '한국 여성의 삶을 담은 소설.' },
-      { lib: '부산시립도서관', title: '도파민네이션', author: '애나 렘키', cover: '📘', reason: '중독과 균형에 대한 통찰.' },
-      { lib: '인천시립도서관', title: '아몬드', author: '손원평', cover: '📙', reason: '공감에 대한 소설.' },
-      { lib: '대구시립도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📔', reason: '용서와 구원의 감동 소설.' },
-      { lib: '광주시립도서관', title: '채식주의자', author: '한강', cover: '📒', reason: '한강의 대표작.' },
+    '2': [
+      { lib: '국립중앙도서관', title: '아주 오랜만에 행복하다는 느낌', author: '백수린', publisher: '창비', category: '문학', isbn: '9788936438869', cover: '📚', total_loans: 25799, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 25,799건 대출' },
+      { lib: '국립중앙도서관', title: '할 말 많은 미술관', author: '정시몬', publisher: '부키', category: '인문과학', isbn: '9788960519398', cover: '📚', total_loans: 3155, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 3,155건 대출' },
+      { lib: '국립중앙도서관', title: '세 형제의 숲', author: '알렉스 슐만', publisher: '다산책방', category: '문학', isbn: '9791130695204', cover: '📚', total_loans: 2869, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 2,869건 대출' },
+      { lib: '국립중앙도서관', title: '탈서울 지망생입니다', author: '김미향', publisher: '한겨레출판', category: '사회과학', isbn: '9791160408188', cover: '📚', total_loans: 2312, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 2,312건 대출' },
+      { lib: '국립중앙도서관', title: '지리학이 중요하다', author: '알렉산더 머피', publisher: '김영사', category: '인문과학', isbn: '9788934940654', cover: '📚', total_loans: 1559, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 1,559건 대출' },
+      { lib: '국립중앙도서관', title: '과일 길들이기의 역사', author: '베른트 브루너', publisher: 'B.read(브.레드)', category: '자연과학', isbn: '9791190920247', cover: '📚', total_loans: 1552, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 1,552건 대출' },
+      { lib: '국립중앙도서관', title: '휴먼 프런티어', author: '마이클 바스카', publisher: '퍼블리온', category: '사회과학', isbn: '9791191587272', cover: '📚', total_loans: 535, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 535건 대출' },
+      { lib: '국립중앙도서관', title: '생명의 태피스트리', author: '안네 스베르드루프-튀게손', publisher: '단추', category: '자연과학', isbn: '9791189723200', cover: '📚', total_loans: 430, reason: '국립중앙도서관 사서추천도서 (2023년 2월 선정) · 전국 도서관 430건 대출' },
     ],
     '4': [
-      { lib: '국립중앙도서관', title: '세이노의 가르침', author: '세이노', cover: '📕', reason: '출간 직후 전국을 강타한 자기계발서.' },
-      { lib: '서울도서관', title: '불편한 편의점', author: '김호연', cover: '📗', reason: '봄에 읽기 좋은 따뜻한 소설.' },
-      { lib: '부산시립도서관', title: '파과', author: '구병모', cover: '📘', reason: '독창적인 한국 소설.' },
-      { lib: '인천시립도서관', title: '파친코', author: '이민진', cover: '📙', reason: '재일 조선인의 역사 소설.' },
-      { lib: '대구시립도서관', title: '역행자', author: '자청', cover: '📔', reason: '남다른 성공 전략의 자기계발서.' },
-      { lib: '광주시립도서관', title: '소크라테스 익스프레스', author: '에릭 와이너', cover: '📒', reason: '봄에 읽기 좋은 철학 에세이.' },
+      { lib: '국립중앙도서관', title: '과학이 필요한 시간', author: '궤도', publisher: '동아시아', category: '자연과학', isbn: '9788962624670', cover: '📚', total_loans: 6444, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 6,444건 대출' },
+      { lib: '국립중앙도서관', title: '리빙스턴 씨의 달빛서점', author: '모니카 구티에레스 아르테로', publisher: '문학동네', category: '문학', isbn: '9788954689809', cover: '📚', total_loans: 6345, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 6,345건 대출' },
+      { lib: '국립중앙도서관', title: '다시, 어떻게 읽을 것인가', author: '나오미 배런', publisher: '어크로스', category: '인문과학', isbn: '9791167740847', cover: '📚', total_loans: 4968, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 4,968건 대출' },
+      { lib: '국립중앙도서관', title: '(마음을 치료하는 당신만의) 물망초 식당', author: '청예', publisher: '팩토리나인', category: '문학', isbn: '9791165346058', cover: '📚', total_loans: 4360, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 4,360건 대출' },
+      { lib: '국립중앙도서관', title: 'AI 지도책', author: '케이트 크로퍼드', publisher: '소소의책', category: '사회과학', isbn: '9791188941896', cover: '📚', total_loans: 4151, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 4,151건 대출' },
+      { lib: '국립중앙도서관', title: '말의 트렌드', author: '정유라', publisher: '인플루엔셜', category: '인문과학', isbn: '9791168340657', cover: '📚', total_loans: 3679, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 3,679건 대출' },
+      { lib: '국립중앙도서관', title: '이상한 나라의 모자장수는 왜 미쳤을까', author: '유수연', publisher: '에이도스에이도스출판사', category: '자연과학', isbn: '9791185415529', cover: '📚', total_loans: 2430, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 2,430건 대출' },
+      { lib: '국립중앙도서관', title: '환경사란 무엇인가?', author: '도널드 휴즈', publisher: '앨피', category: '사회과학', isbn: '9791192647012', cover: '📚', total_loans: 271, reason: '국립중앙도서관 사서추천도서 (2023년 4월 선정) · 전국 도서관 271건 대출' },
     ],
-    '3': [
-      { lib: '국립중앙도서관', title: '역행자', author: '자청', cover: '📕', reason: '출간 이후 전국 도서관 대출 급증한 자기계발서.' },
-      { lib: '서울도서관', title: '아몬드', author: '손원평', cover: '📗', reason: '공감에 대한 깊은 탐구의 소설.' },
-      { lib: '부산시립도서관', title: '채식주의자', author: '한강', cover: '📘', reason: '한강 작가의 대표작.' },
-      { lib: '인천시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📙', reason: '삶의 가능성에 대한 따뜻한 소설.' },
-      { lib: '대구시립도서관', title: '총균쇠', author: '재레드 다이아몬드', cover: '📔', reason: '인류 문명 탐구의 역작.' },
-      { lib: '광주시립도서관', title: '82년생 김지영', author: '조남주', cover: '📒', reason: '한국 여성의 삶을 담은 소설.' },
+    '6': [
+      { lib: '국립중앙도서관', title: '시어머니 유품정리', author: '가키야 미우', publisher: '문예춘추사', category: '테마', isbn: '9788976045683', cover: '📚', total_loans: 8279, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 8,279건 대출' },
+      { lib: '국립중앙도서관', title: '해내려는 마음은 늙지 않는다', author: '김원곤', publisher: '청림출판', category: '테마', isbn: '9788935214068', cover: '📚', total_loans: 3502, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 3,502건 대출' },
+      { lib: '국립중앙도서관', title: '오십, 인생의 재발견', author: '구자복', publisher: '더퀘스트', category: '테마', isbn: '9791165219857', cover: '📚', total_loans: 3100, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 3,100건 대출' },
+      { lib: '국립중앙도서관', title: '(몸의 감각을 깨우고 온전히 나를 되찾는) 걷는 존재', author: '애나벨 스트리츠', publisher: '위즈덤하우스', category: '테마', isbn: '9791168125728', cover: '📚', total_loans: 2885, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 2,885건 대출' },
+      { lib: '국립중앙도서관', title: '어른 이후의 어른', author: '모야 사너', publisher: '엘리', category: '테마', isbn: '9791191247305', cover: '📚', total_loans: 2059, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 2,059건 대출' },
+      { lib: '국립중앙도서관', title: '인생, 예술', author: '윤혜정', publisher: '을유문화사', category: '테마', isbn: '9788932474748', cover: '📚', total_loans: 1955, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 1,955건 대출' },
+      { lib: '국립중앙도서관', title: '철학자와 달리기', author: '마크 롤랜즈', publisher: '유노북스', category: '테마', isbn: '9791192300320', cover: '📚', total_loans: 1711, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 1,711건 대출' },
+      { lib: '국립중앙도서관', title: '마흔의 품격', author: '김철영', publisher: '에디토리', category: '테마', isbn: '9791197697838', cover: '📚', total_loans: 1389, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 1,389건 대출' },
+      { lib: '국립중앙도서관', title: '우리가 잠들지 못하는 11가지 이유', author: '에이다 칼훈', publisher: '라이팅하우스', category: '테마', isbn: '9788998075958', cover: '📚', total_loans: 1220, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 1,220건 대출' },
+      { lib: '국립중앙도서관', title: '사이보그 가족의 밭농사', author: '황승희', publisher: '푸른향기', category: '테마', isbn: '9788967821838', cover: '📚', total_loans: 1069, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 1,069건 대출' },
+      { lib: '국립중앙도서관', title: '취미는 식물', author: '권지연', publisher: '김반장스튜디오', category: '테마', isbn: '9791198039804', cover: '📚', total_loans: 1037, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 1,037건 대출' },
+      { lib: '국립중앙도서관', title: '초원서점 믹스테잎', author: '초사장', publisher: '한스미디어', category: '테마', isbn: '9791160077933', cover: '📚', total_loans: 445, reason: '국립중앙도서관 사서추천도서 (2023년 6월 선정) · 전국 도서관 445건 대출' },
     ],
+    '8': [
+      { lib: '국립중앙도서관', title: '아쿠아리움이 문을 닫으면', author: '셸비 반 펠트', publisher: '미디어창비', category: '문학', isbn: '9791191248975', cover: '📚', total_loans: 9034, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 9,034건 대출' },
+      { lib: '국립중앙도서관', title: '외로움 수업', author: '김민식', publisher: '생각정원', category: '사회과학', isbn: '9791191360608', cover: '📚', total_loans: 8999, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 8,999건 대출' },
+      { lib: '국립중앙도서관', title: '미래과거시제', author: '배명훈', publisher: '북하우스퍼블리셔스 북하우스 퍼블리셔스', category: '문학', isbn: '9791164052011', cover: '📚', total_loans: 4864, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 4,864건 대출' },
+      { lib: '국립중앙도서관', title: '도둑맞은 뇌', author: '대니얼 샥터', publisher: '인물과사상사', category: '인문과학', isbn: '9788959066711', cover: '📚', total_loans: 4357, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 4,357건 대출' },
+      { lib: '국립중앙도서관', title: '기후를 위한 경제학', author: '김병권', publisher: '착한책가게', category: '사회과학', isbn: '9791190400442', cover: '📚', total_loans: 1672, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 1,672건 대출' },
+      { lib: '국립중앙도서관', title: '(한 권으로 읽는) 미생물 세계사', author: '이시 히로유키', publisher: '사람과나무사이', category: '자연과학', isbn: '9791188635764', cover: '📚', total_loans: 1588, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 1,588건 대출' },
+      { lib: '국립중앙도서관', title: '모자의 나라 조선', author: '이승우', publisher: '주류성출판사', category: '인문과학', isbn: '9788962464924', cover: '📚', total_loans: 1216, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 1,216건 대출' },
+      { lib: '국립중앙도서관', title: '연어의 시간', author: '마크 쿨란스키', publisher: '디플롯', category: '자연과학', isbn: '9791197918148', cover: '📚', total_loans: 864, reason: '국립중앙도서관 사서추천도서 (2023년 8월 선정) · 전국 도서관 864건 대출' },
+    ],
+    '10': [
+      { lib: '국립중앙도서관', title: '인생 박물관', author: '김동식', publisher: '요다', category: '문학', isbn: '9791190749527', cover: '📚', total_loans: 10516, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 10,516건 대출' },
+      { lib: '국립중앙도서관', title: '엣지', author: '로라 후앙', publisher: '세계사(세계사컨텐츠그룹)', category: '사회과학', isbn: '9788933871942', cover: '📚', total_loans: 3340, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 3,340건 대출' },
+      { lib: '국립중앙도서관', title: '사계절 기억책', author: '최원형 글·그림', publisher: '블랙피쉬 백도씨', category: '자연과학', isbn: '9788968334320', cover: '📚', total_loans: 3097, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 3,097건 대출' },
+      { lib: '국립중앙도서관', title: '지도로 보는 인류의 흑역사', author: '트래비스 엘버러', publisher: '한겨레출판', category: '인문과학', isbn: '9791160405170', cover: '📚', total_loans: 2570, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 2,570건 대출' },
+      { lib: '국립중앙도서관', title: '우리는 미래를 가져다 쓰고 있다', author: '윌리엄 맥어스킬', publisher: '김영사', category: '인문과학', isbn: '9788934965947', cover: '📚', total_loans: 1836, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 1,836건 대출' },
+      { lib: '국립중앙도서관', title: '뜻밖의 것의 단순한 아름다움', author: '마르셀로 글레이서', publisher: '지와사랑', category: '자연과학', isbn: '9788989007999', cover: '📚', total_loans: 1381, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 1,381건 대출' },
+      { lib: '국립중앙도서관', title: '여행자와 달빛', author: '세르브 언털', publisher: '휴머니스트출판그룹', category: '문학', isbn: '9791160809756', cover: '📚', total_loans: 1231, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 1,231건 대출' },
+      { lib: '국립중앙도서관', title: '기계 살림', author: '전범선', publisher: '다른백년', category: '사회과학', isbn: '9791198286000', cover: '📚', total_loans: 256, reason: '국립중앙도서관 사서추천도서 (2023년 10월 선정) · 전국 도서관 256건 대출' },
+    ],
+    '12': [
+      { lib: '국립중앙도서관', title: '연수', author: '장류진', publisher: '창비', category: '테마', isbn: '9788936439170', cover: '📚', total_loans: 18190, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 18,190건 대출' },
+      { lib: '국립중앙도서관', title: '알아차림에 대한 알아차림', author: '루퍼트 스파이라', publisher: '퍼블리온', category: '테마', isbn: '9791191587418', cover: '📚', total_loans: 9699, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 9,699건 대출' },
+      { lib: '국립중앙도서관', title: '베르베르 씨, 오늘은 뭘 쓰세요?', author: '베르나르 베르베르', publisher: '열린책들', category: '테마', isbn: '9788932923383', cover: '📚', total_loans: 6922, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 6,922건 대출' },
+      { lib: '국립중앙도서관', title: '모든 꽃이 봄에 피지는 않는다', author: '이다지', publisher: '서삼독', category: '테마', isbn: '9791165346751', cover: '📚', total_loans: 5489, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 5,489건 대출' },
+      { lib: '국립중앙도서관', title: '이토록 클래식이 끌리는 순간', author: '최지환', publisher: '북라이프', category: '테마', isbn: '9791191013511', cover: '📚', total_loans: 3083, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 3,083건 대출' },
+      { lib: '국립중앙도서관', title: '삶을 향한 완벽한 몰입', author: '조슈아 베커', publisher: '와이즈맵', category: '테마', isbn: '9791189328627', cover: '📚', total_loans: 2743, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 2,743건 대출' },
+      { lib: '국립중앙도서관', title: '서평가의 독서법', author: '미치코 가쿠타니', publisher: '돌베개', category: '테마', isbn: '9791192836003', cover: '📚', total_loans: 2364, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 2,364건 대출' },
+      { lib: '국립중앙도서관', title: '처음 읽는 서양 미술사', author: '이케가미 히데히로', publisher: '탐나는책', category: '테마', isbn: '9791193130001', cover: '📚', total_loans: 1356, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 1,356건 대출' },
+      { lib: '국립중앙도서관', title: '운동의 진실과 기쁨', author: '강윤규', publisher: '리즈앤북', category: '테마', isbn: '9791190741347', cover: '📚', total_loans: 746, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 746건 대출' },
+      { lib: '국립중앙도서관', title: '지금 우리가 바꾼다', author: '일로나 코글린,마렉 로데', publisher: '슬로비', category: '테마', isbn: '9791187135296', cover: '📚', total_loans: 739, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 739건 대출' },
+      { lib: '국립중앙도서관', title: '고기는 절반만 먹겠습니다', author: '브라이언 케이트먼', publisher: '비전비앤피 애플북스', category: '테마', isbn: '9791192641140', cover: '📚', total_loans: 714, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 714건 대출' },
+      { lib: '국립중앙도서관', title: '플레이밍 사회', author: '이토 마사아키', publisher: '북바이북', category: '테마', isbn: '9791190812528', cover: '📚', total_loans: 493, reason: '국립중앙도서관 사서추천도서 (2023년 12월 선정) · 전국 도서관 493건 대출' },
+    ],
+  },
+  '2024': {
     '2': [
-      { lib: '국립중앙도서관', title: '도둑맞은 집중력', author: '요한 하리', cover: '📕', reason: '현대인의 집중력 문제를 파헤친 필독서.' },
-      { lib: '서울도서관', title: '파친코', author: '이민진', cover: '📗', reason: '재일 조선인의 삶을 담은 방대한 소설.' },
-      { lib: '부산시립도서관', title: '불편한 편의점', author: '김호연', cover: '📘', reason: '따뜻한 인간 이야기의 소설.' },
-      { lib: '인천시립도서관', title: '소년이 온다', author: '한강', cover: '📙', reason: '역사의 상처를 다룬 한강의 소설.' },
-      { lib: '대구시립도서관', title: '작별하지 않는다', author: '한강', cover: '📔', reason: '제주 4.3을 배경으로 한 소설.' },
-      { lib: '광주시립도서관', title: '도파민네이션', author: '애나 렘키', cover: '📒', reason: '중독과 균형에 대한 통찰.' },
+      { lib: '국립중앙도서관', title: '시대예보', author: '송길영', publisher: '교보문고', category: '사회과학', isbn: '9791170610359', cover: '📚', total_loans: 27314, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 27,314건 대출' },
+      { lib: '국립중앙도서관', title: '88번 버스의 기적', author: '프레야 샘슨', publisher: '바이포엠 스튜디오', category: '문학', isbn: '9791192579870', cover: '📚', total_loans: 15783, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 15,783건 대출' },
+      { lib: '국립중앙도서관', title: '세상은 이야기로 만들어졌다', author: '자미라 엘 우아실,프리데만 카릭', publisher: '원더박스', category: '인문과학', isbn: '9791192953151', cover: '📚', total_loans: 10520, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 10,520건 대출' },
+      { lib: '국립중앙도서관', title: '조선이 만난 아인슈타인', author: '민태기', publisher: '위즈덤하우스', category: '자연과학', isbn: '9791168126855', cover: '📚', total_loans: 7304, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 7,304건 대출' },
+      { lib: '국립중앙도서관', title: '불타는 작품', author: '윤고은', publisher: '은행나무', category: '문학', isbn: '9791167373618', cover: '📚', total_loans: 4906, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 4,906건 대출' },
+      { lib: '국립중앙도서관', title: '(일하는 당신을 위한) 최고의 수면법', author: '스미야 료', publisher: '한빛라이프', category: '자연과학', isbn: '9791190846622', cover: '📚', total_loans: 4067, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 4,067건 대출' },
+      { lib: '국립중앙도서관', title: '수상한 단어들의 지도', author: '데버라 워런', publisher: '윌북', category: '인문과학', isbn: '9791155816493', cover: '📚', total_loans: 1891, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 1,891건 대출' },
+      { lib: '국립중앙도서관', title: '2024 AI 트렌드', author: '딥앤와이랩스,류성일,이규남,황동건,이영표,조현서,박준상,홍준의', publisher: '한스미디어 한즈미디어', category: '사회과학', isbn: '9791160079685', cover: '📚', total_loans: 1694, reason: '국립중앙도서관 사서추천도서 (2024년 2월 선정) · 전국 도서관 1,694건 대출' },
     ],
-    '1': [
-      { lib: '국립중앙도서관', title: '불편한 편의점', author: '김호연', cover: '📕', reason: '2023년 새해 첫 달 전국 도서관 최다 대출 도서.' },
-      { lib: '서울도서관', title: '역행자', author: '자청', cover: '📗', reason: '새해에 읽기 좋은 자기계발서.' },
-      { lib: '부산시립도서관', title: '채식주의자', author: '한강', cover: '📘', reason: '한강의 대표작.' },
-      { lib: '인천시립도서관', title: '미드나잇 라이브러리', author: '매트 헤이그', cover: '📙', reason: '새해 첫 날 읽기 좋은 따뜻한 소설.' },
-      { lib: '대구시립도서관', title: '아몬드', author: '손원평', cover: '📔', reason: '공감에 대한 깊은 탐구.' },
-      { lib: '광주시립도서관', title: '연을 쫓는 아이', author: '할레드 호세이니', cover: '📒', reason: '새해에 다시 읽는 감동 소설.' },
+    '4': [
+      { lib: '국립중앙도서관', title: '공룡의 이동 경로', author: '김화진', publisher: '스위밍꿀', category: '문학', isbn: '9791196074470', cover: '📚', total_loans: 8207, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 8,207건 대출' },
+      { lib: '국립중앙도서관', title: '좋은 엄마 학교', author: '제서민 챈', publisher: '허블', category: '문학', isbn: '9791193078112', cover: '📚', total_loans: 2308, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 2,308건 대출' },
+      { lib: '국립중앙도서관', title: '출근하는 책들', author: '구채은', publisher: 'PAZIT파지트', category: '인문과학', isbn: '9791192381756', cover: '📚', total_loans: 1873, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 1,873건 대출' },
+      { lib: '국립중앙도서관', title: '혼자가 좋지만 고독사는 걱정입니다', author: '몬가 미오코', publisher: '반니', category: '인문과학', isbn: '9791167961396', cover: '📚', total_loans: 1582, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 1,582건 대출' },
+      { lib: '국립중앙도서관', title: '80억 인류, 가보지 않은 미래', author: '제니퍼 D. 스쿠바', publisher: '흐름출판', category: '사회과학', isbn: '9788965966005', cover: '📚', total_loans: 1433, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 1,433건 대출' },
+      { lib: '국립중앙도서관', title: '우세한 책들', author: '장윤미', publisher: '사람IN', category: '사회과학', isbn: '9791171010356', cover: '📚', total_loans: 1366, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 1,366건 대출' },
+      { lib: '국립중앙도서관', title: '무질서와 질서 사이에서', author: '조르조 파리시', publisher: '사이언스북스', category: '자연과학', isbn: '9791192908151', cover: '📚', total_loans: 833, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 833건 대출' },
+      { lib: '국립중앙도서관', title: '과학에서 인문학을 만나다', author: '김유항,황진명', publisher: '사과나무', category: '자연과학', isbn: '9788967260590', cover: '📚', total_loans: 701, reason: '국립중앙도서관 사서추천도서 (2024년 4월 선정) · 전국 도서관 701건 대출' },
+    ],
+    '6': [
+      { lib: '국립중앙도서관', title: '경성 맛집 산책', author: '박현수', publisher: '한겨레출판 한겨레엔', category: '테마', isbn: '9791160405675', cover: '📚', total_loans: 2814, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 2,814건 대출' },
+      { lib: '국립중앙도서관', title: '지리학자의 열대 인문여행', author: '이영민', publisher: '아날로그', category: '테마', isbn: '9791192706122', cover: '📚', total_loans: 2465, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 2,465건 대출' },
+      { lib: '국립중앙도서관', title: '인류의 여정', author: '오데드 갤로어', publisher: '시공사', category: '테마', isbn: '9791169255820', cover: '📚', total_loans: 2081, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 2,081건 대출' },
+      { lib: '국립중앙도서관', title: '미국이 만든 가난', author: '매슈 데즈먼드', publisher: 'ARTE북이십일아르테', category: '테마', isbn: '9791171171781', cover: '📚', total_loans: 1692, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,692건 대출' },
+      { lib: '국립중앙도서관', title: '도시의 맛', author: '정희섭', publisher: 'AMSTORY에이엠스토리', category: '테마', isbn: '9791185469256', cover: '📚', total_loans: 1561, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,561건 대출' },
+      { lib: '국립중앙도서관', title: '나의 문학 답사 일지', author: '정병설', publisher: '문학동네', category: '테마', isbn: '9788954692199', cover: '📚', total_loans: 1558, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,558건 대출' },
+      { lib: '국립중앙도서관', title: '다크투어, 내 여행의 이름', author: '양재화', publisher: '어떤책', category: '테마', isbn: '9791189385408', cover: '📚', total_loans: 1439, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,439건 대출' },
+      { lib: '국립중앙도서관', title: '우리가 우주에 가야 하는 이유', author: '폴윤', publisher: 'EBS Books', category: '테마', isbn: '9788954782227', cover: '📚', total_loans: 1418, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,418건 대출' },
+      { lib: '국립중앙도서관', title: '노숙 인생', author: '실뱅 테송', publisher: '뮤진트리', category: '테마', isbn: '9791161111254', cover: '📚', total_loans: 1401, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,401건 대출' },
+      { lib: '국립중앙도서관', title: '이토록 우아한 제로 웨이스트 여행', author: '신혜정', publisher: '사우', category: '테마', isbn: '9791187332893', cover: '📚', total_loans: 1366, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 1,366건 대출' },
+      { lib: '국립중앙도서관', title: '우리나라 탐조지 100', author: '김성현,최순규', publisher: '자연과생태', category: '테마', isbn: '9791164500598', cover: '📚', total_loans: 545, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 545건 대출' },
+      { lib: '국립중앙도서관', title: '프랑스의 음식문화사', author: '마리안 테벤', publisher: '니케북스', category: '테마', isbn: '9791189722883', cover: '📚', total_loans: 320, reason: '국립중앙도서관 사서추천도서 (2024년 6월 선정) · 전국 도서관 320건 대출' },
+    ],
+    '8': [
+      { lib: '국립중앙도서관', title: '물질의 세계', author: '에드 콘웨이', publisher: '인플루엔셜', category: '사회과학', isbn: '9791168341746', cover: '📚', total_loans: 12243, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 12,243건 대출' },
+      { lib: '국립중앙도서관', title: '출근길 심리학', author: '반유화', publisher: '다산초당', category: '인문과학', isbn: '9791130650548', cover: '📚', total_loans: 3524, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 3,524건 대출' },
+      { lib: '국립중앙도서관', title: '뉴럴 링크', author: '임창환', publisher: '동아시아', category: '자연과학', isbn: '9788962625936', cover: '📚', total_loans: 2681, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 2,681건 대출' },
+      { lib: '국립중앙도서관', title: '한 사람의 노래가 온 거리에 노래를', author: '신경림,강성은,고형렬,곽재구,김경미,김경후,김기택,김남주,김명수,김사인,김선우,김수영,김승희,김언희,김용택,김정환,김중일,김태정,김해자,김현,나희덕,도종환,문태준,민영,박성우,박소란,박철,박형준,박흥식,백무산,손택수,송경동,신동엽,신미나,신용목,심재휘,안도현,안미옥,안현미,안희연,양애경,엄원태,유병록,유이우,이근화,이동순,이병률,이상국,이성부,이시영,이영광,이장욱,이정록,이정훈,이제니,장석남,전동균,전욱진,정호승,정희성,조말선,조연호,조온윤,조태일,주하림,진은영,천양희,최영숙,최정례,최지인,허수경,황유원,황인찬', publisher: '창비', category: '문학', isbn: '9788936403010', cover: '📚', total_loans: 1944, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 1,944건 대출' },
+      { lib: '국립중앙도서관', title: '각본 없음', author: '아비 모건', publisher: '현암사', category: '문학', isbn: '9788932323541', cover: '📚', total_loans: 1247, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 1,247건 대출' },
+      { lib: '국립중앙도서관', title: '해파리의 시간은 거꾸로 간다', author: '니클라스 브렌보르', publisher: '북트리거 지학사', category: '자연과학', isbn: '9791193378106', cover: '📚', total_loans: 1235, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 1,235건 대출' },
+      { lib: '국립중앙도서관', title: '유튜브 백과', author: '김남훈', publisher: '이은북', category: '사회과학', isbn: '9791191053357', cover: '📚', total_loans: 1090, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 1,090건 대출' },
+      { lib: '국립중앙도서관', title: '전시디자인, 미술의 발견', author: '김용주', publisher: '소동', category: '인문과학', isbn: '9791193193020', cover: '📚', total_loans: 1027, reason: '국립중앙도서관 사서추천도서 (2024년 8월 선정) · 전국 도서관 1,027건 대출' },
+    ],
+    '10': [
+      { lib: '국립중앙도서관', title: '쓰게 될 것', author: '최진영', publisher: '안온', category: '문학', isbn: '9791192638379', cover: '📚', total_loans: 9940, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 9,940건 대출' },
+      { lib: '국립중앙도서관', title: '친애하는 슐츠 씨', author: '박상현', publisher: '어크로스', category: '사회과학', isbn: '9791167741523', cover: '📚', total_loans: 5631, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 5,631건 대출' },
+      { lib: '국립중앙도서관', title: '재뉴어리의 푸른 문', author: '앨릭스 E. 해로우', publisher: '밝은세상', category: '문학', isbn: '9788984374881', cover: '📚', total_loans: 2495, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 2,495건 대출' },
+      { lib: '국립중앙도서관', title: '나답게 산다는 것', author: '박은미', publisher: '초록북스', category: '인문과학', isbn: '9791160024340', cover: '📚', total_loans: 2384, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 2,384건 대출' },
+      { lib: '국립중앙도서관', title: 'AGI 시대와 인간의 미래', author: '맹성현', publisher: '헤이북스', category: '사회과학', isbn: '9791188366866', cover: '📚', total_loans: 2088, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 2,088건 대출' },
+      { lib: '국립중앙도서관', title: '자화상 내 마음을 그리다', author: '김선현', publisher: '한길사', category: '인문과학', isbn: '9788935678563', cover: '📚', total_loans: 1893, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 1,893건 대출' },
+      { lib: '국립중앙도서관', title: '(조용하고 끈질기게 살아남은) 잡초들의 전략', author: '이나가키 히데히로', publisher: '나무생각', category: '자연과학', isbn: '9791162182963', cover: '📚', total_loans: 1322, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 1,322건 대출' },
+      { lib: '국립중앙도서관', title: '살아있니, 황금두더지', author: '캐서린 런델 글', publisher: '곰출판', category: '자연과학', isbn: '9791189327316', cover: '📚', total_loans: 470, reason: '국립중앙도서관 사서추천도서 (2024년 10월 선정) · 전국 도서관 470건 대출' },
+    ],
+    '12': [
+      { lib: '국립중앙도서관', title: '가난한 아이들은 어떻게 어른이 되는가', author: '강지나', publisher: '돌베개', category: '테마', isbn: '9791192836355', cover: '📚', total_loans: 13690, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 13,690건 대출' },
+      { lib: '국립중앙도서관', title: '고층 입원실의 갱스터 할머니', author: '양유진', publisher: '21세기북스', category: '테마', isbn: '9791171174508', cover: '📚', total_loans: 9641, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 9,641건 대출' },
+      { lib: '국립중앙도서관', title: '남겨진 것들의 기록', author: '김새별,전애원', publisher: '청림출판', category: '테마', isbn: '9788935214495', cover: '📚', total_loans: 5563, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 5,563건 대출' },
+      { lib: '국립중앙도서관', title: '외로움의 습격', author: '김만권', publisher: '혜다', category: '테마', isbn: '9791191183276', cover: '📚', total_loans: 3938, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 3,938건 대출' },
+      { lib: '국립중앙도서관', title: '세상에서 가장 긴 행복 탐구 보고서', author: '로버트 월딩거,마크 슐츠', publisher: '비즈니스북스', category: '테마', isbn: '9791162543481', cover: '📚', total_loans: 3482, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 3,482건 대출' },
+      { lib: '국립중앙도서관', title: '쓸데없는 걱정으로 준비된 체력이 소진되었습니다', author: '이광민', publisher: '웅진지식하우스 웅진씽크빅', category: '테마', isbn: '9788901284927', cover: '📚', total_loans: 3292, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 3,292건 대출' },
+      { lib: '국립중앙도서관', title: '내가 누구인지 아는 것이 왜 중요한가', author: '페터 베르', publisher: '갈매나무', category: '테마', isbn: '9791191842630', cover: '📚', total_loans: 3256, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 3,256건 대출' },
+      { lib: '국립중앙도서관', title: '(쇼펜하우어의) 고독한 행복', author: '아르투어 쇼펜하우어', publisher: '열림원', category: '테마', isbn: '9791170402688', cover: '📚', total_loans: 2281, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 2,281건 대출' },
+      { lib: '국립중앙도서관', title: '뭉크의 별이 빛나는 밤', author: '이미경', publisher: '더블북', category: '테마', isbn: '9791193153307', cover: '📚', total_loans: 1747, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 1,747건 대출' },
+      { lib: '국립중앙도서관', title: '이렇게 누워만 있어도 괜찮을까', author: '안예슬', publisher: '이매진', category: '테마', isbn: '9791155311424', cover: '📚', total_loans: 1237, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 1,237건 대출' },
+      { lib: '국립중앙도서관', title: '윈터 씨의 해빙기', author: '슈테판 쿨만', publisher: '달로와 마인드빌딩', category: '테마', isbn: '9791192886473', cover: '📚', total_loans: 1148, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 1,148건 대출' },
+      { lib: '국립중앙도서관', title: '공감사회를 위한 담론들', author: '강황선', publisher: '건국대학교출판부', category: '테마', isbn: '9788971077702', cover: '📚', total_loans: 27, reason: '국립중앙도서관 사서추천도서 (2024년 12월 선정) · 전국 도서관 27건 대출' },
+    ],
+  },
+  '2025': {
+    '2': [
+      { lib: '국립중앙도서관', title: '오렌지와 빵칼', author: '청예', publisher: '허블', category: '문학', isbn: '9791193078259', cover: '📚', total_loans: 13315, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 13,315건 대출' },
+      { lib: '국립중앙도서관', title: '일생에 한번은 헌법을 읽어라', author: '이효원', publisher: '현대지성', category: '사회과학', isbn: '9791139717013', cover: '📚', total_loans: 6583, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 6,583건 대출' },
+      { lib: '국립중앙도서관', title: '생각의 기술', author: '코디정', publisher: '이소노미아', category: '인문과학', isbn: '9791190844550', cover: '📚', total_loans: 2275, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 2,275건 대출' },
+      { lib: '국립중앙도서관', title: '가위는 왜 가위처럼 생겼을까', author: '다나카 미유키,유키 치요코', publisher: '오아시스', category: '자연과학', isbn: '9791168272071', cover: '📚', total_loans: 2111, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 2,111건 대출' },
+      { lib: '국립중앙도서관', title: '완벽이라는 중독', author: '토머스 커런', publisher: '북라이프', category: '인문과학', isbn: '9791191013740', cover: '📚', total_loans: 2080, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 2,080건 대출' },
+      { lib: '국립중앙도서관', title: '기술은 세상을 어떻게 바꾸는가', author: '이정동', publisher: '김영사', category: '사회과학', isbn: '9791194330158', cover: '📚', total_loans: 1303, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 1,303건 대출' },
+      { lib: '국립중앙도서관', title: '나에게 진실이라는 거짓을 맹세해', author: '헬레네 플루드', publisher: '푸른숲', category: '문학', isbn: '9791172540241', cover: '📚', total_loans: 1299, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 1,299건 대출' },
+      { lib: '국립중앙도서관', title: '위대한 관찰', author: '조르주 빅토르 르그로', publisher: 'H(휴머니스트출판그룹)', category: '자연과학', isbn: '9791170872429', cover: '📚', total_loans: 449, reason: '국립중앙도서관 사서추천도서 (2025년 2월 선정) · 전국 도서관 449건 대출' },
+    ],
+    '4': [
+      { lib: '국립중앙도서관', title: '빛이 이끄는 곳으로', author: '백희성', publisher: '북로망스 책읽어주는남자', category: '문학', isbn: '9791193937198', cover: '📚', total_loans: 13910, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 13,910건 대출' },
+      { lib: '국립중앙도서관', title: '침묵을 배우는 시간', author: '코르넬리아 토프', publisher: '서교책방', category: '사회과학', isbn: '9791198752444', cover: '📚', total_loans: 8535, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 8,535건 대출' },
+      { lib: '국립중앙도서관', title: '제대로 연습하는 법', author: '아투로 E. 허낸데즈', publisher: '북트리거 지학사', category: '인문과학', isbn: '9791193378335', cover: '📚', total_loans: 1992, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 1,992건 대출' },
+      { lib: '국립중앙도서관', title: '코끼리는 암에 걸리지 않는다', author: '데이비드 B. 아구스', publisher: '현암사', category: '자연과학', isbn: '9788932323879', cover: '📚', total_loans: 1737, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 1,737건 대출' },
+      { lib: '국립중앙도서관', title: '(교양인이 알아야 할) 음식의 역사', author: '자크 아탈리', publisher: '따비', category: '사회과학', isbn: '9791192169408', cover: '📚', total_loans: 978, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 978건 대출' },
+      { lib: '국립중앙도서관', title: '나의 작은 나라', author: '가엘 파유', publisher: '열린책들', category: '문학', isbn: '9788932924786', cover: '📚', total_loans: 758, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 758건 대출' },
+      { lib: '국립중앙도서관', title: '지명발견록', author: '이경교', publisher: '문학수첩', category: '인문과학', isbn: '9791193790786', cover: '📚', total_loans: 413, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 413건 대출' },
+      { lib: '국립중앙도서관', title: '개미 오디세이', author: '오드레 뒤쉬투르,앙투안 비스트라크', publisher: 'HCBOOKS힘찬북스', category: '자연과학', isbn: '9791190227506', cover: '📚', total_loans: 253, reason: '국립중앙도서관 사서추천도서 (2025년 4월 선정) · 전국 도서관 253건 대출' },
+    ],
+    '6': [
+      { lib: '국립중앙도서관', title: '살아갈 날들을 위한 괴테의 시', author: '김종원', publisher: '퍼스트펭귄', category: '테마', isbn: '9791199040311', cover: '📚', total_loans: 7756, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 7,756건 대출' },
+      { lib: '국립중앙도서관', title: '(빼앗긴 집중력을 되찾고 당신의 뇌를 최적화할) 깊은 생각의 비밀', author: '김태훈,이윤형', publisher: '저녁달', category: '테마', isbn: '9791189217259', cover: '📚', total_loans: 2357, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 2,357건 대출' },
+      { lib: '국립중앙도서관', title: '시간의 지배자', author: '토머스 서든도프,조너선 레드쇼,애덤 벌리', publisher: '디플롯', category: '테마', isbn: '9791193591123', cover: '📚', total_loans: 1414, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 1,414건 대출' },
+      { lib: '국립중앙도서관', title: '상상하는 공학 진화하는 인간', author: 'KAIST 기계공학과', publisher: '해냄', category: '테마', isbn: '9791167140814', cover: '📚', total_loans: 1329, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 1,329건 대출' },
+      { lib: '국립중앙도서관', title: '데드 스페이스', author: '칼리 월리스', publisher: '황금가지', category: '테마', isbn: '9791170525295', cover: '📚', total_loans: 1274, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 1,274건 대출' },
+      { lib: '국립중앙도서관', title: '숨 쉬는 것들은 어떻게든 진화한다', author: '마들렌 치게', publisher: '흐름출판', category: '테마', isbn: '9788965966241', cover: '📚', total_loans: 961, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 961건 대출' },
+      { lib: '국립중앙도서관', title: '철학으로 돌파하라', author: '안광복', publisher: '사계절사계절출판사', category: '테마', isbn: '9791169813471', cover: '📚', total_loans: 787, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 787건 대출' },
+      { lib: '국립중앙도서관', title: '균형 잡힌 뇌', author: '권택영', publisher: '글항아리', category: '테마', isbn: '9791169093415', cover: '📚', total_loans: 700, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 700건 대출' },
+      { lib: '국립중앙도서관', title: '인간 문명의 네 가지 법칙', author: '마이클 무투크리슈나', publisher: '바다출판사', category: '테마', isbn: '9791166893131', cover: '📚', total_loans: 559, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 559건 대출' },
+      { lib: '국립중앙도서관', title: '초연결 학교', author: '함돈균', publisher: '쌤앤파커스', category: '테마', isbn: '9791194246602', cover: '📚', total_loans: 498, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 498건 대출' },
+      { lib: '국립중앙도서관', title: '왜 읽고 쓰고 걸어야 하는가', author: '김태정', publisher: '살림터', category: '테마', isbn: '9791159302824', cover: '📚', total_loans: 472, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 472건 대출' },
+      { lib: '국립중앙도서관', title: '텔로미어', author: '박성신', publisher: '북다 교보문고', category: '테마', isbn: '9791170612025', cover: '📚', total_loans: 456, reason: '국립중앙도서관 사서추천도서 (2025년 6월 선정) · 전국 도서관 456건 대출' },
+    ],
+    '8': [
+      { lib: '국립중앙도서관', title: '기울어진 문해력', author: '조병영', publisher: '21세기북스북이십일21세기북스 21세기북스북이십일 21세기북스', category: '인문과학', isbn: '9791171179916', cover: '📚', total_loans: 2041, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 2,041건 대출' },
+      { lib: '국립중앙도서관', title: '단역배우 김순효 씨', author: '이수정', publisher: '다산책방 다산북스', category: '문학', isbn: '9791130664996', cover: '📚', total_loans: 1482, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 1,482건 대출' },
+      { lib: '국립중앙도서관', title: '나는 언제나 늙기를 기다려왔다', author: '안드레아 칼라일', publisher: '웅진지식하우스 웅진씽크빅', category: '문학', isbn: '9788901293455', cover: '📚', total_loans: 1251, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 1,251건 대출' },
+      { lib: '국립중앙도서관', title: '스테로이드 인류', author: '백승만', publisher: '히포크라테스', category: '자연과학', isbn: '9791193690109', cover: '📚', total_loans: 1102, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 1,102건 대출' },
+      { lib: '국립중앙도서관', title: '감상의 심리학', author: '오성주', publisher: '북하우스', category: '인문과학', isbn: '9791164053018', cover: '📚', total_loans: 1100, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 1,100건 대출' },
+      { lib: '국립중앙도서관', title: '대화를 한다는 것', author: '피에르 쌍소', publisher: '드림셀러', category: '사회과학', isbn: '9791192788371', cover: '📚', total_loans: 875, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 875건 대출' },
+      { lib: '국립중앙도서관', title: '100가지 물건으로 보는 우주의 역사', author: '스텐 오덴발드', publisher: '스테이블', category: '자연과학', isbn: '9791193476116', cover: '📚', total_loans: 736, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 736건 대출' },
+      { lib: '국립중앙도서관', title: 'AI 시대 창의적 인간', author: '이시한', publisher: 'RHK(알에이치코리아)', category: '사회과학', isbn: '9788925574172', cover: '📚', total_loans: 673, reason: '국립중앙도서관 사서추천도서 (2025년 8월 선정) · 전국 도서관 673건 대출' },
+    ],
+    '10': [
+      { lib: '국립중앙도서관', title: '다정함이 인격이다', author: '김선희', publisher: '나무생각', category: '인문과학', isbn: '9791162183397', cover: '📚', total_loans: 2456, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 2,456건 대출' },
+      { lib: '국립중앙도서관', title: '언젠가 모든 것은 바다로 떨어진다', author: '세라 핀스커', publisher: '창비', category: '문학', isbn: '9788936439699', cover: '📚', total_loans: 1656, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 1,656건 대출' },
+      { lib: '국립중앙도서관', title: '경이로운 한국인', author: '장클로드 드크레센조', publisher: '마음의숲', category: '사회과학', isbn: '9791162851685', cover: '📚', total_loans: 1193, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 1,193건 대출' },
+      { lib: '국립중앙도서관', title: '꽃을 공부합니다', author: '박원순', publisher: '사이언스북스', category: '자연과학', isbn: '9791194087199', cover: '📚', total_loans: 845, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 845건 대출' },
+      { lib: '국립중앙도서관', title: '소풍을 빌려드립니다', author: '문하연', publisher: '알파미디어', category: '문학', isbn: '9791191122916', cover: '📚', total_loans: 766, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 766건 대출' },
+      { lib: '국립중앙도서관', title: '음식은 넘쳐나고, 인간은 배고프다', author: '바츨라프 스밀', publisher: '김영사', category: '사회과학', isbn: '9791173322099', cover: '📚', total_loans: 634, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 634건 대출' },
+      { lib: '국립중앙도서관', title: '노화도 설계하는 시대가 온다', author: '박상철,권순용,강시철', publisher: '매일경제신문사', category: '자연과학', isbn: '9791164847662', cover: '📚', total_loans: 567, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 567건 대출' },
+      { lib: '국립중앙도서관', title: 'AI를 압도하는 내면 경쟁력', author: '이헌주', publisher: '라이프앤페이지', category: '인문과학', isbn: '9791191462357', cover: '📚', total_loans: 455, reason: '국립중앙도서관 사서추천도서 (2025년 10월 선정) · 전국 도서관 455건 대출' },
+    ],
+    '12': [
+      { lib: '국립중앙도서관', title: '최재천의 희망 수업', author: '최재천', publisher: '샘터(샘터사)', category: '테마', isbn: '9788946423008', cover: '📚', total_loans: 6154, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 6,154건 대출' },
+      { lib: '국립중앙도서관', title: '먼저 온 미래', author: '장강명', publisher: '동아시아', category: '테마', isbn: '9788962626605', cover: '📚', total_loans: 5484, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 5,484건 대출' },
+      { lib: '국립중앙도서관', title: '내게 남은 스물다섯 번의 계절', author: '슈테판 셰퍼', publisher: '서삼독', category: '테마', isbn: '9791193904213', cover: '📚', total_loans: 5329, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 5,329건 대출' },
+      { lib: '국립중앙도서관', title: '젊음의 나라', author: '손원평', publisher: '다즐링', category: '테마', isbn: '9791198363596', cover: '📚', total_loans: 4376, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 4,376건 대출' },
+      { lib: '국립중앙도서관', title: '파이어드', author: '한정수,강기태', publisher: '체인지업체인지업북스', category: '테마', isbn: '9791191378672', cover: '📚', total_loans: 3474, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 3,474건 대출' },
+      { lib: '국립중앙도서관', title: '회복탄력성의 뇌과학', author: '아디티 네루카', publisher: '현대지성', category: '테마', isbn: '9791139723281', cover: '📚', total_loans: 2030, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 2,030건 대출' },
+      { lib: '국립중앙도서관', title: '파란색 미술관', author: '강민지', publisher: '아트북스', category: '테마', isbn: '9788961964500', cover: '📚', total_loans: 1401, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 1,401건 대출' },
+      { lib: '국립중앙도서관', title: '아주 오래된 행복론', author: '알랭', publisher: 'ARTE 북이십일아르테', category: '테마', isbn: '9791171179503', cover: '📚', total_loans: 755, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 755건 대출' },
+      { lib: '국립중앙도서관', title: '행복 호르몬', author: '야마구치 하지메', publisher: '동양북스', category: '테마', isbn: '9791172109240', cover: '📚', total_loans: 737, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 737건 대출' },
+      { lib: '국립중앙도서관', title: '단단한 행복', author: '양현길', publisher: '유노책주', category: '테마', isbn: '9791171830848', cover: '📚', total_loans: 692, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 692건 대출' },
+      { lib: '국립중앙도서관', title: '내 생의 가장 아름다운 완성', author: '공저: 최신한,김진식,공병혜,김수배,이관표,김선희,안종수,김경미,이기호', publisher: '사유와공감 : 이츠북스', category: '테마', isbn: '9791194531074', cover: '📚', total_loans: 315, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 315건 대출' },
+      { lib: '국립중앙도서관', title: '바닥짐 위의 행복', author: '정종민', publisher: '지식터', category: '테마', isbn: '9791193871539', cover: '📚', total_loans: 3, reason: '국립중앙도서관 사서추천도서 (2025년 12월 선정) · 전국 도서관 3건 대출' },
     ],
   },
 };
-
-// 현재 선택된 연도/월
-let libSelectedYear = '2025';
-let libSelectedMonth = '4';
-
-function filterLibYear(year, el) {
-  document.querySelectorAll('#lib-year-bar .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  libSelectedYear = year;
-  // 해당 연도의 가장 최근 월 선택
-  const months = Object.keys(LIBRARY_ARCHIVE[year]).map(Number).sort((a,b)=>b-a);
-  libSelectedMonth = String(months[0]);
-  renderLibMonthBar(year);
-  renderLibrary();
-}
-
-function filterLibMonth(month, el) {
-  document.querySelectorAll('#lib-month-bar .filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  libSelectedMonth = month;
-  renderLibrary();
-}
-
-function renderLibMonthBar(year) {
-  const months = Object.keys(LIBRARY_ARCHIVE[year]).map(Number).sort((a,b)=>b-a);
-  const monthNames = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
-  document.getElementById('lib-month-bar').innerHTML = months.map(m => `
-    <button class="filter-chip ${String(m) === libSelectedMonth ? 'active' : ''}"
-      onclick="filterLibMonth('${m}', this)">${monthNames[m-1]}</button>
-  `).join('');
-}
-
 const LIBRARY_PICKS = LIBRARY_ARCHIVE['2025']['4']; // 하위 호환용
 
 // ─── THEME DATA ──────────────────────────────────────────────────────
@@ -2379,6 +2473,84 @@ function filterCeleb(cat, el) {
   renderCeleb(cat);
 }
 
+// ─── 이달의 책 필터 ──────────────────────────────────────────────────
+let libSelectedYear = '2025';
+let libSelectedMonth = '12';
+
+const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+function filterLibYear(year, el) {
+  document.querySelectorAll('#lib-year-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  libSelectedYear = year;
+  const months = Object.keys(LIBRARY_ARCHIVE[year] || {}).map(Number).sort((a,b) => b-a);
+  libSelectedMonth = String(months[0] || 12);
+  renderLibMonthBar(year);
+  renderLibrary();
+}
+
+function filterLibMonth(month, el) {
+  document.querySelectorAll('#lib-month-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  libSelectedMonth = month;
+  renderLibrary();
+}
+
+function renderLibMonthBar(year) {
+  const months = Object.keys(LIBRARY_ARCHIVE[year] || {}).map(Number).sort((a,b) => b-a);
+  document.getElementById('lib-month-bar').innerHTML = months.map(m => `
+    <button class="filter-chip ${String(m) === libSelectedMonth ? 'active' : ''}"
+      onclick="filterLibMonth('${m}', this)">${MONTH_NAMES[m-1]}</button>
+  `).join('');
+}
+
+function renderLibrary() {
+  const picks = LIBRARY_ARCHIVE[libSelectedYear]?.[libSelectedMonth] || [];
+  const yearMonth = libSelectedYear + '년 ' + libSelectedMonth + '월';
+  const sub = document.querySelector('#panel-library .section-sub');
+  if (sub) sub.textContent = '국립중앙도서관 사서추천도서 · ' + yearMonth + ' · 전국 공공도서관 실제 대출 데이터';
+
+  if (!picks.length) {
+    document.getElementById('lib-grid').innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">데이터 준비 중입니다.</div>';
+    return;
+  }
+
+  const html = picks.map((b, i) => {
+    const categoryColor = {
+      '문학': '#8b5cf6', '사회과학': '#f43f5e', '인문과학': '#06b6d4',
+      '자연과학': '#10b981', '테마': '#f59e0b'
+    }[b.category] || '#888';
+
+    return `
+    <div class="lib-card" style="animation-delay:${i*0.06}s" onclick='openModalDirect(${JSON.stringify({
+      title: b.title, author: b.author, publisher: b.publisher,
+      isbn: b.isbn, cover: b.cover, desc: b.reason, rank: i+1,
+      loans: b.total_loans, rankLabel: yearMonth + " 사서추천"
+    })})'>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div class="lib-name" style="margin-bottom:0">${b.lib}</div>
+        <span style="font-size:0.62rem;padding:2px 7px;border-radius:20px;background:${categoryColor}20;color:${categoryColor};font-weight:600">${b.category}</span>
+      </div>
+      <div class="lib-book-row">
+        ${b.coverUrl
+          ? `<img src="${b.coverUrl}" class="lib-cover" alt="${b.title}">`
+          : `<div class="lib-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover}</div>`}
+        <div class="lib-book-info">
+          <div class="lib-book-title">${b.title}</div>
+          <div class="lib-book-author">${b.author}${b.publisher ? ' · ' + b.publisher : ''}</div>
+          ${b.total_loans ? `<div style="font-size:0.68rem;color:var(--g2);font-weight:600;margin-top:4px">📖 전국 ${b.total_loans.toLocaleString()}건 대출</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('lib-grid').innerHTML = html;
+
+  // 카카오 표지 이미지 비동기 로딩
+  if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
+    attachCovers(picks, () => renderLibrary());
+  }
+}
+
 // ─── UTILS ───────────────────────────────────────────────────────────
 // 책 제목에서 " : " 이후 부제 제거
 function cleanTitle(title) {
@@ -2406,7 +2578,6 @@ if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
 if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
   attachCovers(DEMO_CHART, d => renderChart(d, 'chart'));
   attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
-  attachCovers(LIBRARY_PICKS, () => renderLibrary());
 }
 </script>
 </body>
