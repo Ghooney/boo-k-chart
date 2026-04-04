@@ -2519,32 +2519,6 @@ function renderCeleb(filter = 'all') {
   document.getElementById('celeb-grid').innerHTML = html;
 }
 
-function renderLibrary() {
-  const picks = LIBRARY_ARCHIVE[libSelectedYear]?.[libSelectedMonth] || [];
-  const yearMonth = `${libSelectedYear}년 ${libSelectedMonth}월`;
-  // section-sub 업데이트
-  const sub = document.querySelector('#panel-library .section-sub');
-  if (sub) sub.textContent = `전국 공공도서관 사서가 직접 엄선한 추천도서 · ${yearMonth}`;
-
-  const html = picks.map((b, i) => `
-    <div class="lib-card" style="animation-delay:${i*0.07}s">
-      <div class="lib-name">${b.lib}</div>
-      <div class="lib-book-row">
-        ${b.coverUrl
-          ? `<img src="${b.coverUrl}" class="lib-cover" alt="${b.title}">`
-          : `<div class="lib-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover}</div>`}
-        <div class="lib-book-info">
-          <div class="lib-book-title">${b.title}</div>
-          <div class="lib-book-author">${b.author}</div>
-          <div class="lib-book-reason">${b.reason}</div>
-        </div>
-      </div>
-      <div class="lib-month">${yearMonth} 추천</div>
-    </div>
-  `).join('');
-  document.getElementById('lib-grid').innerHTML = html || '<div style="padding:40px;text-align:center;color:var(--muted)">데이터 준비 중입니다.</div>';
-}
-
 // ─── MODAL ───────────────────────────────────────────────────────────
 function closeModal(e) {
   if (e.target === document.getElementById('modal-overlay')) closeModalBtn();
@@ -2639,7 +2613,7 @@ function renderLibrary() {
         ${b.category ? `<span style="font-size:0.62rem;padding:2px 7px;border-radius:20px;background:${categoryColor}18;color:${categoryColor};font-weight:600">${b.category}</span>` : ''}
       </div>
       <div class="lib-book-row">
-        <div class="lib-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover || '📚'}</div>
+        <div class="lib-cover lib-cover-${i}" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover || '📚'}</div>
         <div class="lib-book-info">
           <div class="lib-book-title">${cleanTitle(b.title)}</div>
           <div class="lib-book-author">${b.author}</div>
@@ -2650,6 +2624,20 @@ function renderLibrary() {
   }).join('');
 
   document.getElementById('lib-grid').innerHTML = html;
+
+  // 카카오 API로 표지 이미지 비동기 업데이트 (무한루프 없이 DOM 직접 교체)
+  if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
+    picks.forEach(async (b, i) => {
+      try {
+        const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(b.title);
+        if (!url) return;
+        const el = document.querySelector(`.lib-cover-${i}`);
+        if (el) {
+          el.outerHTML = `<img src="${url}" class="lib-cover lib-cover-${i}" alt="${b.title}" style="object-fit:cover" onerror="this.style.display='none'">`;
+        }
+      } catch(e) {}
+    });
+  }
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
