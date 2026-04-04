@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>북차트 — 전국 공공도서관 빅데이터 기반 순수 독자 인기차트</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 <style>
   :root {
     --ink: #0f0a1a;
@@ -2193,11 +2192,15 @@ async function renderBookModal(book) {
   document.getElementById('modal-overlay').classList.add('open');
 
   // 2) 카카오 SDK로 표지 + 설명 가져와서 업데이트
-  const info = await fetchBookInfo(cleanT, book.isbn);
-  if (info) {
-    if (info.thumbnail) enriched.coverUrl = info.thumbnail;
-    if (info.contents) enriched.desc = info.contents;
-    if (info.publisher) enriched.publisher = info.publisher;
+  // 표지: ISBN으로 알라딘 패턴 시도
+  const coverUrl = await fetchCoverByIsbn(book.isbn);
+  if (coverUrl) { enriched.coverUrl = coverUrl; _drawModal(enriched, null, aladin, chaekieum); }
+  // 설명: 카카오 REST API 시도
+  const desc = await fetchBookDesc(cleanT, book.isbn);
+  if (desc) {
+    if (desc.thumbnail && !enriched.coverUrl) enriched.coverUrl = desc.thumbnail;
+    if (desc.contents) enriched.desc = desc.contents;
+    if (desc.publisher) enriched.publisher = desc.publisher;
     _drawModal(enriched, null, aladin, chaekieum);
   }
 }
@@ -2281,21 +2284,15 @@ function openCelebModal(idx) {
   `;
   document.getElementById('modal-overlay').classList.add('open');
 
-  // 셀럽 추천책도 카카오 API로 표지 업데이트
-  if (KAKAO_KEY && c.isbn) {
-    fetch(`https://dapi.kakao.com/v3/search/book?query=${c.isbn}&target=isbn&size=1`,
-      { headers: { Authorization: `KakaoAK ${KAKAO_KEY}` } })
-    .then(r => r.json()).then(json => {
-      const doc = json.documents?.[0];
-      if (doc?.thumbnail) {
-        const img = document.querySelector('#modal-content img');
-        if (img) img.src = doc.thumbnail;
-        else {
-          const div = document.querySelector('#modal-content [style*="font-size:2.2rem"]');
-          if (div) div.outerHTML = `<img src="${doc.thumbnail}" style="width:52px;height:72px;border-radius:5px;object-fit:cover;box-shadow:2px 3px 8px rgba(0,0,0,0.14)">`;
-        }
-      }
-    }).catch(() => {});
+  // 알라딘 ISBN 패턴으로 셀럽 추천책 표지 로딩
+  if (c.isbn) {
+    fetchCoverByIsbn(c.isbn).then(url => {
+      if (!url) return;
+      const existing = document.querySelector('#modal-content img');
+      if (existing) { existing.src = url; return; }
+      const div = document.querySelector('#modal-content [style*="font-size:2.2rem"]');
+      if (div) div.outerHTML = `<img src="${url}" style="width:52px;height:72px;border-radius:5px;object-fit:cover;box-shadow:2px 3px 8px rgba(0,0,0,0.14)">`;
+    });
   }
 }
 
@@ -2307,64 +2304,81 @@ const KAKAO_KEY = '8a6440a3dee00f4c195520b4f7edb0b7';
 let currentChartData = DEMO_CHART;
 let currentRisingData = DEMO_RISING;
 
-// ── 카카오 SDK 초기화 ─────────────────────────────────────────────────
-if (window.Kakao && !Kakao.isInitialized()) {
-  Kakao.init(KAKAO_KEY);
+// ── 표지 이미지 (알라딘 ISBN URL 패턴) ──────────────────────────────
+// 알라딘은 ISBN13 기반 표지 URL을 공개 제공 — CORS 없음, API 불필요
+function getCoverUrl(isbn) {
+  if (!isbn) return null;
+  const id = String(isbn).replace(/[^0-9]/g, '');
+  if (id.length < 10) return null;
+  // 알라딘 표지 URL 패턴 (소형)
+  return `https://image.aladin.co.kr/product/${id.slice(-4)}/${id.slice(-8,-4)}/cover/cover${id.slice(-4)}.jpg`;
 }
 
-// ── 카카오 책 검색 (SDK 방식 — CORS 없음) ────────────────────────────
-function kakaoSearchBook(query) {
-  return new Promise((resolve) => {
-    if (!window.Kakao || !Kakao.isInitialized()) { resolve(null); return; }
-    Kakao.API.request({
-      url: '/v3/search/book',
-      data: { query, size: 1 },
-      success: (res) => resolve(res.documents?.[0] || null),
-      fail: () => resolve(null),
-    });
+// img 로드 테스트 후 성공하면 URL, 실패하면 null 반환
+function testImgUrl(url) {
+  return new Promise(resolve => {
+    if (!url) { resolve(null); return; }
+    const img = new Image();
+    img.onload  = () => resolve(url);
+    img.onerror = () => resolve(null);
+    img.src = url + '?t=' + Date.now(); // 캐시 방지
   });
 }
 
-function toHttps(url) {
-  if (!url) return null;
-  return url.replace(/^http:\/\//, 'https://');
-}
-
-async function fetchBookInfo(title, isbn) {
-  const isbnStr = isbn ? String(isbn).replace(/[^0-9]/g, '') : '';
-  const query = isbnStr.length >= 10 ? isbnStr : title;
-  const doc = await kakaoSearchBook(query);
-  if (!doc) return null;
-  return {
-    thumbnail: toHttps(doc.thumbnail) || null,
-    contents: doc.contents || '',
-    publisher: doc.publisher || '',
-  };
-}
-
+// ISBN13으로 알라딘 표지 URL 3가지 패턴 시도
 async function fetchCoverByIsbn(isbn) {
-  const info = await fetchBookInfo('', isbn);
-  return info?.thumbnail || null;
+  if (!isbn) return null;
+  const id = String(isbn).replace(/[^0-9]/g, '');
+  if (id.length < 10) return null;
+
+  // 알라딘 표지 URL 패턴들
+  const patterns = [
+    `https://image.aladin.co.kr/product/cover/s/${id}.jpg`,
+    `https://image.aladin.co.kr/product/${id.slice(-4)}/${id.slice(-8,-4)}/cover/cover${id.slice(-4)}.jpg`,
+    `https://covers.openlibrary.org/b/isbn/${id}-M.jpg`,
+  ];
+
+  for (const url of patterns) {
+    const result = await testImgUrl(url);
+    if (result) return result;
+  }
+  return null;
 }
 
 async function fetchCoverByTitle(title) {
-  const info = await fetchBookInfo(title, '');
-  return info?.thumbnail || null;
+  return null; // 제목만으론 URL 패턴 생성 불가
 }
 
-// 데이터 배열에 표지 이미지 로딩 — 순차 (SDK rate limit 방지)
+// 데이터 배열 표지 병렬 로딩
 async function attachCovers(dataArr, renderFn) {
-  for (const b of dataArr) {
-    const info = await fetchBookInfo(cleanTitle(b.title), b.isbn);
-    if (info?.thumbnail) b.coverUrl = info.thumbnail;
-    await new Promise(r => setTimeout(r, 80));
-  }
+  await Promise.all(dataArr.map(async (b) => {
+    if (!b.isbn) return;
+    const url = await fetchCoverByIsbn(b.isbn);
+    if (url) b.coverUrl = url;
+  }));
   renderFn(dataArr);
 }
 
+// 모달용 책 설명 — 카카오 REST API (CORS 시도, 실패해도 무방)
 async function fetchBookDesc(title, isbn) {
-  const info = await fetchBookInfo(title, isbn);
-  return info;
+  try {
+    const isbnStr = isbn ? String(isbn).replace(/[^0-9]/g,'') : '';
+    const query = isbnStr.length >= 10 ? isbnStr : encodeURIComponent(title);
+    const target = isbnStr.length >= 10 ? '&target=isbn' : '';
+    const res = await fetch(
+      `https://dapi.kakao.com/v3/search/book?query=${query}&size=1${target}`,
+      { headers: { Authorization: `KakaoAK ${KAKAO_KEY}` } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    const doc = json.documents?.[0];
+    if (!doc) return null;
+    return {
+      contents: doc.contents || '',
+      publisher: doc.publisher || '',
+      thumbnail: doc.thumbnail?.replace(/^http:\/\//, 'https://') || null,
+    };
+  } catch(e) { return null; }
 }
 
 async function fetchLoanChart(kdc = '') {
@@ -2728,26 +2742,22 @@ function renderLibrary() {
 
   document.getElementById('lib-grid').innerHTML = html;
 
-  // 카카오 SDK로 표지 이미지 로딩
-  (async () => {
-    for (const b of picks) {
-      const info = await fetchBookInfo(cleanTitle(b.title), b.isbn);
-      if (info?.thumbnail) {
-        const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`);
-        if (el && el.tagName !== 'IMG') {
-          const img = document.createElement('img');
-          img.src = info.thumbnail;
-          img.className = 'lib-cover';
-          img.alt = cleanTitle(b.title);
-          img.style.objectFit = 'cover';
-          img.dataset.isbn = b.isbn;
-          img.onerror = () => { img.style.display='none'; };
-          el.replaceWith(img);
-        }
-      }
-      await new Promise(r => setTimeout(r, 80));
+  // 알라딘 ISBN 패턴으로 표지 병렬 로딩
+  picks.forEach(async (b) => {
+    const url = await fetchCoverByIsbn(b.isbn);
+    if (!url) return;
+    const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`);
+    if (el && el.tagName !== 'IMG') {
+      const img = document.createElement('img');
+      img.src = url;
+      img.className = 'lib-cover';
+      img.alt = cleanTitle(b.title);
+      img.style.objectFit = 'cover';
+      img.dataset.isbn = b.isbn;
+      img.onerror = () => { img.style.display='none'; };
+      el.replaceWith(img);
     }
-  })();
+  });
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
@@ -2774,7 +2784,6 @@ if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
   loadChartData();
   loadRisingData();
 }
-// 알라딘 ISBN 표지 — CORS 없이 바로 로딩
 attachCovers(DEMO_CHART, d => renderChart(d, 'chart'));
 attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
 </script>
