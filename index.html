@@ -2627,35 +2627,29 @@ function renderLibrary() {
       '문학': '#8b5cf6', '사회과학': '#f43f5e', '인문과학': '#06b6d4',
       '자연과학': '#10b981', '테마': '#f59e0b'
     }[b.category] || '#888';
-
-    return `
-    <div class="lib-card" style="animation-delay:${i*0.06}s" onclick='openModalDirect(${JSON.stringify({
+    const bookData = JSON.stringify({
       title: b.title, author: b.author, publisher: b.publisher,
-      isbn: b.isbn, cover: b.cover, desc: b.reason, rank: i+1,
-      loans: b.total_loans, rankLabel: yearMonth + " 사서추천"
-    })})'>
+      isbn: b.isbn, cover: b.cover, desc: b.reason,
+      rank: i+1, loans: b.total_loans, rankLabel: yearMonth + ' 사서추천'
+    });
+    return `
+    <div class="lib-card" style="animation-delay:${Math.min(i,8)*0.05}s" onclick='openModalDirect(${bookData})'>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <div class="lib-name" style="margin-bottom:0">${b.lib}</div>
-        <span style="font-size:0.62rem;padding:2px 7px;border-radius:20px;background:${categoryColor}20;color:${categoryColor};font-weight:600">${b.category}</span>
+        ${b.category ? `<span style="font-size:0.62rem;padding:2px 7px;border-radius:20px;background:${categoryColor}18;color:${categoryColor};font-weight:600">${b.category}</span>` : ''}
       </div>
       <div class="lib-book-row">
-        ${b.coverUrl
-          ? `<img src="${b.coverUrl}" class="lib-cover" alt="${b.title}">`
-          : `<div class="lib-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover}</div>`}
+        <div class="lib-cover" style="display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--cream)">${b.cover || '📚'}</div>
         <div class="lib-book-info">
-          <div class="lib-book-title">${b.title}</div>
-          <div class="lib-book-author">${b.author}${b.publisher ? ' · ' + b.publisher : ''}</div>
+          <div class="lib-book-title">${cleanTitle(b.title)}</div>
+          <div class="lib-book-author">${b.author}</div>
           ${b.total_loans ? `<div style="font-size:0.68rem;color:var(--g2);font-weight:600;margin-top:4px">📖 전국 ${b.total_loans.toLocaleString()}건 대출</div>` : ''}
         </div>
       </div>
     </div>`;
   }).join('');
-  document.getElementById('lib-grid').innerHTML = html;
 
-  // 카카오 표지 이미지 비동기 로딩
-  if (KAKAO_KEY && KAKAO_KEY !== 'YOUR_KAKAO_REST_KEY') {
-    attachCovers(picks, () => renderLibrary());
-  }
+  document.getElementById('lib-grid').innerHTML = html;
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
