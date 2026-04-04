@@ -52,7 +52,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 56px;
+    height: 52px;
   }
   .logo {
     font-family: 'Noto Sans KR', sans-serif;
@@ -83,7 +83,7 @@
   /* ── HERO ── */
   .hero {
     background: linear-gradient(160deg, #1a0a2e 0%, #2d0a1e 50%, #1a0f2e 100%);
-    padding: 60px 24px 72px;
+    padding: 40px 20px 52px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -202,8 +202,8 @@
   }
   .tabs::-webkit-scrollbar { display: none; }
   .tab {
-    padding: 14px 18px;
-    font-size: 0.8rem;
+    padding: 12px 12px;
+    font-size: 0.75rem;
     font-weight: 500;
     color: var(--muted);
     cursor: pointer;
@@ -224,7 +224,10 @@
   .main {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 32px 24px;
+    padding: 20px 16px;
+  }
+  @media (min-width: 640px) {
+    .main { padding: 28px 24px;
   }
   .section-header {
     display: flex;
@@ -262,10 +265,10 @@
   .chart-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 14px;
   }
-  @media (max-width: 700px) {
-    .chart-grid { grid-template-columns: 1fr; }
+  @media (max-width: 640px) {
+    .chart-grid { grid-template-columns: 1fr; gap: 10px; }
   }
 
   /* ── RANK CARD ── */
@@ -273,10 +276,10 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 16px;
+    padding: 12px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     cursor: pointer;
     transition: all 0.22s;
     position: relative;
@@ -376,32 +379,48 @@
     gap: 2px;
   }
 
-  /* ── FEATURED (TOP3) ── */
+  /* ── TOP5 스와이프 슬라이더 ── */
   .featured-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 28px;
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    margin-left: -24px;
+    margin-right: -24px;
+    padding-left: 24px;
+    padding-right: 24px;
   }
-  @media (max-width: 650px) {
-    .featured-row { grid-template-columns: 1fr; }
-  }
+  .featured-row::-webkit-scrollbar { display: none; }
   .featured-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 16px;
+    border-radius: 14px;
+    padding: 18px 14px;
     text-align: center;
     position: relative;
-    overflow: hidden;
     cursor: pointer;
     transition: all 0.22s;
+    scroll-snap-align: start;
+    flex: 0 0 160px;
+    min-width: 160px;
   }
-  .featured-card:first-child {
-    border-color: #c8a832;
-    box-shadow: 0 0 0 1px #c8a83240;
+  @media (min-width: 600px) {
+    .featured-card { flex: 0 0 180px; min-width: 180px; }
   }
-  .featured-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+  @media (min-width: 900px) {
+    .featured-row {
+      margin-left: 0; margin-right: 0;
+      padding-left: 0; padding-right: 0;
+      flex-wrap: nowrap;
+    }
+    .featured-card { flex: 1; min-width: 0; }
+  }
+  .featured-card.rank1 { border-color: #c8a832; box-shadow: 0 0 0 1px #c8a83240; }
+  .featured-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
   .crown {
     font-size: 1.6rem;
     margin-bottom: 8px;
@@ -575,14 +594,17 @@
   /* ── LIBRARY PICKS ── */
   .lib-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 600px) {
+    .lib-grid { grid-template-columns: 1fr; gap: 10px; }
   }
   .lib-card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    padding: 18px;
+    padding: 16px;
     cursor: pointer;
     transition: all 0.22s;
   }
@@ -957,6 +979,41 @@
     font-size: 0.68rem;
     color: var(--border);
     margin-top: 12px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    .hero-title .line1 { font-size: 0.85rem; }
+    .hero-title .line2 { font-size: 2rem; letter-spacing: -0.5px; }
+    .hero-desc { font-size: 0.72rem; }
+    .stat { padding: 10px 16px; }
+    .stat-num { font-size: 1.05rem; }
+    .stat-label { font-size: 0.55rem; }
+    .section-title { font-size: 1.1rem; }
+    .section-sub { font-size: 0.72rem; }
+    .modal { padding: 20px 16px; max-height: 85vh; }
+    .modal-title { font-size: 1rem; }
+    .celeb-grid { grid-template-columns: 1fr; }
+    .theme-list { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .theme-card { padding: 16px 12px; }
+    .theme-card-title { font-size: 0.9rem; }
+    .theme-emoji { font-size: 1.6rem; margin-bottom: 8px; }
+    .rising-list { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .rising-cover-wrap { width: 56px; height: 78px; font-size: 1.5rem; }
+    .rising-pct-badge { font-size: 0.75rem; }
+    .rising-book-title { font-size: 0.7rem; }
+    .rising-book-author { font-size: 0.62rem; }
+    .rank-num { font-size: 1.1rem; min-width: 28px; }
+    .book-cover { width: 44px; height: 62px; }
+    .book-title { font-size: 0.82rem; }
+    .book-author { font-size: 0.68rem; }
+    .featured-cover { width: 60px; height: 84px; }
+    .filter-chip { font-size: 0.7rem; padding: 5px 10px; }
+    .loadmore-btn { font-size: 0.78rem; padding: 10px 24px; }
+  }
+  @media (max-width: 400px) {
+    .rising-list { grid-template-columns: repeat(2, 1fr); }
+    .theme-list { grid-template-columns: 1fr; }
   }
 
   /* ── ANIMATIONS ── */
@@ -2279,97 +2336,147 @@ function loadingHTML() {
 }
 
 // ─── RENDER ──────────────────────────────────────────────────────────
-const PAGE_SIZE = 20; // 한 번에 보여줄 개수
-let chartPage = 1;    // 인기차트 현재 페이지
-let chartFilteredData = []; // 현재 필터된 전체 데이터
+const PAGE_SIZE = 20;
+let chartPage = 1;
+let chartFilteredData = [];
+let chartRestExpanded = false; // 6위~ 펼침 여부
 
 function coverHTML(b, cls) {
   if (b.coverUrl) return `<img src="${b.coverUrl}" class="${cls}" alt="${b.title}" onerror="this.outerHTML='<div class=\'${cls} cover-placeholder\'>${b.cover||'📚'}</div>'">`;
   return `<div class="${cls} cover-placeholder">${b.cover || '📚'}</div>`;
 }
 
+function rankBadge(rank) {
+  if (rank === 1) return '<span style="font-size:1rem">👑</span>';
+  if (rank === 2) return '<span style="font-size:1rem">🥈</span>';
+  if (rank === 3) return '<span style="font-size:1rem">🥉</span>';
+  return `<span style="font-size:0.8rem;font-weight:700;color:var(--muted)">${rank}</span>`;
+}
+
 function renderChart(data, mode = 'chart') {
   chartFilteredData = data;
   chartPage = 1;
-  _renderChartPage(false); // 초기 렌더
+  chartRestExpanded = false;
+  _renderChartPage();
 }
 
-function _renderChartPage(isAppend = false) {
+function _renderChartPage() {
   const data = chartFilteredData;
-  const top3 = data.slice(0, 3);
+  const top5 = data.slice(0, 5);
+  const rest  = data.slice(5);
   const total = data.length;
-  const crowns = ['👑', '🥈', '🥉'];
 
-  // 초기 렌더 시에만 TOP3 + 그리드 전체 교체
-  if (!isAppend) {
-    document.getElementById('featured-row').innerHTML = top3.map((b, i) => `
-      <div class="featured-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${i*0.08}s">
-        <span class="crown">${crowns[i]}</span>
-        ${coverHTML(b, 'featured-cover')}
-        <div class="featured-rank">${['1ST','2ND','3RD'][i]} PLACE</div>
-        <div class="featured-title">${cleanTitle(b.title)}</div>
-        <div class="featured-author">${b.author}</div>
-        <div class="featured-loan">📖 대출 ${(b.loans||0).toLocaleString()}회</div>
+  // TOP5 가로 슬라이더
+  document.getElementById('featured-row').innerHTML = top5.map((b, i) => `
+    <div class="featured-card ${i===0?'rank1':''}" onclick="openModal(${b.rank-1},'chart')">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        ${rankBadge(b.rank)}
+        <span style="font-size:0.6rem;color:var(--muted);background:var(--cream);padding:2px 6px;border-radius:10px">${kdcLabel(b.kdc)}</span>
       </div>
-    `).join('');
+      ${coverHTML(b, 'featured-cover')}
+      <div class="featured-title" style="font-size:0.82rem;margin-top:8px">${cleanTitle(b.title)}</div>
+      <div class="featured-author" style="font-size:0.68rem">${b.author}</div>
+      <div class="featured-loan" style="font-size:0.65rem;margin-top:4px">📖 ${(b.loans||0).toLocaleString()}회</div>
+    </div>
+  `).join('');
 
-    const firstPage = data.slice(3, 3 + PAGE_SIZE);
-    document.getElementById('chart-grid').innerHTML = firstPage.map((b, i) => `
-      <div class="rank-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${Math.min(i,10)*0.04}s">
-        <div class="rank-num other">${b.rank}</div>
-        ${coverHTML(b, 'book-cover')}
-        <div class="book-info">
-          <div class="book-title">${cleanTitle(b.title)}</div>
-          <div class="book-author">${b.author} · ${b.publisher||''}</div>
-          <div class="book-meta">
-            <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
-            <span class="genre-tag">${kdcLabel(b.kdc)}</span>
-          </div>
-        </div>
-      </div>
-    `).join('');
+  // 6위~ 더보기 버튼 + 접힘/펼침
+  const grid = document.getElementById('chart-grid');
+  const loadmoreWrap = document.getElementById('chart-loadmore-wrap');
+
+  if (!chartRestExpanded) {
+    // 접힌 상태 → 버튼만 표시
+    grid.innerHTML = '';
+    grid.style.display = 'none';
+    if (loadmoreWrap) loadmoreWrap.style.display = 'none';
+    // 6위부터 보기 버튼
+    let expandBtn = document.getElementById('chart-expand-btn');
+    if (!expandBtn) {
+      expandBtn = document.createElement('div');
+      expandBtn.id = 'chart-expand-btn';
+      expandBtn.style.cssText = 'text-align:center;margin-top:8px;margin-bottom:4px';
+      grid.parentNode.insertBefore(expandBtn, grid.nextSibling);
+    }
+    expandBtn.innerHTML = `
+      <button onclick="expandChartRest()" style="
+        width:100%;padding:14px;border:1.5px solid var(--border);border-radius:10px;
+        background:var(--card);font-size:0.82rem;font-weight:600;color:var(--ink);
+        cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+        font-family:'Noto Sans KR',sans-serif;transition:all 0.2s">
+        6위부터 알아보기
+        <span style="font-size:0.7rem;color:var(--muted);font-weight:400">${rest.length}권 더</span>
+        <span style="font-size:0.9rem">⌄</span>
+      </button>`;
   } else {
-    // 더보기: 새 카드만 뒤에 추가
-    const start = 3 + PAGE_SIZE * (chartPage - 1);
-    const end   = 3 + PAGE_SIZE * chartPage;
-    const newItems = data.slice(start, end);
-    const grid = document.getElementById('chart-grid');
-    newItems.forEach((b, i) => {
-      const div = document.createElement('div');
-      div.className = 'rank-card';
-      div.style.animationDelay = `${Math.min(i,10)*0.04}s`;
-      div.onclick = () => openModal(b.rank-1, 'chart');
-      div.innerHTML = `
-        <div class="rank-num other">${b.rank}</div>
-        ${coverHTML(b, 'book-cover')}
-        <div class="book-info">
-          <div class="book-title">${cleanTitle(b.title)}</div>
-          <div class="book-author">${b.author} · ${b.publisher||''}</div>
-          <div class="book-meta">
-            <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
-            <span class="genre-tag">${kdcLabel(b.kdc)}</span>
-          </div>
-        </div>`;
-      grid.appendChild(div);
-    });
-  }
+    // 펼쳐진 상태 → 리스트 표시
+    const expandBtn = document.getElementById('chart-expand-btn');
+    if (expandBtn) expandBtn.style.display = 'none';
+    grid.style.display = '';
 
-  // 더보기 버튼 상태 업데이트
-  const wrap = document.getElementById('chart-loadmore-wrap');
-  const shown = 3 + PAGE_SIZE * chartPage;
-  if (wrap) {
-    if (shown < total) {
-      wrap.style.display = 'block';
-      document.getElementById('chart-loadmore-count').textContent = `(${shown}/${total})`;
+    const pageData = rest.slice(0, PAGE_SIZE * chartPage);
+    if (chartPage === 1) {
+      grid.innerHTML = pageData.map((b, i) => `
+        <div class="rank-card" onclick="openModal(${b.rank-1},'chart')" style="animation-delay:${Math.min(i,8)*0.03}s">
+          <div class="rank-num other">${b.rank}</div>
+          ${coverHTML(b, 'book-cover')}
+          <div class="book-info">
+            <div class="book-title">${cleanTitle(b.title)}</div>
+            <div class="book-author">${b.author}</div>
+            <div class="book-meta">
+              <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+              <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+            </div>
+          </div>
+        </div>`).join('');
     } else {
-      wrap.style.display = 'none';
+      // append
+      const newItems = rest.slice(PAGE_SIZE * (chartPage-1), PAGE_SIZE * chartPage);
+      newItems.forEach((b, i) => {
+        const div = document.createElement('div');
+        div.className = 'rank-card';
+        div.style.animationDelay = `${Math.min(i,8)*0.03}s`;
+        div.onclick = () => openModal(b.rank-1, 'chart');
+        div.innerHTML = `
+          <div class="rank-num other">${b.rank}</div>
+          ${coverHTML(b, 'book-cover')}
+          <div class="book-info">
+            <div class="book-title">${cleanTitle(b.title)}</div>
+            <div class="book-author">${b.author}</div>
+            <div class="book-meta">
+              <span class="loan-count">📖 ${(b.loans||0).toLocaleString()}회</span>
+              <span class="genre-tag">${kdcLabel(b.kdc)}</span>
+            </div>
+          </div>`;
+        grid.appendChild(div);
+      });
+    }
+
+    // 더보기 버튼
+    const shown = PAGE_SIZE * chartPage;
+    if (loadmoreWrap) {
+      if (shown < rest.length) {
+        loadmoreWrap.style.display = 'block';
+        document.getElementById('chart-loadmore-count').textContent = `(${shown+5}/${total})`;
+      } else {
+        loadmoreWrap.style.display = 'none';
+      }
     }
   }
 }
 
+function expandChartRest() {
+  chartRestExpanded = true;
+  chartPage = 1;
+  _renderChartPage();
+  // 살짝 스크롤
+  setTimeout(() => {
+    document.getElementById('chart-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
 function loadMoreChart() {
   chartPage++;
-  _renderChartPage(true); // append 모드
+  _renderChartPage();
 }
 
 function renderRising(data) {
