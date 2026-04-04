@@ -224,10 +224,7 @@
   .main {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 20px 16px;
-  }
-  @media (min-width: 640px) {
-    .main { padding: 28px 24px;
+    padding: 20px 16px 40px;
   }
   .section-header {
     display: flex;
@@ -731,7 +728,10 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(26,22,18,0.7);
+    background: rgba(15,10,26,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     z-index: 200;
     display: flex;
     align-items: center;
@@ -981,39 +981,123 @@
     margin-top: 12px;
   }
 
-  /* ── MOBILE ── */
+  /* ── MOBILE FIRST ── */
+  .pc-only { display: none; }
+
   @media (max-width: 640px) {
-    .hero-title .line1 { font-size: 0.85rem; }
-    .hero-title .line2 { font-size: 2rem; letter-spacing: -0.5px; }
-    .hero-desc { font-size: 0.72rem; }
-    .stat { padding: 10px 16px; }
-    .stat-num { font-size: 1.05rem; }
-    .stat-label { font-size: 0.55rem; }
-    .section-title { font-size: 1.1rem; }
-    .section-sub { font-size: 0.72rem; }
-    .modal { padding: 20px 16px; max-height: 85vh; }
+    /* 헤더 */
+    header { padding: 0 16px; }
+
+    /* 히어로 */
+    .hero { padding: 36px 20px 44px; }
+    .hero-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after { display: none; }
+    .hero-title { margin-bottom: 12px; }
+    .hero-title .line1 {
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+    .hero-title .line2 {
+      font-size: 2.4rem;
+      letter-spacing: -1px;
+      line-height: 1.0;
+    }
+    .hero-desc {
+      font-size: 0.72rem;
+      margin-bottom: 28px;
+    }
+    .hero-stats {
+      display: flex;
+      width: 100%;
+      max-width: 320px;
+    }
+    .stat { padding: 10px 0; flex: 1; }
+    .stat-num { font-size: 1.1rem; }
+    .stat-label { font-size: 0.52rem; }
+
+    /* 탭 */
+    .tab-wrap { top: 52px; }
+    .tabs { padding: 0 12px; }
+    .tab { padding: 11px 10px; font-size: 0.73rem; }
+    .tab .tab-icon { margin-right: 3px; }
+
+    /* 본문 */
+    .main { padding: 16px; }
+    .section-title { font-size: 1rem; }
+    .section-sub { font-size: 0.7rem; margin-bottom: 14px; }
+    .section-header { margin-bottom: 14px; }
+
+    /* 필터칩 */
+    .filter-bar { gap: 6px; margin-bottom: 14px; }
+    .filter-chip { font-size: 0.68rem; padding: 5px 10px; }
+
+    /* 차트 */
+    .chart-grid { grid-template-columns: 1fr; gap: 8px; }
+    .rank-card { padding: 10px 12px; gap: 10px; }
+    .rank-num { font-size: 1rem; min-width: 24px; }
+    .book-cover { width: 42px; height: 58px; }
+    .cover-placeholder { width: 42px; height: 58px; font-size: 1.2rem; }
+    .book-title { font-size: 0.82rem; -webkit-line-clamp: 1; }
+    .book-author { font-size: 0.67rem; margin-bottom: 4px; }
+    .loan-count { font-size: 0.62rem; }
+    .genre-tag { font-size: 0.6rem; }
+
+    /* TOP5 카드 */
+    .featured-cover { width: 56px; height: 78px; margin-bottom: 8px; }
+    .featured-title { font-size: 0.75rem; }
+    .featured-author { font-size: 0.65rem; }
+    .featured-loan { font-size: 0.6rem; }
+
+    /* 더보기 버튼 */
+    .loadmore-btn { font-size: 0.76rem; padding: 10px 20px; }
+
+    /* 급상승 */
+    .rising-list { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .rising-item { padding: 12px 10px; gap: 6px; }
+    .rising-rank-badge { font-size: 0.58rem; padding: 2px 5px; top: 7px; left: 7px; }
+    .rising-cover-wrap { width: 52px; height: 72px; font-size: 1.4rem; margin-top: 6px; }
+    .rising-pct-badge { font-size: 0.72rem; }
+    .rising-book-title { font-size: 0.67rem; }
+    .rising-book-author { font-size: 0.6rem; }
+
+    /* 테마 */
+    .theme-list { grid-template-columns: 1fr; gap: 8px; }
+    .theme-card { padding: 14px 10px; }
+    .theme-card-title { font-size: 0.82rem; }
+    .theme-emoji { font-size: 1.5rem; margin-bottom: 6px; }
+
+    /* 셀럽 */
+    .celeb-grid { grid-template-columns: 1fr; gap: 10px; }
+    .celeb-card { padding: 16px; }
+
+    /* 이달의 책 */
+    .lib-grid { grid-template-columns: 1fr; gap: 8px; }
+    .lib-card { padding: 14px; }
+    .lib-cover { width: 54px !important; height: 74px !important; border-radius: 5px; }
+    .lib-book-title { font-size: 0.82rem; }
+    .lib-book-author { font-size: 0.7rem; }
+
+    /* 모달 */
+    .modal { padding: 20px 16px; max-height: 88vh; border-radius: 16px 16px 0 0; }
+    .modal-overlay { align-items: flex-end; }
     .modal-title { font-size: 1rem; }
-    .celeb-grid { grid-template-columns: 1fr; }
-    .theme-list { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .theme-card { padding: 16px 12px; }
-    .theme-card-title { font-size: 0.9rem; }
-    .theme-emoji { font-size: 1.6rem; margin-bottom: 8px; }
-    .rising-list { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .rising-cover-wrap { width: 56px; height: 78px; font-size: 1.5rem; }
-    .rising-pct-badge { font-size: 0.75rem; }
-    .rising-book-title { font-size: 0.7rem; }
-    .rising-book-author { font-size: 0.62rem; }
-    .rank-num { font-size: 1.1rem; min-width: 28px; }
-    .book-cover { width: 44px; height: 62px; }
-    .book-title { font-size: 0.82rem; }
-    .book-author { font-size: 0.68rem; }
-    .featured-cover { width: 60px; height: 84px; }
-    .filter-chip { font-size: 0.7rem; padding: 5px 10px; }
-    .loadmore-btn { font-size: 0.78rem; padding: 10px 24px; }
+    .modal-actions { flex-direction: column; gap: 8px; }
+    .btn-primary, .btn-secondary { padding: 13px; font-size: 0.8rem; }
   }
-  @media (max-width: 400px) {
+
+  @media (max-width: 380px) {
+    .hero-title .line2 { font-size: 2rem; }
     .rising-list { grid-template-columns: repeat(2, 1fr); }
-    .theme-list { grid-template-columns: 1fr; }
+
+  }
+
+  @media (min-width: 641px) {
+    .pc-only { display: block; }
   }
 
   /* ── ANIMATIONS ── */
@@ -1030,26 +1114,21 @@
 
 <header>
   <div class="header-inner">
-    <div style="display:flex;align-items:baseline;gap:10px">
-      <div class="logo">북<span>차트</span></div>
-      <div class="header-sub">Book Chart</div>
-    </div>
-    <div class="header-sub" style="display:none;display:flex;align-items:center;gap:6px">
-    </div>
+    <div class="logo">북<span>차트</span></div>
     <div style="display:flex;align-items:center;gap:8px">
-      <div class="header-sub">전국 공공도서관 빅데이터</div>
+      <div class="header-sub pc-only">전국 공공도서관 빅데이터</div>
       <div class="api-badge">LIVE</div>
     </div>
   </div>
 </header>
 
 <div class="hero">
-  <div class="hero-eyebrow">전국 공공도서관 빅데이터 · 순수 독자 인기차트</div>
+  <div class="hero-eyebrow">전국 공공도서관 빅데이터</div>
   <h1 class="hero-title">
     <span class="line1">읽힌 책이 증명한다</span>
-    <span class="line2">100만 대출이 선택한 북차트</span>
+    <span class="line2">북차트</span>
   </h1>
-  <p class="hero-desc">서점 순위가 아닌 — 실제로 빌려 읽은 책들의 차트</p>
+  <p class="hero-desc">서점 순위가 아닌 실제 대출로 증명된 차트</p>
   <div class="hero-stats">
     <div class="stat">
       <div class="stat-num">1,100+</div>
@@ -2100,8 +2179,9 @@ function filterTheme(kdc, el) {
 // 테마 상세 모달
 // ─── 공통 모달 렌더 ──────────────────────────────────────────────────
 async function renderBookModal(book) {
-  const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(book.title)}`;
-  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(book.title)}`;
+  const cleanT = cleanTitle(book.title);
+  const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(cleanT)}`;
+  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(cleanT)}`;
 
   _drawModal(book, null, aladin, chaekieum);
   document.getElementById('modal-overlay').classList.add('open');
@@ -2176,8 +2256,9 @@ function openModalDirect(b) {
 
 function openCelebModal(idx) {
   const c = CELEB_DATA[idx];
-  const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(c.book)}`;
-  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(c.book)}`;
+  const cleanB = cleanTitle(c.book);
+  const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(cleanB)}`;
+  const chaekieum = `https://books.nl.go.kr/search?query=${encodeURIComponent(cleanB)}`;
   document.getElementById('modal-content').innerHTML = `
     <div style="display:flex;gap:14px;align-items:center;margin-bottom:16px">
       <div class="celeb-avatar">${c.emoji}</div>
