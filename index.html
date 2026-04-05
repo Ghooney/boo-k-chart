@@ -2373,14 +2373,8 @@ let currentRisingData = DEMO_RISING;
 // 네이버 검색 API는 브라우저에서 직접 호출 가능 (CORS 허용)
 async function naverBookSearch(query) {
   try {
-    const apiUrl = `https://openapi.naver.com/v1/search/book.json?query=${encodeURIComponent(query)}&display=1`;
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`;
-    const res = await fetch(proxyUrl, {
-      headers: {
-        'X-Naver-Client-Id': NAVER_CLIENT_ID,
-        'X-Naver-Client-Secret': NAVER_CLIENT_SECRET,
-      }
-    });
+    // Vercel API 프록시 경유 — CORS 완전 해결
+    const res = await fetch(`/api/book?query=${encodeURIComponent(query)}`);
     if (!res.ok) return null;
     const json = await res.json();
     return json.items?.[0] || null;
