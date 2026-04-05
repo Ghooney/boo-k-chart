@@ -98,22 +98,17 @@
   .hero-eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    color: rgba(255,255,255,0.7);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    font-weight: 500;
+    gap: 12px;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.95);
+    margin-top: 14px;
+    margin-bottom: 32px;
+    font-weight: 400;
     position: relative;
     z-index: 1;
   }
-  .hero-eyebrow::before, .hero-eyebrow::after {
-    content: '';
-    display: block;
-    width: 20px; height: 1px;
-    background: rgba(255,255,255,0.3);
-  }
+  .hero-eyebrow::before, .hero-eyebrow::after { display: none; }
   .hero-title {
     font-family: 'Noto Sans KR', sans-serif;
     line-height: 1.0;
@@ -123,10 +118,10 @@
   }
   .hero-title .line1 {
     display: block;
-    font-size: clamp(0.88rem, 2vw, 1.1rem);
-    font-weight: 400;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.06em;
+    font-size: clamp(1.1rem, 2.8vw, 1.5rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
     margin-bottom: 14px;
   }
   .hero-title .line2 {
@@ -141,9 +136,8 @@
   .hero-features {
     position: relative;
     z-index: 1;
-    margin-top: 36px;
-    padding-top: 28px;
-    border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: 8px;
+    padding-top: 0;
     max-width: 480px;
     margin-left: auto;
     margin-right: auto;
@@ -443,8 +437,9 @@
     margin-bottom: 12px;
     margin-left: -24px;
     margin-right: -24px;
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: calc(50% - 80px);
+    padding-right: calc(50% - 80px);
+    scroll-padding-left: calc(50% - 80px);
   }
   .featured-row::-webkit-scrollbar { display: none; }
   .featured-card {
@@ -467,6 +462,7 @@
     .featured-row {
       margin-left: 0; margin-right: 0;
       padding-left: 0; padding-right: 0;
+      scroll-padding-left: 0;
       flex-wrap: nowrap;
     }
     .featured-card { flex: 1; min-width: 0; }
@@ -1049,16 +1045,19 @@
     /* 히어로 */
     .hero { padding: 36px 20px 44px; }
     .hero-eyebrow {
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: #ffffff;
       margin-bottom: 16px;
     }
     .hero-eyebrow::before, .hero-eyebrow::after { display: none; }
     .hero-title { margin-bottom: 12px; }
     .hero-title .line1 {
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
-      margin-bottom: 4px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
     }
     .hero-title .line2 {
       font-size: 2.4rem;
@@ -1177,11 +1176,11 @@
 </header>
 
 <div class="hero">
-  <div class="hero-eyebrow">전국 공공도서관 대출 빅데이터 차트</div>
   <h1 class="hero-title">
     <span class="line1">진짜 독자들은 어떤 책을 읽을까?</span>
     <span class="line2">BOOK CHART</span>
   </h1>
+  <div class="hero-eyebrow">─ 전국 공공도서관 대출 빅데이터 차트 ─</div>
   <div class="hero-features">
     <div class="hero-feat-viewport">
     <div class="hero-feat-track" id="heroFeatTrack">
@@ -2254,20 +2253,30 @@ async function renderBookModal(book) {
   const aladin = `https://www.aladin.co.kr/search/wsearchresult.aspx?SearchWord=${encodeURIComponent(cleanT)}`;
   const chaekieum = `https://books.nl.go.kr/nill/contents/NI2010000000.do?page_move_status=0&page_num=1&sort=&logic2=and&collection=dan&first_search=Y&search_type=SIMPLE&search_field1=total&page_size=10&hanja_trans=N&schM=searchResultList&value1=${encodeURIComponent(cleanT)}`;
 
-  // 1) 일단 현재 데이터로 바로 모달 오픈
-  const enriched = { ...book, desc: book.desc || book.reason || '' };
-  _drawModal(enriched, null, aladin, chaekieum);
+  // 로딩 스피너 먼저 표시
+  document.getElementById('modal-content').innerHTML = `
+    <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-start">
+      <div style="width:88px;height:122px;border-radius:8px;background:var(--cream);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:2.5rem">${book.cover||'📚'}</div>
+      <div style="flex:1">
+        <div class="modal-title">${cleanT}</div>
+        <div class="modal-author">${book.author||''}</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:24px 0;color:var(--muted)">
+      <div class="loading-spinner" style="margin:0 auto 8px"></div>
+      <div style="font-size:0.78rem">책 정보 불러오는 중...</div>
+    </div>`;
   document.getElementById('modal-overlay').classList.add('open');
 
-  // 2) 카카오 SDK로 표지 + 설명 가져와서 업데이트
-  // 네이버 API로 표지 + 설명 동시 로딩
+  // 네이버 API로 표지 + 설명 가져온 후 한 번에 그리기
+  const enriched = { ...book, desc: book.desc || book.reason || '' };
   const info = await fetchBookInfo(cleanT, book.isbn);
   if (info) {
     if (info.thumbnail) enriched.coverUrl = info.thumbnail;
     if (info.contents) enriched.desc = info.contents;
     if (info.publisher) enriched.publisher = info.publisher;
-    _drawModal(enriched, null, aladin, chaekieum);
   }
+  _drawModal(enriched, null, aladin, chaekieum);
 }
 
 function _drawModal(b, kakaoDoc, aladin, chaekieum) {
@@ -2399,15 +2408,46 @@ async function fetchCoverByTitle(title) {
   return item?.image || null;
 }
 
-// 데이터 배열 표지 로딩 — 순차 (네이버 API rate limit 방지)
+// 데이터 배열 표지 로딩 — 병렬 호출, 나오는 즉시 DOM 직접 교체
 async function attachCovers(dataArr, renderFn) {
-  for (const b of dataArr) {
+  // 먼저 현재 상태로 렌더
+  renderFn(dataArr);
+  // 병렬 요청 — 표지 오는 즉시 해당 카드만 교체 (renderChart 재호출 안 함)
+  dataArr.forEach(async (b) => {
     const query = b.isbn || cleanTitle(b.title);
     const item = await naverBookSearch(query);
-    if (item?.image) b.coverUrl = item.image;
-    await new Promise(r => setTimeout(r, 100));
-  }
-  renderFn(dataArr);
+    if (!item?.image) return;
+    b.coverUrl = item.image;
+    // rank 기반으로 placeholder 찾아서 교체
+    document.querySelectorAll('.cover-placeholder').forEach(el => {
+      const card = el.closest('[onclick]');
+      if (!card) return;
+      const onclick = card.getAttribute('onclick') || '';
+      if (onclick.includes(`openModal(${b.rank-1},`) || onclick.includes(`'${b.rank-1}',`)) {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.className = el.className.replace('cover-placeholder','').trim() + ' book-cover';
+        img.style.cssText = el.style.cssText;
+        img.alt = cleanTitle(b.title);
+        img.onerror = () => {};
+        el.replaceWith(img);
+      }
+    });
+    // featured-cover placeholder도 교체
+    document.querySelectorAll('.featured-cover.cover-placeholder').forEach(el => {
+      const card = el.closest('[onclick]');
+      if (!card) return;
+      const onclick = card.getAttribute('onclick') || '';
+      if (onclick.includes(`openModal(${b.rank-1},`)) {
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.className = 'featured-cover';
+        img.alt = cleanTitle(b.title);
+        img.onerror = () => {};
+        el.replaceWith(img);
+      }
+    });
+  });
 }
 
 // 표지 + 설명 동시에 반환
@@ -2478,7 +2518,7 @@ async function loadChartData(kdc = '') {
     if (data.length) {
       currentChartData = data;
       renderChart(data, 'chart');
-      if (KAKAO_KEY) attachCovers(currentChartData, d => renderChart(d, 'chart'));
+      attachCovers(currentChartData, d => {});  // 표지만 로딩, 재렌더 안 함
     } else renderChart(DEMO_CHART, 'chart');
   } catch(e) { renderChart(DEMO_CHART, 'chart'); }
 }
@@ -2651,10 +2691,10 @@ function renderRising(data) {
         rank: b.rank, rankLabel: "급상승 순위", loans: b.loans||0
       })})'>
       <div class="rising-rank-badge">${b.rank}위</div>
-      <div class="rising-cover-wrap">
+      <div class="rising-cover-wrap" data-rank="${b.rank}">
         ${b.coverUrl
           ? `<img src="${b.coverUrl}" alt="${b.title}">`
-          : `${b.cover || '📚'}`}
+          : `<span class="rising-emoji-${b.rank}">${b.cover || '📚'}</span>`}
       </div>
       <div class="rising-pct-badge">▲ ${b.pct}</div>
       <div class="rising-book-title">${cleanTitle(b.title)}</div>
@@ -2662,6 +2702,23 @@ function renderRising(data) {
     </div>
   `).join('');
   document.getElementById('rising-list').innerHTML = html;
+
+  // 표지 병렬 로딩
+  list.forEach(async (b) => {
+    if (b.coverUrl) return;
+    const item = await naverBookSearch(b.isbn || cleanTitle(b.title));
+    if (!item?.image) return;
+    b.coverUrl = item.image;
+    const wrap = document.querySelector(`.rising-cover-wrap[data-rank="${b.rank}"]`);
+    if (wrap) {
+      const img = document.createElement('img');
+      img.src = item.image;
+      img.alt = cleanTitle(b.title);
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover';
+      wrap.innerHTML = '';
+      wrap.appendChild(img);
+    }
+  });
 }
 
 function renderCeleb(filter = 'all') {
@@ -2796,26 +2853,22 @@ function renderLibrary() {
 
   document.getElementById('lib-grid').innerHTML = html;
 
-  // 네이버 책 API로 표지 순차 로딩
-  (async () => {
-    for (const b of picks) {
-      const url = await fetchCoverByIsbn(b.isbn) || await fetchCoverByTitle(cleanTitle(b.title));
-      if (url) {
-        const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`);
-        if (el && el.tagName !== 'IMG') {
-          const img = document.createElement('img');
-          img.src = url;
-          img.className = 'lib-cover';
-          img.alt = cleanTitle(b.title);
-          img.style.objectFit = 'cover';
-          img.dataset.isbn = b.isbn;
-          img.onerror = () => { img.style.display = 'none'; };
-          el.replaceWith(img);
-        }
-      }
-      await new Promise(r => setTimeout(r, 100));
+  // 네이버 책 API로 표지 병렬 로딩 — 나오는 즉시 교체
+  picks.forEach(async (b) => {
+    const item = await naverBookSearch(b.isbn || cleanTitle(b.title));
+    if (!item?.image) return;
+    const el = document.querySelector(`.lib-cover[data-isbn="${b.isbn}"]`);
+    if (el && el.tagName !== 'IMG') {
+      const img = document.createElement('img');
+      img.src = item.image;
+      img.className = 'lib-cover';
+      img.alt = cleanTitle(b.title);
+      img.style.objectFit = 'cover';
+      img.dataset.isbn = b.isbn;
+      img.onerror = () => { img.style.display = 'none'; };
+      el.replaceWith(img);
     }
-  })();
+  });
 }
 
 // ─── UTILS ───────────────────────────────────────────────────────────
@@ -2845,7 +2898,7 @@ function heroFeatGo(idx) {
 }
 
 // 자동 슬라이드 3초 간격
-setInterval(() => heroFeatGo((heroFeatIdx + 1) % heroFeatTotal), 3000);
+setInterval(() => heroFeatGo((heroFeatIdx + 1) % heroFeatTotal), 5000);
 
 // ─── INIT ─────────────────────────────────────────────────────────────
 renderChart(DEMO_CHART, 'chart');
@@ -2859,7 +2912,7 @@ if (API_KEY && API_KEY !== 'YOUR_DATA4LIBRARY_KEY') {
   loadChartData();
   loadRisingData();
 }
-attachCovers(DEMO_CHART, d => renderChart(d, 'chart'));
+attachCovers(DEMO_CHART, () => {});
 attachCovers(CELEB_DATA.map(c => ({ isbn: c.isbn, title: c.book, cover: c.cover, coverUrl: c.coverUrl })), () => renderCeleb());
 </script>
 </body>
