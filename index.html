@@ -935,8 +935,8 @@
     margin-bottom: 12px;
   }
   .theme-card {
-    border-radius: 14px;
-    padding: 24px;
+    border-radius: 16px;
+    padding: 28px 28px 22px;
     cursor: pointer;
     transition: all 0.25s;
     position: relative;
@@ -954,7 +954,7 @@
     );
   }
   .theme-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
-  .theme-card-title { font-family: 'Noto Sans KR', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+  .theme-card-title { font-family: 'Noto Sans KR', sans-serif; font-size: 1.1rem; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
   .theme-card-desc { font-size: 0.78rem; line-height: 1.6; opacity: 0.8; margin-bottom: 14px; }
   .theme-card-meta {
     display: flex; align-items: center; justify-content: space-between;
@@ -2305,7 +2305,7 @@ async function openTheme(idx) {
     <div class="loading-wrap" style="grid-column:1/-1">
       <div class="loading-spinner"></div>
       <div class="loading-text" id="theme-loading-text">
-        ${isIntersect ? '10년치 데이터를 동시에 분석 중...' : '데이터 불러오는 중...'}
+        ${isIntersect ? '📚 10년간의 독서 기록을 분석하고 있어요...' : '데이터 불러오는 중...'}
       </div>
       ${isIntersect ? `<div style="margin-top:8px">
         <div style="height:4px;background:var(--border);border-radius:2px;width:240px;margin:0 auto;overflow:hidden">
@@ -2323,7 +2323,7 @@ async function openTheme(idx) {
           const bar = document.getElementById('theme-progress-bar');
           const txt = document.getElementById('theme-progress-text');
           if (bar) bar.style.width = `${Math.round(done/total*100)}%`;
-          if (txt) txt.textContent = `${done} / ${total}년 완료`;
+          if (txt) txt.textContent = `${done} / ${Number(total)}년 완료`;
         });
       } else {
         const docs = await fetchPeriodBooks(
@@ -3042,8 +3042,12 @@ function switchTab(name, el) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-' + name).classList.add('active');
-  // 이달의 책 탭 첫 진입 시 렌더 (표지 포함)
   if (name === 'library') renderLibrary();
+  // 테마 탭 클릭 시 항상 목록으로 복귀
+  if (name === 'theme') {
+    document.getElementById('theme-list').style.display = 'grid';
+    document.getElementById('theme-detail').style.display = 'none';
+  }
 }
 
 function filterChart(kdc, el) {
